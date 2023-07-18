@@ -1,0 +1,93 @@
+import { getResource, listResources } from "@/api/kubernetes"
+
+export function frontendData(listname, tablename, pageSite, tableColumns:[], tableData:[], props='', region='test'){
+  const MAX_RETRIES = 10;
+  const fetchData = (retryCount = 0) => {
+    if (retryCount >= MAX_RETRIES) {
+      console.error("Maximum retry count reached.");
+      return;
+    }
+
+    listResources({
+      fullkind: listname,
+      page: pageSite.value.page,
+      limit: pageSite.value.limit,
+      labels: {
+        "metadata##name": props
+      },
+      region: region
+    }).then((resp)=>{
+      console.log(resp.data.data.items);
+      tableData.value = resp.data.data;
+
+      getResource({
+        fullkind: "doslab.io.Frontend",
+        name: tablename + '-table',
+        namespace: "default",
+        region: region
+      }).then((resp) => {
+        console.log(resp.data.data.spec.data);
+        tableColumns.value = resp.data.data.spec.data;
+      }).catch((error) => {
+        console.error("Inner request failed.");
+        fetchData(retryCount + 1); // 递归调用 fetchData 函数，并增加 retryCount
+      });
+    }).catch((error) => {
+      console.error("Outer request failed.");
+      fetchData(retryCount + 1);
+    });
+  };
+
+  fetchData(); // 初始调用 fetchData 函数
+  return [tableData, tableColumns];
+}
+
+export function frontendMeta(tablename, descItem: [], region = 'test', retryCount = 3) {
+  const getResourceData = (retry) => {
+    getResource({
+      fullkind: "doslab.io.Frontend",
+      name: tablename + '-desc',
+      namespace: "default",
+      region: region
+    })
+        .then((resp) => {
+          console.log(resp.data.data.spec);
+          descItem.value = resp.data.data.spec;
+        })
+        .catch((error) => {
+          console.error(error);
+          if (retry < retryCount) {
+            getResourceData(retry + 1);
+          } else {
+            console.error('Request failed.');
+          }
+        });
+  };
+
+  getResourceData(1); // 初始化时发送请求
+}
+
+export function frontendFormSearch(tablename, descItem: [], region = 'test', retryCount = 3) {
+  const getResourceData = (retry) => {
+    getResource({
+      fullkind: "doslab.io.Frontend",
+      name: tablename + '-formsearch',
+      namespace: "default",
+      region: region
+    })
+        .then((resp) => {
+          console.log(resp.data.data.spec.data.items);
+          descItem.value = resp.data.data.spec.data.items;
+        })
+        .catch((error) => {
+          console.error(error);
+          if (retry < retryCount) {
+            getResourceData(retry + 1); // 重新发送
+          } else {
+            console.error('Request failed.');
+          }
+        });
+  };
+
+  getResourceData(1); // 初始化时发送请求
+}

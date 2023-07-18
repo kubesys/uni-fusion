@@ -1,0 +1,41 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "all-menus"
+  },
+  "spec": {
+    "data": [{
+      "title": "资源中心",
+      "items": [{
+        "type": "span1",
+        "span": 6,
+        "name": "云主机",
+        "src": "docker.png",
+        "classify": ["云主机", "云磁盘", "镜像", "计算规格", "云盘规格", "快照"]
+      },
+        {
+          "type": "span2",
+          "span": 6,
+          "name": "硬件设施",
+          "src": "docker.png",
+          "classify": ["区域", "集群", "物理机", "主存储", "镜像服务器"]
+        },
+        {
+          "type": "span2",
+          "span": 6,
+          "name": "网络资源",
+          "src": "docker.png",
+          "classify": ["二层网络", "VXLAN Pool", "公有网络", "扁平网络", "VPC网络", "VPC路由器", "路由器镜像", "路由器规格"]
+        },
+        {
+          "type": "span2",
+          "span": 6,
+          "name": "网络服务",
+          "src": "docker.png",
+          "classify": ["安全组", "虚拟IP", "弹性IP", "端口转发", "负载均衡"]
+        }
+      ]
+    }]
+  }
+}

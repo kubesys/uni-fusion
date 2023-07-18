@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'Vue'
+import {ref} from 'vue'
 import Annular from "./annular.vue";
 import Select from './select.vue'
 

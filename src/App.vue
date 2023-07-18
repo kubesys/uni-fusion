@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDark, useWindowSize, useThrottleFn } from '@vueuse/core'
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+
 import useAppStore from './stores/modules/app'
 import useSettingStore from './stores/modules/setting'
 import { ScreenEnum } from './enums/appEnums'
@@ -8,7 +8,7 @@ const appStore = useAppStore()
 const settingStore = useSettingStore()
 const elConfig = {
     zIndex: 3000,
-    locale: zhCn
+
 }
 const isDark = useDark()
 onMounted(async () => {

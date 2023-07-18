@@ -53,7 +53,7 @@ export function getRegions(){
 }
 
 // 编辑管理员信息
-// export function setUserInfo(params: any) {
-//     return request.post({ url: '/system/admin/upInfo', params })
-// }
+export function setUserInfo(params: any) {
+    return request.post({ url: '/system/admin/upInfo', params })
+}
 

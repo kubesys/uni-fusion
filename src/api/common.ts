@@ -1,6 +1,6 @@
 import { getResource, listResources } from "@/api/kubernetes"
 
-export function frontendData(listname, tablename, pageSite, tableColumns:[], tableData:[], props='', region='test'){
+export function frontendData(listname, tablename, pageSite, tableColumns:[], tableData:[], actions:[], props='', region='test'){
   const MAX_RETRIES = 10;
   const fetchData = (retryCount = 0) => {
     if (retryCount >= MAX_RETRIES) {
@@ -28,6 +28,19 @@ export function frontendData(listname, tablename, pageSite, tableColumns:[], tab
       }).then((resp) => {
         console.log(resp.data.data.spec.data);
         tableColumns.value = resp.data.data.spec.data;
+
+        getResource({
+          fullkind: "doslab.io.Frontend",
+          name: tablename + '-action',
+          namespace: "default",
+          region: region
+        }).then((resp)=>{
+          console.log(resp.data.data.spec.data)
+          actions.value = resp.data.data.spec.data
+        }).catch((error)=>{
+          fetchData(retryCount+1);
+        })
+
       }).catch((error) => {
         console.error("Inner request failed.");
         fetchData(retryCount + 1); // 递归调用 fetchData 函数，并增加 retryCount

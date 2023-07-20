@@ -43,6 +43,7 @@ export function getAllMenus(){
     })
 }
 
+// all-regions
 export function getRegions(){
     return axios.post( '/kubesys/kube/getResource',{
         fullkind:"doslab.io.Frontend",

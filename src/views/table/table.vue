@@ -54,10 +54,8 @@
       <template v-else-if="column.kind === 'action'">
         <!-- 操作列 -->
         <el-table-column :key="column.row" :label="column.label" :prop="column.row">
-          <el-select placeholder="请选择" style="width: 100px">
-            <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.type)" >
-              {{ item.name }}
-            </el-option>
+          <el-select placeholder="请选择">
+            <el-option/>
           </el-select>
         </el-table-column>
       </template>
@@ -73,12 +71,12 @@
       :page-size=pageSite.limit
       :current-page=pageSite.page
       :total=tableData.metadata.totalCount
+      @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
   ></el-pagination>
 </template>
 
 <script setup lang="ts">
-import router from "@/router";
 import {onMounted, ref} from 'vue'
 import {frontendFormSearch, frontendData} from "@/api/common";
 
@@ -107,12 +105,8 @@ const tableData = ref({
   metadata:{
     totalCount:''
   },
-  items:[],
-  actions:[]
+  items:[]
 })
-
-const actions = ref([])
-
 const pageSite = ref({limit:10,page:1})
 const tableDataLoaded = ref(false)
 const formData = ref<Record<string, string>>({}); // 表单数据对象
@@ -121,68 +115,58 @@ const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
 
 onMounted(()=>{
   frontendFormSearch(tablename, formItems)
-  frontendData(listname, tablename, pageSite,tableColumns, tableData, actions)
+  frontendData(listname, tablename, pageSite,tableColumns, tableData)
   tableDataLoaded.value = true
 })
 
-// function handleSizeChange(newSize) {
-//   this.pageSize = newSize;
-//   this.currentPage = 1; // 切换每页显示条数时重置当前页码
-//   this.fetchData(); // 重新请求数据
-// }
+function handleSizeChange(newSize) {
+  this.pageSize = newSize;
+  this.currentPage = 1; // 切换每页显示条数时重置当前页码
+  this.fetchData(); // 重新请求数据
+}
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
   frontendData(listname, tablename, pageSite,tableColumns, tableData,props.value)
 }
 
-// function generateLink(column, item) {
-//   if (column.link.startsWith('@')) {
-//     const tag = column.tag ? column.tag.split('##') : [];
-//     const linkParts = column.link.split(';');
-//     const apiVersion = getPropertyValue(item, linkParts[0].substring(1));
-//     const kind = getPropertyValue(item, linkParts[2]);
-//     return `/${apiVersion}/${kind}/${tag.join('/')}`;
-//   }
-//   return column.link;
-// }
+function generateLink(column, item) {
+  if (column.link.startsWith('@')) {
+    const tag = column.tag ? column.tag.split('##') : [];
+    const linkParts = column.link.split(';');
+    const apiVersion = getPropertyValue(item, linkParts[0].substring(1));
+    const kind = getPropertyValue(item, linkParts[2]);
+    return `/${apiVersion}/${kind}/${tag.join('/')}`;
+  }
+  return column.link;
+}
 
-// function getLinkText(column, item) {
-//   if (column.link.startsWith('@')) {
-//     const tag = column.tag ? column.tag.split('##') : [];
-//     return this.getPropertyValue(item, tag[tag.length - 1]);
-//   }
-//   return column.label;
-// }
-// function getPropertyValue(item, propertyPath) {
-//   const properties = propertyPath.split('.');
-//   let value = item;
-//   for (let i = 0; i < properties.length; i++) {
-//     const property = properties[i];
-//     if (property.startsWith('@')) {
-//       value = value[property.substring(1)];
-//     } else if (property.includes('[') && property.includes(']')) {
-//       const arrayProperty = property.substring(0, property.indexOf('['));
-//       const index = parseInt(property.substring(property.indexOf('[') + 1, property.indexOf(']')));
-//       value = value[arrayProperty][index];
-//     } else {
-//       value = value[property];
-//     }
-//   }
-//   return value;
-// }
+function getLinkText(column, item) {
+  if (column.link.startsWith('@')) {
+    const tag = column.tag ? column.tag.split('##') : [];
+    return this.getPropertyValue(item, tag[tag.length - 1]);
+  }
+  return column.label;
+}
+function getPropertyValue(item, propertyPath) {
+  const properties = propertyPath.split('.');
+  let value = item;
+  for (let i = 0; i < properties.length; i++) {
+    const property = properties[i];
+    if (property.startsWith('@')) {
+      value = value[property.substring(1)];
+    } else if (property.includes('[') && property.includes(']')) {
+      const arrayProperty = property.substring(0, property.indexOf('['));
+      const index = parseInt(property.substring(property.indexOf('[') + 1, property.indexOf(']')));
+      value = value[arrayProperty][index];
+    } else {
+      value = value[property];
+    }
+  }
+  return value;
+}
 
 function submitForm() {
   frontendData(listname, tablename, pageSite,tableColumns, tableData, props.value)
-}
-
-function handleOptionClick(type) {
-  if (type === 'Update') {
-    // 跳转到更新页面
-    router.push('/test');
-  } else if (type === 'Delete') {
-    // 跳转到删除页面
-    router.push('/delete-page');
-  }
 }
 </script>
 

@@ -104,3 +104,28 @@ export function frontendFormSearch(tablename, descItem: [], region = 'test', ret
 
   getResourceData(1); // 初始化时发送请求
 }
+
+export function frontendAction(tablename, step: [], region = 'test', retryCount = 3) {
+  const getResourceData = (retry) => {
+    getResource({
+      fullkind: "doslab.io.Frontend",
+      name: tablename + '-action-scale',
+      namespace: "default",
+      region: region
+    })
+        .then((resp) => {
+          console.log(resp.data.data.spec);
+          step.value = resp.data.data.spec;
+        })
+        .catch((error) => {
+          console.error(error);
+          if (retry < retryCount) {
+            getResourceData(retry + 1);
+          } else {
+            console.error('Request failed.');
+          }
+        });
+  };
+
+  getResourceData(1); // 初始化时发送请求
+}

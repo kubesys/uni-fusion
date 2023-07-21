@@ -1,7 +1,11 @@
 <template>
   <div class="main">
-    <div class="step">
-      <Step :activeStep="1"></Step>
+    <div class="step" style="flex: 0.2" >
+        <el-steps :active="active" finish-status="success" direction="vertical">
+            <el-step title="Step 1" :icon="Edit"/>
+            <el-step title="Step 2" :icon="Edit"/>
+            <el-step title="Step 3" :icon="Edit"/>
+        </el-steps>
     </div>
     <div>
       <el-card v-for="(group, groupName) in steps.step1" :key="groupName" style="border:1px solid #d2d2d2; width: 1000px;">
@@ -103,29 +107,41 @@
   </div>
 
   <div class="controls__wrap" style="float: right; margin-right: 100px;margin-top: 100px">
-    <div class="controls__right">
-      <router-link :to="`/test1`">
-        <button type="primary"
-                class="save-btn"
-                plain>下一步</button>
-      </router-link>
-      <div class="run-button">
-      </div>
-    </div>
+<!--    <div class="controls__right">-->
+<!--      <router-link :to="`/test1`">-->
+<!--        <button type="primary"-->
+<!--                class="save-btn"-->
+<!--                plain>下一步</button>-->
+<!--      </router-link>-->
+<!--      <div class="run-button">-->
+<!--      </div>-->
+<!--    </div>-->
+      <template v-if="active != 3 ">
+          <el-button style="margin-top: 12px" @click="next">下一步</el-button>
+      </template>
+      <template v-else>
+          <el-button style="margin-top: 12px" @click="next">完成</el-button>
+      </template>
+
   </div>
+
 </template>
 
 <script setup lang="ts">
-import Step from './Step.vue'
 import {ref} from 'vue'
 import {useCounter} from '@vueuse/core'
 import {frontendAction} from "@/api/common";
+import { Edit } from '@element-plus/icons-vue'
 
 const {count, inc, dec} = useCounter()
 
 const activeNames = [];
 const steps = ref([])
+const active = ref(0)
 
+const next = () => {
+    if (active.value++ > 2) active.value = 0
+}
 
 frontendAction('apps.replicaset', steps)
 console.log(steps.value)
@@ -170,6 +186,7 @@ const getRules = (group) => {
   margin-left: 300px;
   margin-top: 200px;
   overflow: hidden;
+  display: flex;
 }
 .step{
   float: left;

@@ -28,41 +28,21 @@
 </template>
 
 <script setup lang="ts">
-// import axios from "axios";
-// export default {
-//     data () {
-//         return {
-//             allMenuItems:[]
-//         }
-//     },
-//
-//     mounted() {
-//         this.allMenuShows()
-//     },
-//
-//     methods: {
-//         allMenuShows() {
-//             axios.get('http://localhost:5173/allMenu').then(response => {
-//                 if (response.data) {
-//                     console.log(response.data.data)
-//                     this.allMenuItems = response.data.data;
-//                 }
-//             })
-//         }
-//     }
-// }
 import {onMounted, ref} from "vue";
 import { getAllMenus } from '@/api/user'
 
 const allMenuItems = ref([]);
 
-async function allMenuShows() {
-  const resp = await getAllMenus();
-  console.log(resp.data.data.spec)
-  allMenuItems.value = resp.data.data.spec.data
-}
+const fetchAllMenuItems = async () => {
+    try {
+        const resp = await getAllMenus();
+        allMenuItems.value = resp.data.data.spec.data;
+    } catch (error) {
+        console.error('Error fetching all menu items:', error);
+    }
+};
 
-onMounted(() => {allMenuShows()})
+onMounted(fetchAllMenuItems);
 </script>
 
 <style>

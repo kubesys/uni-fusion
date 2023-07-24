@@ -17,6 +17,7 @@
       </el-col>
       <el-col :span="7">
         <el-form-item>
+          <el-button type="primary" @click="handleCreateClick" style="text-align: left;">创建</el-button>
           <el-button type="primary" @click="submitForm" style="text-align: left;"><icon name="el-icon-RefreshRight" :size="18" /></el-button>
           <el-button type="primary" @click="submitForm" style="text-align: left;">提交</el-button>
         </el-form-item>
@@ -55,7 +56,7 @@
         <!-- 操作列 -->
         <el-table-column :key="column.row" :label="column.label" :prop="column.row">
           <el-select placeholder="请选择" style="width: 100px">
-            <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.type)" >
+            <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type)" >
               {{ item.name }}
             </el-option>
           </el-select>
@@ -75,12 +76,46 @@
       :total=tableData.metadata.totalCount
       @current-change="handleCurrentChange"
   ></el-pagination>
+  <el-dialog
+      v-model="dialogVisible"
+      :title=selectedItemName
+      width="50%">
+    <div class="dialog-content">
+      <el-card v-for="(group, groupName) in scaleItems.data" :key="groupName" style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">
+        <el-form :model="group" :rules="getRules(group)">
+          <el-form-item v-for="(field, fieldName) in group" :key="fieldName" :label="field.value">
+            <template v-if="field.type === 'textbox'">
+              <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
+              <el-input  type="textarea"
+                         :rows="5"/>
+            </template>
+            <template v-else-if="field.type === 'text'">
+              <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
+              <el-input />
+            </template>
+            <template v-else-if="field.type === 'select'">
+              <el-select v-model="group[fieldName]" :placeholder="field.value">
+                <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>
+              </el-select>
+            </template>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import router from "@/router";
 import {onMounted, ref} from 'vue'
-import {frontendFormSearch, frontendData} from "@/api/common";
+import {frontendFormSearch, frontendData, frontendAction} from "@/api/common";
+import Step1 from "@/views/guide/Step1.vue";
 
 interface Option {
   label: string;
@@ -97,6 +132,7 @@ const route = useRoute()
 const listname = route.meta?.listname
 const tablename = route.meta?.tablename
 const props = ref()
+const dialogVisible = ref(false)
 
 console.log(listname, tablename, props)
 
@@ -118,10 +154,19 @@ const tableDataLoaded = ref(false)
 const formData = ref<Record<string, string>>({}); // 表单数据对象
 const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
 
+const scaleItems = ref([])
+const selectedItemName = ref(''); // 初始化选中的选项为空
+const selectOptions = ref([
+  { label: "Option 1", value: "option1" },
+  { label: "Option 2", value: "option2" },
+  // Add more options as needed
+]);
+
 
 onMounted(()=>{
   frontendFormSearch(tablename, formItems)
   frontendData(listname, tablename, pageSite,tableColumns, tableData, actions)
+  frontendAction(tablename, scaleItems)
   tableDataLoaded.value = true
 })
 
@@ -134,6 +179,16 @@ function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
   frontendData(listname, tablename, pageSite,tableColumns, tableData,props.value)
 }
+
+const getRules = (group) => {
+  const rules = {};
+  for (const field in group) {
+    if (group[field].required === "true") {
+      rules[field] = [{ required: true, message: `${group[field].value}不能为空`, trigger: 'blur' }];
+    }
+  }
+  return rules;
+};
 
 // function generateLink(column, item) {
 //   if (column.link.startsWith('@')) {
@@ -170,15 +225,19 @@ function handleCurrentChange(newPage) {
 //   }
 //   return value;
 // }
-
+function handleCreateClick(){
+  router.push('/test')
+}
 function submitForm() {
   frontendData(listname, tablename, pageSite,tableColumns, tableData, props.value)
 }
 
-function handleOptionClick(type) {
+function handleOptionClick(name, type) {
   if (type === 'Update') {
     // 跳转到更新页面
-    router.push('/test');
+    // router.push('/test');
+    dialogVisible.value = true;
+    selectedItemName.value = name
   } else if (type === 'Delete') {
     // 跳转到删除页面
     router.push('/delete-page');
@@ -189,5 +248,18 @@ function handleOptionClick(type) {
 <style>
 .el-table .el-table__row {
   border-bottom: 2px solid #000;
+}
+
+/* 在样式中设置对话框内容的布局 */
+.dialog-content {
+  display: flex; /* 使用flex布局 */
+  flex-wrap: wrap; /* 换行 */
+  justify-content: space-between; /* 横向分布 */
+  align-items: center; /* 垂直居中 */
+  margin: 50px;
+}
+
+.dialog-footer button:first-child {
+  margin-right: 10px;
 }
 </style>

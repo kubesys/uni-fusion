@@ -52,14 +52,16 @@
         </template>
       </template>
 
-      <template v-else-if="column.kind === 'action'">
+      <template v-else-if="column.kind === 'action'" >
         <!-- 操作列 -->
         <el-table-column :key="column.row" :label="column.label" :prop="column.row">
-          <el-select placeholder="请选择" style="width: 100px">
-            <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type)" >
-              {{ item.name }}
-            </el-option>
-          </el-select>
+          <template #default="scope">
+            <el-select placeholder="请选择" style="width: 100px">
+              <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">
+                {{ item.name }}
+              </el-option>
+            </el-select>
+          </template>
         </el-table-column>
       </template>
 
@@ -91,7 +93,7 @@
             </template>
             <template v-else-if="field.type === 'text'">
               <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
-              <el-input />
+              <el-input v-model="replicaset" />
             </template>
             <template v-else-if="field.type === 'select'">
               <el-select v-model="group[fieldName]" :placeholder="field.value">
@@ -105,7 +107,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+        <el-button type="primary" @click="saveData">确定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -114,7 +116,7 @@
 <script setup lang="ts">
 import router from "@/router";
 import {onMounted, ref} from 'vue'
-import {frontendFormSearch, frontendData, frontendAction} from "@/api/common";
+import {frontendFormSearch, frontendData, frontendAction, frontendUpdate} from "@/api/common";
 import Step1 from "@/views/guide/Step1.vue";
 
 interface Option {
@@ -232,16 +234,28 @@ function submitForm() {
   frontendData(listname, tablename, pageSite,tableColumns, tableData, props.value)
 }
 
-function handleOptionClick(name, type) {
+function handleOptionClick(name, type, rowData) {
   if (type === 'Update') {
     // 跳转到更新页面
     // router.push('/test');
     dialogVisible.value = true;
     selectedItemName.value = name
+    console.log('点击了操作列，当前行数据：', rowData);
+    props.value = rowData
   } else if (type === 'Delete') {
     // 跳转到删除页面
     router.push('/delete-page');
   }
+}
+
+const replicaset = ref<number>(0);
+function saveData(){
+  const rowData = props.value
+  console.log(rowData)
+  rowData.spec.replicas = Number(replicaset.value)
+  console.log(rowData)
+  frontendUpdate(rowData)
+  dialogVisible.value = false;
 }
 </script>
 

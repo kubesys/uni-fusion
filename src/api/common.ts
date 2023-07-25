@@ -1,4 +1,4 @@
-import { getResource, listResources } from "@/api/kubernetes"
+import { getResource, listResources, updateResource } from "@/api/kubernetes"
 
 export function frontendData(listname, tablename, pageSite, tableColumns:[], tableData:[], actions:[], props='', region='test'){
   const MAX_RETRIES = 10;
@@ -153,4 +153,13 @@ export function frontendCreate(tablename, step: [], region = 'test', retryCount 
   };
 
   getResourceData(1); // 初始化时发送请求
+}
+
+export function frontendUpdate(rowData, region = 'test'){
+  updateResource({
+    region: region,
+    data: rowData
+  }).then((resp)=>{
+    console.log(resp)
+  })
 }

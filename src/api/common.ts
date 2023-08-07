@@ -155,11 +155,24 @@ export function frontendCreate(tablename, step: [], region = 'test', retryCount 
   getResourceData(1); // 初始化时发送请求
 }
 
-export function frontendUpdate(rowData, region = 'test'){
-  updateResource({
-    region: region,
-    data: rowData
-  }).then((resp)=>{
-    console.log(resp)
-  })
+export function frontendUpdate(rowData, region = 'test', retryCount = 3) {
+  const updateResourceData = (retry) => {
+    updateResource({
+      region: region,
+      data: rowData
+    })
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((error) => {
+          console.error(error);
+          if (retry < retryCount) {
+            updateResourceData(retry + 1);
+          } else {
+            console.error('Request failed.');
+          }
+        });
+  };
+
+  updateResourceData(1); // 初始化时发送请求
 }

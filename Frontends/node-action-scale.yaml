@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "name": "node-action-scale"
+  },
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "spec": {
+    "data": {
+      "group1": {
+        "spec.replicas": {
+          "value": "资源名称",
+          "required": "false",
+          "type": "text",
+          "regexp": "1<x<10"
+        }
+      }
+    }
+  }
+}

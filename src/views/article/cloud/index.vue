@@ -86,7 +86,6 @@
     import axios from "axios";
     import Annular from "../lists/annular.vue";
     import Select from '../lists/select.vue'
-    import {getMenu} from "../../../api/user";
 
     export default {
         components:{ Annular, Select },

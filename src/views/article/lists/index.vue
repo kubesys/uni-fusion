@@ -1,13 +1,14 @@
 <template>
-  <div class="host-header-list">
-    <table-type />
-    <div class="host-state">
-      <annular />
+  <div>
+    <div class="host-header-list">
+      <table-type />
+      <div class="host-state">
+        <annular />
+      </div>
     </div>
+
+    <Table style="padding-left: 24px; padding-right: 24px;"/>
   </div>
-
-  <Table />
-
 </template>
 
 <script setup lang="ts">

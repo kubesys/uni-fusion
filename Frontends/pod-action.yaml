@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "name": "pod-action"
+  },
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "spec": {
+    "data": [{
+      "name": "更新pod",
+      "type": "Update",
+      "json": "pod-action-scale"
+    }, {
+      "name": "删除pod",
+      "type": "Delete",
+      "params": ["metdata##name", "metdata##namespace"]
+    }]
+  }
+}

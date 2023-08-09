@@ -1,7 +1,7 @@
 <template>
     <div class="logo">
         <div class="font-size-style">
-            LikeAdmin平台
+            云计算平台
         </div>
     </div>
 </template>

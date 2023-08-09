@@ -258,6 +258,7 @@ function saveData(){
   frontendUpdate(rowData)
   dialogVisible.value = false;
 }
+
 </script>
 
 <style lang="scss" scoped>

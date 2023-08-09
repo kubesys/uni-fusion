@@ -16,10 +16,13 @@
                     <div class="line" />
                     <div class="dataItems">
                         <el-row >
-                            <el-col v-for="data in row.items" :key="data.index" :span=data.span>
-                                {{data.name}}<div class="dataItems-main" v-for="items in data.classify">{{items}}</div>
+                            <el-col span=6>
+                              <router-link v-for="catalog in allMenuItems" :to="catalog.path" :key="catalog.path">
+                                {{ catalog.name }}
+                              </router-link>
                             </el-col>
                         </el-row>
+
                     </div>
                 </div>
             </div>
@@ -29,14 +32,14 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import { getAllMenus } from '@/api/user'
+import { getMenu } from '@/api/user'
 
 const allMenuItems = ref([]);
 
 const fetchAllMenuItems = async () => {
     try {
-        const resp = await getAllMenus();
-        allMenuItems.value = resp.data.data.spec.data;
+        const resp = await getMenu();
+        allMenuItems.value = resp.data.data.spec.catalogs;
     } catch (error) {
         console.error('Error fetching all menu items:', error);
     }

@@ -51,7 +51,7 @@ export function frontendData(listname, tablename, pageSite, tableColumns:[], tab
     });
   };
 
-  fetchData(); // 初始调用 fetchData 函数
+  fetchData();
   return [tableData, tableColumns];
 }
 
@@ -102,7 +102,7 @@ export function frontendFormSearch(tablename, descItem: [], region = 'test', ret
         });
   };
 
-  getResourceData(1); // 初始化时发送请求
+  getResourceData(1);
 }
 
 export function frontendAction(tablename, step: [], region = 'test', retryCount = 3) {
@@ -127,7 +127,7 @@ export function frontendAction(tablename, step: [], region = 'test', retryCount 
         });
   };
 
-  getResourceData(1); // 初始化时发送请求
+  getResourceData(1);
 }
 
 export function frontendCreate(tablename, step: [], region = 'test', retryCount = 3) {
@@ -152,7 +152,7 @@ export function frontendCreate(tablename, step: [], region = 'test', retryCount 
         });
   };
 
-  getResourceData(1); // 初始化时发送请求
+  getResourceData(1);
 }
 
 export function frontendUpdate(rowData, region = 'test', retryCount = 3) {
@@ -174,5 +174,5 @@ export function frontendUpdate(rowData, region = 'test', retryCount = 3) {
         });
   };
 
-  updateResourceData(1); // 初始化时发送请求
+  updateResourceData(1);
 }

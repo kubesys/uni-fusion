@@ -73,6 +73,7 @@ const queryStr = computed<string>(() => {
         return query
     }
 })
+
 </script>
 <style lang="scss" scoped>
 .el-menu-item,

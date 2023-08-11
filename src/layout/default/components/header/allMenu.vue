@@ -1,28 +1,15 @@
 <template>
-    <div class="navbar-item allMenu cursor-pointer h-full flex items-center px-2" >
+    <div class="navbar-item allMenu cursor-pointer h-full flex items-center px-2">
         <div>
             <i class="iconfont icon-iconfont2"></i>
-            <div class="nav-bar-list" >
+            <div class="nav-bar-list">
                 <div class="search">
                     <button class="iconfont icon-icon_sousuo"></button>
                     <input type="text" placeholder="  搜索">
                 </div>
-                <div class="showData"
-                     v-for="row of allMenuItems"
-                     :key="row.index">
-                    <div class="title">
-                        {{row.title}}
-                    </div>
-                    <div class="line" />
-                    <div class="dataItems">
-                        <el-row >
-                            <el-col span=6>
-                              <router-link v-for="catalog in allMenuItems" :to="catalog.path" :key="catalog.path">
-                                {{ catalog.name }}
-                              </router-link>
-                            </el-col>
-                        </el-row>
-
+                <div class="showData">
+                    <div class="title" v-for="catalog in allMenuItems" :key="catalog.name">
+                        <a :href="`#${catalog.path}`" @click="handleCatalogClick(catalog)">{{ catalog.name }}</a>
                     </div>
                 </div>
             </div>
@@ -31,22 +18,32 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import { getMenu } from '@/api/user'
+    import { onMounted, provide, ref } from 'vue';
+    import { getMenu } from '@/api/user';
+    import { useMenuStore } from '@/stores/modules/store';
 
-const allMenuItems = ref([]);
+    const menuStore = useMenuStore();
 
-const fetchAllMenuItems = async () => {
-    try {
-        const resp = await getMenu();
-        allMenuItems.value = resp.data.data.spec.catalogs;
-    } catch (error) {
-        console.error('Error fetching all menu items:', error);
-    }
-};
+    const allMenuItems = ref([]);
 
-onMounted(fetchAllMenuItems);
+    const fetchAllMenuItems = async () => {
+        try {
+            const resp = await getMenu();
+            allMenuItems.value = resp.data.data.spec.catalogs;
+        } catch (error) {
+            console.error('Error fetching all menu items:', error);
+        }
+    };
+
+    const handleCatalogClick = (catalog) => {
+        // 更新 Store 中选中的目录
+        console.log(catalog)
+        menuStore.setSelectedCatalog(catalog.path);
+    };
+
+    onMounted(fetchAllMenuItems);
 </script>
+
 
 <style>
 .nav-bar-list{

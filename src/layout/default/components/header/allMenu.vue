@@ -7,17 +7,15 @@
                     <button class="iconfont icon-icon_sousuo"></button>
                     <input type="text" placeholder="  搜索">
                 </div>
-                <div class="showData"
-                     v-for="row of allMenuItems"
-                     :key="row.index">
-                    <div class="title">
-                        {{row.title}}
-                    </div>
+                <div class="showData">
+<!--                    <div class="title">-->
+<!--                        {{row.title}}-->
+<!--                    </div>-->
                     <div class="line" />
                     <div class="dataItems">
-                        <el-row >
+                        <el-row v-for="catalog in allMenuItems.catalogs" :key="catalog.path">
                             <el-col span=6>
-                              <router-link v-for="catalog in allMenuItems" :to="catalog.path" :key="catalog.path">
+                              <router-link  :to="catalog.path" >
                                 {{ catalog.name }}
                               </router-link>
                             </el-col>
@@ -33,17 +31,35 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import { getMenu } from '@/api/user'
+import type {RouteLocationNormalizedLoaded} from "vue-router";
+import {onBeforeRouteUpdate} from "vue-router";
 
 const allMenuItems = ref([]);
 
 const fetchAllMenuItems = async () => {
     try {
         const resp = await getMenu();
-        allMenuItems.value = resp.data.data.spec.catalogs;
+        allMenuItems.value = resp.data.data.spec;
     } catch (error) {
         console.error('Error fetching all menu items:', error);
     }
 };
+
+// let menuItems = [];
+
+// const handleCatalogClick = (catalogPath) => {
+//   menuItems = allMenuItems.value.spec.items.filter(
+//       (item) => item.paths && item.paths.includes(catalogPath)
+//   );
+// };
+
+// // 当路由更新前被调用，我们可以在这里处理目录的切换逻辑
+// onBeforeRouteUpdate((to: RouteLocationNormalizedLoaded) => {
+//   handleCatalogClick(to.path);
+// });
+
+// 初始化时处理当前选中的目录
+// handleCatalogClick(allMenuItems.spec.catalogs[0].path);
 
 onMounted(fetchAllMenuItems);
 </script>

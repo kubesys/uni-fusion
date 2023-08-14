@@ -29,9 +29,9 @@
 import type { PropType } from 'vue'
 import MenuItem from './menu-item.vue'
 import type { RouteRecordRaw } from 'vue-router'
-import { useMenuStore } from '@/stores/modules/store';
+// import { useMenuStore } from '@/stores/modules/store';
 
-const appStore = useMenuStore();
+// const appStore = useMenuStore();
 
 const props = defineProps({
     routes: {
@@ -63,12 +63,7 @@ const route = useRoute()
 const activeMenu = computed<string>(() => route.meta?.activeMenu || route.path)
 const themeClass = computed(() => `theme-${props.theme}`)
 
-const visibleMenuItems = computed(() => {
-    const selectedCatalog = appStore.getSelectedCatalog(); // 获取顶部菜单点击的目录
-    console.log(selectedCatalog)
-    const allItems = routes; // 获取所有菜单项
-    return allItems.filter(item => item.paths.startsWith(selectedCatalog));
-});
+
 </script>
 
 <style lang="scss" scoped>

@@ -87,7 +87,8 @@ const useUserStore = defineStore({
                     .then((data) => {
                         console.log(data.data.data.spec.data)
                         this.menu = data.data.data.spec.items
-                        this.routes = filterAsyncRoutes(data.data.data.spec.items)
+                        const routes:any[] = data.data.data.spec.items.filter(item => item.paths.startsWith(data.data.data.spec.catalogs[0].path))
+                        this.routes = filterAsyncRoutes(routes)
                         resolve(data.data.data.spec.data)
                     })
                     .catch((error) => {

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useMenuStore = defineStore('menu', {
+const useMenuStore = defineStore('menu', {
     state: () => ({
         selectedCatalog: '',
         allItems: [], // 从后台获取的菜单项数据
@@ -16,4 +16,6 @@ export const useMenuStore = defineStore('menu', {
         },
     },
 });
+
+export default useMenuStore
 

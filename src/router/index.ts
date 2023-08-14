@@ -3,7 +3,9 @@ import { MenuEnum } from '@/enums/appEnums'
 import { isExternal } from '@/utils/validate'
 import { constantRoutes, INDEX_ROUTE_NAME, LAYOUT } from './routes'
 import useUserStore from '@/stores/modules/user'
+// import useMenuStore from '@/stores/modules/store';
 
+// const appStore = useMenuStore();
 // 匹配views里面所有的.vue文件，动态引入
 const modules = import.meta.glob('/src/views/**/*.vue')
 
@@ -14,6 +16,12 @@ export function getModulesKey() {
 
 // 过滤路由所需要的数据
 export function filterAsyncRoutes(routes: any[], firstRoute = true) {
+    // function getRoutesItems() {
+    //     const {selectedCatalog} = useMenuStore(); // 获取顶部菜单点击的目录
+    //     const allItems = routes; // 获取所有菜单项
+    //     return allItems.filter(item => item.paths.startsWith(selectedCatalog));
+    // }
+    // const routesItems = getRoutesItems()
     return routes.map((route) => {
         const routeRecord = createRouteRecord(route, firstRoute)
         if (route.children != null && route.children && route.children.length) {

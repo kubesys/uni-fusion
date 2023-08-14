@@ -29,9 +29,9 @@
 import type { PropType } from 'vue'
 import MenuItem from './menu-item.vue'
 import type { RouteRecordRaw } from 'vue-router'
-// import { useMenuStore } from '@/stores/modules/store';
+import { useMenuStore } from '@/stores/modules/store';
 
-// const appStore = useMenuStore();
+const appStore = useMenuStore();
 
 const props = defineProps({
     routes: {
@@ -62,7 +62,6 @@ defineEmits(['select'])
 const route = useRoute()
 const activeMenu = computed<string>(() => route.meta?.activeMenu || route.path)
 const themeClass = computed(() => `theme-${props.theme}`)
-
 
 </script>
 

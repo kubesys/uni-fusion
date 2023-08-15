@@ -12,6 +12,8 @@ export interface UserState {
     routes: RouteRecordRaw[]
     menu: any[]
     perms: string[]
+    catalogs: any[],
+    selectedCatalog: string
 }
 
 const useUserStore = defineStore({
@@ -24,7 +26,9 @@ const useUserStore = defineStore({
         routes: [],
         menu: [],
         // 权限
-        perms: []
+        perms: [],
+        catalogs: [],
+        selectedCatalog: ''
     }),
     getters: {},
     actions: {
@@ -85,15 +89,31 @@ const useUserStore = defineStore({
             return new Promise((resolve, reject) => {
                 getMenu()
                     .then((data) => {
-                        console.log(data.data.data.spec.data)
+                        this.catalogs = data.data.data.spec.catalogs
                         this.menu = data.data.data.spec.items
-                        this.routes = filterAsyncRoutes(data.data.data.spec.items)
+                        // const routepath = this.selectedCatalog === ''? this.catalogs[0].path : this.selectedCatalog
+                        // this.getRoutes(data.data.data.spec.items, routepath)
+                        if (this.selectedCatalog === ''){
+                            this.getRoutes(data.data.data.spec.items)
+                        } else {
+                            console.log(data.data.data.spec.items)
+                            this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
+                        }
                         resolve(data.data.data.spec.data)
                     })
                     .catch((error) => {
                         reject(error)
                     })
             })
+        },
+        getRoutes(items , path = this.catalogs[0].path){
+            const routes:any[] = items.filter(item => item.paths.startsWith(path))
+            console.log(routes)
+            this.routes = filterAsyncRoutes(routes)
+        },
+        setSelectedCatalog(catalogPath:string) {
+            this.selectedCatalog = catalogPath;
+            console.log(this.selectedCatalog)
         }
     }
 })

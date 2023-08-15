@@ -129,14 +129,14 @@ Mock.mock('http://localhost:5173/common/index/config',{
     code: 200,
     msg: "成功",
     data: {
-        "webName": "智能云",
-        "webLogo": "",
+        "webName": "云计算平台",
+        "webLogo": "src/assets/images/logo.png",
         "webFavicon": "",
         "webBackdrop": "",
         "ossDomain": "http://127.0.0.1:8082/",
         "copyright": [
             {
-                "name": "likeadmin",
+                "name": "云计算平台",
                 "link": "http://www.beian.gov.cn"
             }
         ]

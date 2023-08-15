@@ -1,7 +1,8 @@
 <template>
     <div class="logo">
         <div class="font-size-style">
-            云计算平台
+<!--          <img src='src/assets/images/logo.png'>-->
+          <img :width="szie" :height="szie" src='src/assets/images/logo.png' />
         </div>
     </div>
 </template>

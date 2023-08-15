@@ -2,7 +2,8 @@
     <div class="logo">
         <div class="font-size-style">
 <!--          <img src='src/assets/images/logo.png'>-->
-          <img :width="szie" :height="szie" src='src/assets/images/logo.png' />
+<!--          <img :width="szie" :height="szie" src='src/assets/images/logo.png' />-->
+          云计算平台
         </div>
     </div>
 </template>
@@ -49,6 +50,7 @@ const config = computed(() => appStore.config)
 
 .font-size-style{
     font-size: 16px;
+    font-weight: bold;
     color: #eeeeee;
 
 }

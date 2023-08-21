@@ -131,7 +131,7 @@ interface FormItem {
 const route = useRoute()
 const listname = route.meta?.listname
 const tablename = route.meta?.tablename
-const props = ref()
+const props = ref('')
 const dialogVisible = ref(false)
 
 console.log(listname, tablename, props)
@@ -177,7 +177,7 @@ onMounted(()=>{
 // }
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
-  frontendData(listname, tablename, pageSite,tableColumns, tableData,props.value)
+  frontendData(listname, tablename, pageSite,tableColumns, tableData, actions, props.value)
 }
 
 const getRules = (group) => {
@@ -232,7 +232,7 @@ function handleCreateClick(){
   router.push('/test')
 }
 function submitForm() {
-  frontendData(listname, tablename, pageSite,tableColumns, tableData, props.value)
+  frontendData(listname, tablename, pageSite,tableColumns, tableData, actions , props.value)
 }
 
 function handleOptionClick(name, type, rowData) {

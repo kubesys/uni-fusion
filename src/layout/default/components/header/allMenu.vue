@@ -7,11 +7,20 @@
           <button class="iconfont icon-icon_sousuo"></button>
           <input type="text" placeholder="  搜索">
         </div>
-        <div class="showData">
-          <div class="title" v-for="catalog in userStore.catalogs" :key="catalog.name">
+        <div class="showData" v-for="catalog in userStore.catalogs" :key="catalog.name">
+          <div class="line" />
+<!--          <div class="dataItems">-->
+<!--            <el-row >-->
+<!--              <el-col v-for="data in row.items" :key="data.index" :span=data.span>-->
+<!--                {{data.name}}<div class="dataItems-main" v-for="items in data.classify">{{items}}</div>-->
+<!--              </el-col>-->
+<!--            </el-row>-->
+<!--          </div>-->
+          <div class="dataItems" >
             <!--                        <a :href="`#${catalog.path}`" @click="handleCatalogClick(catalog)">{{ catalog.name }}</a>-->
             <router-link :to=routes.path @click="handleCatalogClick(catalog)">{{ catalog.name }}</router-link>
 <!--            <div @click="handleCatalogClick(catalog)">{{ catalog.name }}</div>-->
+<!--            <div class="dataItems-main" v-for="menu in userStore.catalogs">{{ menu.routes }}</div>-->
           </div>
         </div>
       </div>

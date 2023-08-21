@@ -1,7 +1,7 @@
 import { getResource, listResources, updateResource } from "@/api/kubernetes"
 
 export function frontendData(listname, tablename, pageSite, tableColumns:[], tableData:[], actions:[], props='', region='test'){
-  const MAX_RETRIES = 10;
+  const MAX_RETRIES = 3;
   const fetchData = (retryCount = 0) => {
     if (retryCount >= MAX_RETRIES) {
       console.error("Maximum retry count reached.");
@@ -38,7 +38,7 @@ export function frontendData(listname, tablename, pageSite, tableColumns:[], tab
           console.log(resp.data.data.spec.data)
           actions.value = resp.data.data.spec.data
         }).catch((error)=>{
-          fetchData(retryCount+1);
+          fetchData(retryCount + 1);
         })
 
       }).catch((error) => {

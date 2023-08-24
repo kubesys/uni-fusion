@@ -174,10 +174,5 @@ function handlePrevStep() {
   color: black; /* 初始文字颜色 */
   transition: background-color 0.3s ease; /* 添加过渡效果 */
 
-  /* 当鼠标悬停时改变背景颜色 */
-
-  &:hover {
-    background-color: #409EFF; /* 鼠标悬停时的背景颜色 */
-  }
 }
 </style>

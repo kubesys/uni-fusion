@@ -65,7 +65,7 @@ export function loadRouteView(component: string) {
         if (key) {
             return modules[key]
         }
-        throw Error(`找不到组件${component}，请确保组件路径正确`)
+        // throw Error(`找不到组件${component}，请确保组件路径正确`)
     } catch (error) {
         console.error(error)
         return RouterView

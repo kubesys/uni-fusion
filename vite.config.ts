@@ -9,6 +9,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
+import nodePolyfills from 'vite-plugin-node-stdlib-browser'
+
 // https://vitejs.dev/config/
 export default defineConfig({
     // base: '/admin/',
@@ -43,7 +45,8 @@ export default defineConfig({
             iconDirs: [fileURLToPath(new URL('./src/assets/icons', import.meta.url))],
             symbolId: 'local-icon-[dir]-[name]'
         }),
-        vueSetupExtend()
+        vueSetupExtend(),
+        nodePolyfills()
     ],
     resolve: {
         alias: {

@@ -3,9 +3,14 @@ import { MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic } from './mqtt';
 
 const client = Stomp.client(MQTT_SERVICE);
 
-function onConnected(msg: any) {
+function onConnected() {
     const topic = MQTT_topic;
-    client.subscribe(topic, responseCallback, onFailed);
+    const subscribeHeaders = {
+        durable: false, // 设置队列为非持久化
+        'auto-delete': false,
+        exclusive: false
+    };
+    client.subscribe(topic, responseCallback, subscribeHeaders, onFailed);
 }
 
 function onFailed(msg: any) {

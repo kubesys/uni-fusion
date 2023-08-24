@@ -93,12 +93,15 @@ const useUserStore = defineStore({
                         this.menu = data.data.data.spec.items
                         // const routepath = this.selectedCatalog === ''? this.catalogs[0].path : this.selectedCatalog
                         // this.getRoutes(data.data.data.spec.items, routepath)
-                        if (this.selectedCatalog === ''){
-                            this.getRoutes(data.data.data.spec.items)
-                        } else {
-                            console.log(data.data.data.spec.items)
-                            this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
-                        }
+
+
+                        // if (this.selectedCatalog === ''){
+                        //     this.getRoutes(data.data.data.spec.items)
+                        // } else {
+                        //     console.log(data.data.data.spec.items)
+                        //     this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
+                        // }
+                        this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
                         resolve(data.data.data.spec.data)
                     })
                     .catch((error) => {

@@ -45,7 +45,8 @@
 
           <template v-else>
             <!-- 外部链接 -->
-            <el-table-column :key="column.row" :label="column.label" :prop="column.row"></el-table-column>
+            <el-table-column :key="column.row" :label="column.label" :prop="column.row">
+            </el-table-column>
           </template>
         </template>
 
@@ -67,6 +68,18 @@
           <el-table-column :key="column.row" :label="column.label" :prop="column.row"></el-table-column>
         </template>
       </template>
+<!--      <el-table-column-->
+<!--          v-for="item in tableColumns"-->
+<!--          :key="item.key"-->
+<!--          :lable="item.label"-->
+<!--          :prop="item.row"-->
+<!--      >-->
+<!--&lt;!&ndash;        <template #default="scope">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div&ndash;&gt;-->
+<!--&lt;!&ndash;              v-if="item.kind === 'internalLink'"&ndash;&gt;-->
+<!--&lt;!&ndash;              >111</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </template>&ndash;&gt;-->
+<!--      </el-table-column>-->
     </el-table>
     <el-pagination
         v-if="tableDataLoaded"

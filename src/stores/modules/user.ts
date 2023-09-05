@@ -109,7 +109,7 @@ const useUserStore = defineStore({
                     })
             })
         },
-        getRoutes(items , path = this.catalogs[0].path){
+        getRoutes(items:[] , path = this.catalogs[0].path){
             const routes:any[] = items.filter(item => item.paths.startsWith(path))
             console.log(routes)
             this.routes = filterAsyncRoutes(routes)

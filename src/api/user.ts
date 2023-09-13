@@ -27,21 +27,21 @@ export function getUserInfo() {
 export function getMenu() {
     return axios.post( '/kubesys/kube/getResource',{
         fullkind:"doslab.io.Frontend",
-        name:"all-routes",
+        name:"all-routes-test",
         namespace:"default",
         region:"test"
     })
 }
 
 // all-menus
-export function getAllMenus(){
-    return axios.post( '/kubesys/kube/getResource',{
-        fullkind:"doslab.io.Frontend",
-        name:"all-menus",
-        namespace:"default",
-        region:"test"
-    })
-}
+// export function getAllMenus(){
+//     return axios.post( '/kubesys/kube/getResource',{
+//         fullkind:"doslab.io.Frontend",
+//         name:"all-menus",
+//         namespace:"default",
+//         region:"test"
+//     })
+// }
 
 // all-regions
 export function getRegions(){

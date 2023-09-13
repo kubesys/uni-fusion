@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import {ref, onMounted} from "vue";
-import {getAllMenus, getRegions} from '@/api/user'
+import { getRegions } from '@/api/user'
 import {frontendData} from "@/api/common";
 
 const regionItems = ref([]);

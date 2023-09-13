@@ -1,8 +1,8 @@
 import amqp from 'amqplib';
 
 const AMQP_SERVER = 'amqp://139.9.165.93:5672'; // AMQP服务器地址
-const AMQP_USERNAME = 'rabbitmq'; // 替换为你的用户名
-const AMQP_PASSWORD = 'onceas'; // 替换为你的密码
+const AMQP_USERNAME = 'rabbitmq';
+const AMQP_PASSWORD = 'onceas';
 
 // 连接到AMQP服务器
 async function connect() {

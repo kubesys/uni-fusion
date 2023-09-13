@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- The Form section of the Table page -->
     <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 80px">
       <el-row>
         <el-col v-for="item in formItems" :key="item.path" :span="7" style="margin-right: 20px">
@@ -19,68 +20,126 @@
         </el-col>
       </el-row>
     </el-form>
+    <!-- Table page action button -->
     <el-button type="primary" @click="handleCreateClick"  style="text-align: left; background-color: #3967FF;"><icon name="el-icon-Plus" :size="16" style="margin-right: 5px"/>创建</el-button>
     <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;"><icon name="el-icon-RefreshRight" :size="18" /></el-button>
-    <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;">提交</el-button>
+    <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;">查询</el-button>
 
-    <el-table :data="tableData.items"
-              :header-cell-style="{ color: '#000'}"
-              :max-height="500"
-              size="large">
+<!--    <el-table :data="tableData.items"-->
+<!--              :header-cell-style="{ color: '#000'}"-->
+<!--              :max-height="500"-->
+<!--              size="large">-->
+<!--      <el-table-column-->
+<!--          type="selection"-->
+<!--          width="55">-->
+<!--      </el-table-column>-->
+<!--      &lt;!&ndash; 列配置 &ndash;&gt;-->
+<!--      <template v-for="(column, index) in tableColumns" :key="index" :label="column.label">-->
+<!--        &lt;!&ndash; 自定义列内容 &ndash;&gt;-->
+<!--        <template v-if="column.kind === 'internalLink'">-->
+<!--          <template v-if="column.link.startsWith('@')">-->
+<!--            &lt;!&ndash; 内部链接 &ndash;&gt;-->
+<!--            <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
+<!--&lt;!&ndash;                            <a :href="generateLink(column, tableData)">{{ getLinkText(column, item) }}</a>&ndash;&gt;-->
+
+<!--            </el-table-column>-->
+<!--          </template>-->
+
+<!--          <template v-else>-->
+<!--            &lt;!&ndash; 外部链接 &ndash;&gt;-->
+<!--            <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
+<!--            </el-table-column>-->
+<!--          </template>-->
+<!--        </template>-->
+
+<!--        <template v-else-if="column.kind === 'externalLink'">-->
+<!--          <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
+<!--            <div v-if="column.row === 'status.phase'">🟢</div>-->
+<!--          </el-table-column>-->
+<!--        </template>-->
+
+<!--        <template v-else-if="column.kind === 'action'" >-->
+<!--          &lt;!&ndash; 操作列 &ndash;&gt;-->
+<!--          <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
+<!--            <template #default="scope">-->
+<!--              <el-select placeholder="请选择" style="width: 100px">-->
+<!--                <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">-->
+<!--                  {{ item.name }}-->
+<!--                </el-option>-->
+<!--              </el-select>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--        </template>-->
+
+<!--        <template v-else>-->
+<!--          &lt;!&ndash; 其他类型列 &ndash;&gt;-->
+<!--          <el-table-column :key="column.row" :label="column.label" :prop="column.row"></el-table-column>-->
+<!--        </template>-->
+<!--      </template>-->
+<!--    </el-table>-->
+    <!-- Table table component -->
+    <el-table
+        :data="tableData.items"
+        :header-cell-style="{ color: '#000'}"
+        :max-height="500"
+        highlight-current-row
+        size="large">
+    >
       <el-table-column
           type="selection"
           width="55">
       </el-table-column>
-      <!-- 列配置 -->
-      <template v-for="(column, index) in tableColumns" :key="index" :label="column.label">
-        <!-- 自定义列内容 -->
-        <template v-if="column.kind === 'internalLink'">
-          <template v-if="column.link.startsWith('@')">
-            <!-- 内部链接 -->
-            <el-table-column :key="column.row" :label="column.label" :prop="column.row">
-<!--                            <a :href="generateLink(column, tableData)">{{ getLinkText(column, item) }}</a>-->
-
-            </el-table-column>
-          </template>
-
-          <template v-else>
-            <!-- 外部链接 -->
-            <el-table-column :key="column.row" :label="column.label" :prop="column.row">
-            </el-table-column>
-          </template>
+      <el-table-column
+          v-for="item in tableColumns"
+          align="center"
+          :key="item.key"
+          :label="item.label"
+          :prop="item.row"
+      >
+        <template #default="scope">
+          <router-link
+              v-if="item.kind === 'internalLink'"
+              to="baidu"
+          >
+            <el-link type="primary">
+              {{getComplexDataDispose(scope.row, item.row)}}
+            </el-link>
+          </router-link>
+<!--          <router-link-->
+<!--              v-if="item.kind === 'internalLink'"-->
+<!--              :to="{-->
+<!--                name: item.link.indexOf('@') === -1 ? item.link : getComplexDataDispose(scope.row, item.link.substring(1)),-->
+<!--                params: {-->
+<!--                  key: item.tag,-->
+<!--                  value: item.tag ? getComplexDataDispose(scope.row, item.row.indexOf('@') === -1 ? item.row : item.row.substring(1)) : undefined-->
+<!--                }-->
+<!--              }"-->
+<!--          >-->
+<!--            <el-link type="primary">{{-->
+<!--                getComplexDataDispose(scope.row, item.row)-->
+<!--              }}</el-link>-->
+<!--          </router-link>-->
+          <div v-else-if="item.kind === 'terminalLink'">
+          </div>
+          <el-select
+              v-else-if="item.kind === 'action'"
+              placeholder="请选择"
+              style="width: 100px"
+          >
+            <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">
+              {{ item.name }}
+            </el-option>
+          </el-select>
+          <span v-else>
+            {{
+              getComplexDataDispose(scope.row, item.row)
+            }}
+          </span>
         </template>
-
-        <template v-else-if="column.kind === 'action'" >
-          <!-- 操作列 -->
-          <el-table-column :key="column.row" :label="column.label" :prop="column.row">
-            <template #default="scope">
-              <el-select placeholder="请选择" style="width: 100px">
-                <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">
-                  {{ item.name }}
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-        </template>
-
-        <template v-else>
-          <!-- 其他类型列 -->
-          <el-table-column :key="column.row" :label="column.label" :prop="column.row"></el-table-column>
-        </template>
-      </template>
-<!--      <el-table-column-->
-<!--          v-for="item in tableColumns"-->
-<!--          :key="item.key"-->
-<!--          :lable="item.label"-->
-<!--          :prop="item.row"-->
-<!--      >-->
-<!--&lt;!&ndash;        <template #default="scope">&ndash;&gt;-->
-<!--&lt;!&ndash;          <div&ndash;&gt;-->
-<!--&lt;!&ndash;              v-if="item.kind === 'internalLink'"&ndash;&gt;-->
-<!--&lt;!&ndash;              >111</div>&ndash;&gt;-->
-<!--&lt;!&ndash;        </template>&ndash;&gt;-->
-<!--      </el-table-column>-->
+      </el-table-column>
     </el-table>
+
+    <!-- Table pagination -->
     <el-pagination
         v-if="tableDataLoaded"
         :page-size=pageSite.limit
@@ -121,14 +180,21 @@
       </span>
       </template>
     </el-dialog>
+
+    <CreateJsonDialog :CreateJsonVisible=CreateJsonVisible
+                      :listname=ListName />
   </div>
 </template>
 
 <script setup lang="ts">
 import router from "@/router";
-import {onMounted, ref} from 'vue'
-import {frontendFormSearch, frontendData, frontendAction, frontendUpdate} from "@/api/common";
-import Step1 from "@/views/guide/Step1.vue";
+import { onMounted, ref } from 'vue';
+import Stomp from 'stompjs';
+import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
+import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, getComplexDataDispose } from "@/api/common";
+import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
+// import '@/rabbitmq/websocket'
+// import Step1 from "@/views/guide/Step1.vue";
 
 interface Option {
   label: string;
@@ -142,16 +208,19 @@ interface FormItem {
 }
 
 const route = useRoute()
-const listname = route.meta?.listname
-const tablename = route.meta?.tablename
+const ListName = route.meta?.listname
+const TableName = route.meta?.tablename
+const filter = route.meta?.filter || {}
 const props = ref('')
+const allLabels = ref(filter)
+console.log(allLabels.value)
+
 const dialogVisible = ref(false)
 
-console.log(listname, tablename, props)
+console.log(ListName, TableName, props)
 
-const tableColumns = ref([
-  // 列配置数据
-])
+// 列配置数据
+const tableColumns = ref([])
 const tableData = ref({
   metadata:{
     totalCount:''
@@ -159,38 +228,30 @@ const tableData = ref({
   items:[],
   actions:[]
 })
-
 const actions = ref([])
-
 const pageSite = ref({limit:5,page:1})
 const tableDataLoaded = ref(false)
 const formData = ref<Record<string, string>>({}); // 表单数据对象
 const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
-
 const scaleItems = ref([])
 const selectedItemName = ref(''); // 初始化选中的选项为空
 const selectOptions = ref([
   { label: "Option 1", value: "option1" },
   { label: "Option 2", value: "option2" },
-  // Add more options as needed
 ]);
 
-
 onMounted(()=>{
-  frontendFormSearch(tablename, formItems)
-  frontendData(listname, tablename, pageSite,tableColumns, tableData, actions)
-  frontendAction(tablename, scaleItems)
+  frontendFormSearch(TableName, formItems)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
+  frontendAction(TableName, scaleItems)
   tableDataLoaded.value = true
 })
 
-// function handleSizeChange(newSize) {
-//   this.pageSize = newSize;
-//   this.currentPage = 1; // 切换每页显示条数时重置当前页码
-//   this.fetchData(); // 重新请求数据
-// }
+getComplexDataDispose
+
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
-  frontendData(listname, tablename, pageSite,tableColumns, tableData, actions, props.value)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels, actions)
 }
 
 const getRules = (group) => {
@@ -241,11 +302,19 @@ const getRules = (group) => {
 //   }
 //   return value;
 // }
+const CreateJsonVisible = ref(false)
+
 function handleCreateClick(){
-  router.push('/test')
+  // router.push('/test')
+  CreateJsonVisible.value = true
 }
 function submitForm() {
-  frontendData(listname, tablename, pageSite,tableColumns, tableData, actions , props.value)
+  const key = "metadata##name"
+  const selectObject = ref({
+    [key]: props
+  })
+  allLabels.value = Object.assign(allLabels.value, selectObject.value)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData, allLabels.value, actions)
 }
 
 function handleOptionClick(name, type, rowData) {
@@ -271,6 +340,42 @@ function saveData(){
   frontendUpdate(rowData)
   dialogVisible.value = false;
 }
+
+/**
+ *  连接Rabbitmq部分
+ */
+const client = Stomp.client(MQTT_SERVICE);
+
+function onConnected() {
+  const topic = MQTT_topic;
+  const subscribeHeaders = {
+    durable: false, // 设置队列为非持久化
+    'auto-delete': false,
+    exclusive: false
+  };
+  client.subscribe(topic, responseCallback, subscribeHeaders, onFailed);
+}
+
+function onFailed(msg: any) {
+  console.log("MQ Failed: " + msg);
+}
+
+function responseCallback(msg: any) {
+  console.log("MQ msg => " + msg.body);
+  submitForm()
+  // location.reload();
+}
+
+function connect() {
+  const headers = {
+    login: MQTT_USERNAME,
+    password: MQTT_PASSWORD,
+  };
+  client.connect(headers, onConnected, onFailed);
+}
+
+onMounted(()=>{connect()})
+
 
 </script>
 

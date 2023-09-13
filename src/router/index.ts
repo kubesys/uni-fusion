@@ -30,16 +30,16 @@ export function createRouteRecord(route: any, firstRoute: boolean): RouteRecordR
         path: isExternal(route.paths) ? route.paths : firstRoute ? `/${route.paths}` : route.paths,
         name: Symbol(route.paths),
         meta: {
-            hidden: !route.isShow,
             keepAlive: !!route.isCache,
-            title: route.kind,
+            title: route.name,
             perms: route.perms,
             query: route.params,
-            icon: route.menuIcon,
             type: route.menuType,
             activeMenu: route.selected,
-            listname: route.listname,
-            tablename: route.tablename
+            listname: route.Kind,
+            tablename: route.kind,
+            source: route.source,
+            filter: route.filter
         }
     }
     switch (route.menuType) {
@@ -53,6 +53,7 @@ export function createRouteRecord(route: any, firstRoute: boolean): RouteRecordR
             routeRecord.component = loadRouteView(route.component)
             break
     }
+
     return routeRecord
 }
 
@@ -75,7 +76,7 @@ export function loadRouteView(component: string) {
 // 找到第一个有效的路由
 export function findFirstValidRoute(routes: RouteRecordRaw[]): string | undefined {
     for (const route of routes) {
-        if (route.meta?.type == MenuEnum.MENU && !route.meta?.hidden && !isExternal(route.path)) {
+        if (route.meta?.type == MenuEnum.MENU  && !isExternal(route.path)) {
             return route.name as string
         }
         if (route.children) {

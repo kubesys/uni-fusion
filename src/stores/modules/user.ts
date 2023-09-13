@@ -13,6 +13,7 @@ export interface UserState {
     menu: any[]
     perms: string[]
     catalogs: any[],
+    groups: any[],
     selectedCatalog: string
 }
 
@@ -28,6 +29,7 @@ const useUserStore = defineStore({
         // 权限
         perms: [],
         catalogs: [],
+        groups: [],
         selectedCatalog: ''
     }),
     getters: {},
@@ -90,6 +92,7 @@ const useUserStore = defineStore({
                 getMenu()
                     .then((data) => {
                         this.catalogs = data.data.data.spec.catalogs
+                        this.groups = data.data.data.spec.groups
                         this.menu = data.data.data.spec.items
                         // const routepath = this.selectedCatalog === ''? this.catalogs[0].path : this.selectedCatalog
                         // this.getRoutes(data.data.data.spec.items, routepath)
@@ -101,7 +104,8 @@ const useUserStore = defineStore({
                         //     console.log(data.data.data.spec.items)
                         //     this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
                         // }
-                        this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
+                        const mergedMenu = this.getRoutes(data.data.data.spec.items, this.selectedCatalog)
+                        this.routes = filterAsyncRoutes(mergedMenu)
                         resolve(data.data.data.spec.data)
                     })
                     .catch((error) => {
@@ -109,10 +113,48 @@ const useUserStore = defineStore({
                     })
             })
         },
+        /**
+         * https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/aitk5capwdhocdlk
+         * @param items
+         * @param path
+         */
         getRoutes(items:[] , path = this.catalogs[0].path){
-            const routes:any[] = items.filter(item => item.paths.startsWith(path))
+            // const routes:any[] = items.filter(item => item.paths.startsWith(path))
+            const routes:any[] = items
             console.log(routes)
-            this.routes = filterAsyncRoutes(routes)
+
+            const mergedMenu = this.groups.map(mainItem => {
+                const matchingSubMenu = routes.filter(subItem => subItem.path.startsWith(mainItem.path));
+                console.log(matchingSubMenu)
+                return {
+                    name: mainItem.name,
+                    menuType: "M",
+                    paths: mainItem.path,
+                    children: matchingSubMenu.map(subItem => {
+                        if(subItem.source){
+                            return {
+                                name: subItem.name,
+                                component: subItem.component,
+                                paths: subItem.path.replace(mainItem.path, '').replace(/^\//, ''),
+                                menuType: "C",
+                                source: subItem.source
+                            }
+                        } else {
+                            return {
+                                name: subItem.name,
+                                component: subItem.component,
+                                paths: subItem.path.replace(mainItem.path, '').replace(/^\//, ''),
+                                menuType: "C",
+                                Kind: subItem.kind,
+                                kind: subItem.kind.toLowerCase(),
+                                filter: subItem.filter
+                            };
+                        }
+                    })
+                };
+            });
+            console.log(mergedMenu);
+            return mergedMenu
         },
         setSelectedCatalog(catalogPath:string) {
             this.selectedCatalog = catalogPath;

@@ -1,4 +1,3 @@
-
 <template>
     <div id="myChart" :style="{ width: '70px', height: '100%' ,flex: 1}"></div>
     <div style="margin-right: 10px; flex: 1">
@@ -6,7 +5,7 @@
             总数
         </div>
         <div style="float:left;margin-top: 3px;  margin-right:30px; font-weight: bolder; font-size: 10px">
-            2
+            {{tableData.metadata.totalCount}}
         </div>
     </div>
     <div style="margin-right: 20px; flex: 1">
@@ -15,7 +14,7 @@
             运行中
         </div>
         <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 10px">
-            0
+          {{ tableData.metadata.totalCount }}
         </div>
     </div>
 
@@ -25,7 +24,7 @@
             已停止
         </div>
         <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 10px">
-            2
+            0
         </div>
     </div>
 
@@ -50,40 +49,69 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent, onMounted, getCurrentInstance } from 'vue'
-    export default defineComponent({
-        setup() {
-            const { proxy } = getCurrentInstance() as any
-            // 配置建议写在 onMount 的外面
-            const option = {
+<script setup lang="ts">
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { frontendData } from "@/api/common";
 
-                color: ['#F93940'],
-                series: [
-                    {
-                        type: 'pie',
-                        radius: ['40%', '80%'],
-                        data: [{ value: 1048},],
-                        label: {
-                            show: false, // 设置为false隐藏指示线
-                        }
+const route = useRoute()
+const ListName = route.meta?.listname
+const TableName = route.meta?.tablename
+const filter = route.meta?.filter || {}
+const allLabels = ref(filter)
 
-                    }
-                ]
-            }
-            onMounted(() => {
-                // 获取挂载的组件实例
-                const echarts = proxy.$ECharts
-                //初始化挂载
-                const echarts1 = echarts.init(document.getElementById('myChart'))
-                //添加配置
-                echarts1.setOption(option)
-                // 自适应
-                window.onresize = function () {
-                    echarts1.resize()
-                }
-            })
-            return {}
-        }
-    })
+const pageSite = ref({limit:5,page:1})
+const tableColumns = ref([])
+const tableData = ref({
+  metadata:{
+    totalCount:''
+  },
+  items:[],
+  actions:[]
+})
+
+onMounted(()=>{frontendData(ListName, TableName, pageSite,tableColumns, tableData, allLabels.value,[])})
+
+const option = {
+  color: ['#57D344','#F93940'],
+  series: [
+    {
+      type: 'pie',
+      radius: ['40%', '80%'],
+      data: [{ value: 1048 }],
+      label: {
+        show: false, // 设置为 false 隐藏指示线
+      },
+    },
+  ],
+}
+
+const router = useRouter()
+const { proxy } = getCurrentInstance() as any
+const echarts = proxy.$ECharts
+const echartsInstance = ref(null)
+
+onMounted(() => {
+  // 初始化挂载
+  echartsInstance.value = echarts.init(document.getElementById('myChart')!)
+  // 添加配置
+  echartsInstance.value.setOption(option)
+  // 自适应
+  window.onresize = function () {
+    echartsInstance.value.resize()
+  }
+})
+
+onBeforeUnmount(() => {
+  // 在组件销毁前销毁 ECharts 图表
+  echartsInstance.value.dispose()
+})
+
+// 监听路由变化，当路由切换时重新初始化 ECharts 图表
+router.beforeEach(() => {
+  if (echartsInstance.value) {
+    // 销毁当前的 ECharts 图表
+    echartsInstance.value.dispose()
+  }
+})
 </script>

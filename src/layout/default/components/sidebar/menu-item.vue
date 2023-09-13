@@ -5,8 +5,7 @@
                 <icon
                     class="menu-item-icon"
                     :size="16"
-                    v-if="routeMeta?.icon"
-                    :name="routeMeta?.icon"
+                    name="el-icon-Monitor"
                 />
                 <template #title>
                     <span>{{ routeMeta?.title }}</span>
@@ -18,8 +17,7 @@
                 <icon
                     class="menu-item-icon"
                     :size="16"
-                    v-if="routeMeta?.icon"
-                    :name="routeMeta?.icon"
+                    name="el-icon-Monitor"
                 />
                 <span>{{ routeMeta?.title }}</span>
             </template>
@@ -48,7 +46,7 @@ const props = defineProps<Props>()
 
 const hasShowChild = computed(() => {
     const children: RouteRecordRaw[] = props.route.children ?? []
-    return !!children.filter((item) => !item.meta?.hidden).length
+    return !!children.length
 })
 
 const routeMeta = computed(() => {

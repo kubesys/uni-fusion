@@ -19,6 +19,16 @@
           <div class="dataItems" >
             <!--                        <a :href="`#${catalog.path}`" @click="handleCatalogClick(catalog)">{{ catalog.name }}</a>-->
             <router-link :to=routes.path @click="handleCatalogClick(catalog)">{{ catalog.name }}</router-link>
+            <div class="showData_inner" v-for="group in userStore.groups" :key="group.name">
+              <span v-if="group.path.startsWith(catalog.path)" >
+                {{group.name}}
+                <div class="showData_inner_inner" v-for="item in userStore.menu" :key="item.name">
+                  <router-link v-if="item.path.startsWith(group.path)" :to=item.path>
+                    {{item.name}}
+                  </router-link>
+                </div>
+              </span>
+            </div>
 <!--            <div @click="handleCatalogClick(catalog)">{{ catalog.name }}</div>-->
 <!--            <div class="dataItems-main" v-for="menu in userStore.catalogs">{{ menu.routes }}</div>-->
           </div>
@@ -36,6 +46,7 @@ import useUserStore from "@/stores/modules/user";
 const userStore = useUserStore()
 
 const routes = useRoute()
+const title = routes.meta?.title
 
 const handleCatalogClick = (catalog) => {
   // 更新 Store 中选中的catalog
@@ -99,6 +110,18 @@ const handleCatalogClick = (catalog) => {
   margin-top: 15px;;
 }
 
+.showData_inner{
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.showData_inner_inner{
+  margin-top: 10px;
+  font-size: 13px;
+  color: #a8abb2;
+}
+
 .line {
   float: left;
   margin-top: 24px;
@@ -113,6 +136,7 @@ const handleCatalogClick = (catalog) => {
   float: left;
   margin-top: 20px;
   margin-left: 20px;
+  font-size: 20px;
   font-weight: 700;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="frontendTable_container">
     <!-- The Form section of the Table page -->
     <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 80px">
       <el-row>
@@ -94,46 +94,46 @@
           align="center"
           :key="item.key"
           :label="item.label"
-          :prop="item.row"
       >
         <template #default="scope">
-          <router-link
-              v-if="item.kind === 'internalLink'"
-              to="baidu"
-          >
-            <el-link type="primary">
-              {{getComplexDataDispose(scope.row, item.row)}}
-            </el-link>
-          </router-link>
 <!--          <router-link-->
 <!--              v-if="item.kind === 'internalLink'"-->
-<!--              :to="{-->
-<!--                name: item.link.indexOf('@') === -1 ? item.link : getComplexDataDispose(scope.row, item.link.substring(1)),-->
-<!--                params: {-->
-<!--                  key: item.tag,-->
-<!--                  value: item.tag ? getComplexDataDispose(scope.row, item.row.indexOf('@') === -1 ? item.row : item.row.substring(1)) : undefined-->
-<!--                }-->
-<!--              }"-->
-<!--          >-->
-<!--            <el-link type="primary">{{-->
-<!--                getComplexDataDispose(scope.row, item.row)-->
-<!--              }}</el-link>-->
+<!--              to="baidu">-->
+<!--            <el-link type="primary">-->
+<!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
+<!--            </el-link>-->
 <!--          </router-link>-->
-          <div v-else-if="item.kind === 'terminalLink'">
-          </div>
+          <router-link
+              v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"
+              :to="{
+                path: item.internalLink.kind.indexOf('@') === -1 ? item.internalLink.kind : getComplexDataDispose(scope.row, item.internalLink.kind),
+                query: {
+
+                }
+              }"
+          >
+            <el-link type="primary" v-if="item.internalLink.kind.indexOf('@') !== -1">{{
+                getComplexDataDispose(scope.row, item.internalLink.item.substring(1))
+              }}</el-link>
+            <el-link type="primary" v-else>
+              {{ getComplexDataDispose(scope.row, item.row) }}
+            </el-link>
+          </router-link>
+          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item)" target="_blank">
+            <el-icon :size="20">
+              <Monitor />
+            </el-icon>
+          </el-link>
           <el-select
               v-else-if="item.kind === 'action'"
               placeholder="请选择"
-              style="width: 100px"
-          >
+              style="width: 100px">
             <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">
               {{ item.name }}
             </el-option>
           </el-select>
           <span v-else>
-            {{
-              getComplexDataDispose(scope.row, item.row)
-            }}
+            {{ getComplexDataDispose(scope.row, item.row) }}
           </span>
         </template>
       </el-table-column>
@@ -182,7 +182,9 @@
     </el-dialog>
 
     <CreateJsonDialog :CreateJsonVisible=CreateJsonVisible
-                      :listname=ListName />
+                      :listname=ListName
+                      :finishStep=finishStep
+    />
   </div>
 </template>
 
@@ -207,6 +209,12 @@ interface FormItem {
   data: Option[];
 }
 
+interface tableColumns {
+  label: string;
+  row: string;
+  internalLink: object;
+}
+
 const route = useRoute()
 const ListName = route.meta?.listname
 const TableName = route.meta?.tablename
@@ -220,7 +228,7 @@ const dialogVisible = ref(false)
 console.log(ListName, TableName, props)
 
 // 列配置数据
-const tableColumns = ref([])
+const tableColumns:tableColumns = ref([])
 const tableData = ref({
   metadata:{
     totalCount:''
@@ -251,7 +259,7 @@ getComplexDataDispose
 
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
-  frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels, actions)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
 }
 
 const getRules = (group) => {
@@ -302,7 +310,16 @@ const getRules = (group) => {
 //   }
 //   return value;
 // }
+function getTerminalAddr(json, item) {
+  return item
+}
+
 const CreateJsonVisible = ref(false)
+
+function finishStep() {
+  CreateJsonVisible.value = true
+}
+
 
 function handleCreateClick(){
   // router.push('/test')
@@ -341,9 +358,11 @@ function saveData(){
   dialogVisible.value = false;
 }
 
-/**
+/************************
+ *
  *  连接Rabbitmq部分
- */
+ *
+ ***********************/
 const client = Stomp.client(MQTT_SERVICE);
 
 function onConnected() {

@@ -20,6 +20,23 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       console.log(resp.data.data.items);
       tableData.value = resp.data.data;
 
+      /***********************
+       *
+       * Echarts data
+       *
+       ***********************/
+      let resultRun = 0
+      let resultPen = 0
+      tableData.value.items.forEach((item:any)=>{
+        if (item.status.phase === 'Running'){
+          resultRun++
+        } else if(item.status.phase !== 'Running'){
+          resultPen++
+        }
+      })
+      tableData.value.resultRun = resultRun
+      tableData.value.resultPen = resultPen
+
       getResource({
         fullkind: "doslab.io.Frontend",
         name: TableName + '-table',
@@ -193,6 +210,34 @@ export function getComplexValue(scope, key){
   }
 
   let result = scope
+
+  if (key.startsWith('@')) {
+    let newkey = '';
+    key.substring(1).split('+').forEach((item) => {
+      console.log(item)
+      if (item.includes('apiVersion')) {
+        const apiVersion = result[item];
+        console.log(apiVersion)
+        if (apiVersion) {
+          newkey += apiVersion.split('/')[0];
+        } else {
+          console.log(1);
+          // 处理 apiVersion 为 undefined 或 null 的情况
+        }
+      } else {
+        const value = result[item];
+        if (value !== undefined && value !== null) {
+          newkey += '.' + value;
+        } else {
+          console.log(2);
+          // 处理 value 为 undefined 或 null 的情况
+        }
+      }
+    });
+    console.log(newkey);
+  }
+
+
   key.split('.').every((item) => {
     item = item.replaceAll('#', '.')
     if (item.indexOf('[') > 0) {
@@ -212,10 +257,9 @@ export function getComplexValue(scope, key){
     } else {
       if (result && result[item] !== undefined) {
         result = result[item]
-        console.log(result)
         return true
       } else {
-        result = '🚫'
+        result = '⊘'
         return false
       }
     }
@@ -234,19 +278,19 @@ export function getComplexValue(scope, key){
     if (result === 'Running') {
       result = '🟢'
     } else if (result === 'Terminating') {
-      result = '销毁中'
+      result = '🔴'
     } else if (result === 'Pending') {
       result = '🔴'
     } else if (result === 'Succeeded') {
-      result = '执行完成'
+      result = '🟢'
     } else if (result === 'Completed') {
-      result = '执行完成'
+      result = '🟢'
     } else if (result === 'Failed') {
-      result = '执行失败'
+      result = '🔴'
     } else if (result === 'Unknown') {
-      result = '未知状态'
+      result = '🔴'
     } else if (result === 'Ready') {
-      result = '健康运行'
+      result = '🟢'
     }
     else if ((result + '').endsWith('Ki')) {
       result = (Number(result.substring(0, result.length - 2).trim())/1024/1024).toFixed(2) + 'GB'

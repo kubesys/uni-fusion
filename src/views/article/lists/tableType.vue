@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import { ref } from "vue";
 import {frontendMeta} from "@/api/common";
 
 const route = useRoute()
@@ -17,9 +17,6 @@ const region = ref(localStorage.getItem('region'));
 
 frontendMeta(tablename, descItem);
 
-// 监听 storage 事件，在数据发生变化时执行回调函数
-
-// onMounted(() => tableDesc());
 </script>
 
 

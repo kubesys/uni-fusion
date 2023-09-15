@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog v-model="CreateJsonVisible"
+    <el-dialog
                width="80%">
       <div class="create-title">
         创建{{listname}}

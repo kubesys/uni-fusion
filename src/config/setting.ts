@@ -2,7 +2,8 @@ const defaultSetting = {
     isUniqueOpened: false, //只展开一个一级菜单
     sideWidth: 200, //侧边栏宽度
     sideTheme: 'light', //侧边栏主题
-    sideDarkColor: '#1d2124', //侧边栏深色主题颜色
+    // sideDarkColor: '#1d2124', //侧边栏深色主题颜色
+    sideDarkColor: '#161f50', //侧边栏深色主题颜色
     openMultipleTabs: true, // 是否开启多标签tab栏
     theme: '#4A5DFF', //主题色
     successTheme: '#67c23a', //成功主题色

@@ -43,13 +43,13 @@ const isCollapsed = computed(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped >
 .axu {
     position: relative;
 }
 
 .navbar{
-    background: #0043B1;
+    background-color: var(--side-dark-color, #0043B1);
     height: 50px;
 }
 

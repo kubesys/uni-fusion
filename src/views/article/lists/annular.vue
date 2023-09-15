@@ -1,5 +1,5 @@
 <template>
-    <div id="myChart" :style="{ width: '70px', height: '100%' ,flex: 1}"></div>
+    <div id="myChart" :style="{ width: '70px', height: '52px' ,flex: 1}"></div>
     <div style="margin-right: 10px; flex: 1">
         <div style="float:left; margin-top: 10px; font-size: 10px">
             总数

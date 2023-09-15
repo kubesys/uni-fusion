@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="all_header" :style="sideStyle" >
         <layout-navigation />
         <div class="app-header " >
             <layout-header />
@@ -26,4 +26,17 @@ import LayoutMain from './components/main.vue'
 import LayoutSidebar from './components/sidebar/index.vue'
 import LayoutHeader from './components/header/index.vue'
 import LayoutNavigation from './components/navigation/index.vue'
+import useSettingStore from "@/stores/modules/setting";
+
+const settingStore = useSettingStore()
+const sideTheme = computed(() => settingStore.sideTheme)
+const sideStyle = computed(() => {
+  return sideTheme.value == 'dark'
+      ? {
+        '--side-dark-color': settingStore.sideDarkColor
+      }
+      : ''
+})
+
+
 </script>

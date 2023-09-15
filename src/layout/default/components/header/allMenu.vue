@@ -132,6 +132,7 @@ const handleCatalogClick = (catalog) => {
 }
 
 .dataItems {
+  color: #0a0a0a;
   width: 100%;
   float: left;
   margin-top: 20px;

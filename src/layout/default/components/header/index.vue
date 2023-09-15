@@ -1,7 +1,7 @@
 <template>
-    <header class="header">
-        <div class="axu">
-            <div class="navbar">
+    <header class="header" >
+        <div class="axu" >
+            <div class="navbar" :style="{ color: menuProp.textColor }">
                 <div class="flex-1 flex">
                     <div class="navbar-item">
                         <fold />
@@ -48,7 +48,17 @@ import MultipleTabs from './multiple-tabs.vue'
 import useSettingStore from '@/stores/modules/setting'
 const appStore = useAppStore()
 const isMobile = computed(() => appStore.isMobile)
+
 const settingStore = useSettingStore()
+const sideTheme = computed(() => settingStore.sideTheme)
+
+const menuProp = computed(() => {
+  return {
+    backgroundColor: sideTheme.value == 'dark' ? settingStore.sideDarkColor : '',
+    textColor: sideTheme.value == 'dark' ? 'var(--el-color-white)' : '',
+    activeTextColor: sideTheme.value == 'dark' ? 'var(--el-color-white)' : ''
+  }
+})
 </script>
 
 <style lang="scss">
@@ -67,6 +77,7 @@ const settingStore = useSettingStore()
         @apply h-full  flex justify-center items-center  hover:bg-page;
         line-height: 90px;
     }
+    background-color: var(--side-dark-color, var(--el-bg-color));
     box-shadow: 0 0px 2px rgba(0,0,0,0.5);
 }
 </style>

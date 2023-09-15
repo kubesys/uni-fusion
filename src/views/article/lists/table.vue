@@ -1,7 +1,7 @@
 <template>
   <div class="frontendTable_container">
     <!-- The Form section of the Table page -->
-    <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 80px">
+    <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 30px">
       <el-row>
         <el-col v-for="item in formItems" :key="item.path" :span="7" style="margin-right: 20px">
           <el-form-item :label="item.label">

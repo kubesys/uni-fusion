@@ -164,6 +164,11 @@
                 <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
                 <el-input v-model="replicaset" />
               </template>
+<!--              <template v-else-if="field.type === 'select'">-->
+<!--                <el-select v-model="group[fieldName]" :placeholder="field.value">-->
+<!--                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>-->
+<!--                </el-select>-->
+<!--              </template>-->
               <template v-else-if="field.type === 'select'">
                 <el-select v-model="group[fieldName]" :placeholder="field.value">
                   <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>

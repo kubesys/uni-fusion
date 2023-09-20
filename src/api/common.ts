@@ -97,7 +97,7 @@ export function frontendMeta(TableName:string, descItem: [], region = 'test', re
   getResourceData(1); // 初始化时发送请求
 }
 
-export function frontendFormSearch(TableName:string, descItem: [], region = 'test', retryCount = 3) {
+export function frontendFormSearch(TableName:string, formItem: [], region = 'test', retryCount = 3) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -107,7 +107,7 @@ export function frontendFormSearch(TableName:string, descItem: [], region = 'tes
     })
         .then((resp) => {
           console.log(resp.data.data.spec.data.items);
-          descItem.value = resp.data.data.spec.data.items;
+          formItem.value = resp.data.data.spec.data.items;
         })
         .catch((error) => {
           console.error(error);

@@ -3,14 +3,14 @@
     <!-- The Form section of the Table page -->
     <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 30px">
       <el-row>
-        <el-col v-for="item in formItems" :key="item.path" :span="7" style="margin-right: 20px">
-          <el-form-item :label="item.label">
-            <template v-if="item.type === 'textbox'">
+        <el-col v-for="formItem in formItems" :key="formItem.path" :span="7" style="margin-right: 20px">
+          <el-form-item :label="formItem.label">
+            <template v-if="formItem.type === 'textbox'">
               <el-input v-model="props" style="width: 100%;"></el-input>
             </template>
-            <template v-else-if="item.type === 'combobox'">
-              <el-select v-model="formData[item.path]" style="width: 100%;">
-                <el-option v-for="(option, index) in item.data" :key="index" :label="option.label" :value="option.value"></el-option>
+            <template v-else-if="formItem.type === 'combobox'">
+              <el-select v-model="formData[formItem.path]" style="width: 100%;">
+                <el-option v-for="(option, index) in formItem.data" :key="index" :label="option.label" :value="option.value" />
               </el-select>
             </template>
             <!-- 可以根据需要添加其他类型的表单组件 -->
@@ -128,9 +128,7 @@
               v-else-if="item.kind === 'action'"
               placeholder="请选择"
               style="width: 100px">
-            <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">
-              {{ item.name }}
-            </el-option>
+            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.name, action.type, scope.row)" />
           </el-select>
           <span v-else>
             {{ getComplexDataDispose(scope.row, item.row) }}
@@ -218,6 +216,7 @@ interface tableColumns {
   label: string;
   row: string;
   internalLink: object;
+  actionLink: object;
 }
 
 const route = useRoute()

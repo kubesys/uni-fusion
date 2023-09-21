@@ -151,37 +151,42 @@
         v-model="dialogVisible"
         :title=selectedItemName
         width="50%">
-      <div class="dialog-content">
-        <el-card  style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">
-          <el-form v-for="group in scaleItems.data" :key="group.key" :model="group" :rules="getRules(group)" label-width="90px" label-position="left" >
-            <el-form-item  :label="group.label">
-              <template v-if="group.type === 'combobox'">
-                <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
-                <el-select style="width: 200px">
-                  <el-option></el-option>
-                </el-select>
-              </template>
-              <template v-else-if="group.type === 'text'">
-                <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
-                <el-input style="width: 200px"/>
-              </template>
-              <template v-if="group.type === 'range'">
-                <el-input-number v-model="group.lessThan" :min="1" :max="10"  />
-              </template>
-<!--              <template v-else-if="field.type === 'select'">-->
-<!--                <el-select v-model="group[fieldName]" :placeholder="field.value">-->
+<!--      <div class="dialog-content">-->
+<!--        <el-card  style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">-->
+<!--          <el-form v-for="group in scaleItems.data" :key="group.key" :model="group" :rules="getRules(group)" label-width="90px" label-position="left" >-->
+<!--            <el-form-item  :label="group.label">-->
+<!--              <template v-if="group.type === 'combobox'">-->
+<!--                &lt;!&ndash;              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>&ndash;&gt;-->
+<!--                <el-select style="width: 200px">-->
+<!--                  <el-option></el-option>-->
+<!--                </el-select>-->
+<!--              </template>-->
+<!--              <template v-else-if="group.type === 'text'">-->
+<!--                &lt;!&ndash;              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>&ndash;&gt;-->
+<!--                <el-input style="width: 200px"/>-->
+<!--              </template>-->
+<!--              <template v-if="group.type === 'range'">-->
+<!--                <el-input-number v-model="group.lessThan" :min="1" :max="10"  />-->
+<!--              </template>-->
+<!--&lt;!&ndash;              <template v-else-if="field.type === 'select'">&ndash;&gt;-->
+<!--&lt;!&ndash;                <el-select v-model="group[fieldName]" :placeholder="field.value">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>&ndash;&gt;-->
+<!--&lt;!&ndash;                </el-select>&ndash;&gt;-->
+<!--&lt;!&ndash;              </template>&ndash;&gt;-->
+<!--              <template v-else-if="group.type === 'select'">-->
+<!--                <el-select v-model="group[group]" :placeholder="group.value">-->
 <!--                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>-->
 <!--                </el-select>-->
 <!--              </template>-->
-              <template v-else-if="group.type === 'select'">
-                <el-select v-model="group[group]" :placeholder="group.value">
-                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>
-                </el-select>
-              </template>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </div>
+<!--            </el-form-item>-->
+<!--          </el-form>-->
+<!--        </el-card>-->
+<!--      </div>-->
+      <!-- 使用 vue-json-pretty 显示 JSON 数据 -->
+
+      <el-scrollbar height="500px">
+        <vue-json-pretty :data="rowItemData"></vue-json-pretty>
+      </el-scrollbar>
       <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -206,6 +211,14 @@ import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, getCo
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
 // import '@/rabbitmq/websocket'
 // import Step1 from "@/views/guide/Step1.vue";
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
+
+const jsonData = ref({
+  name: 'John Doe',
+  age: 30,
+  email: 'johndoe@example.com',
+});
 
 interface Option {
   label: string;
@@ -254,6 +267,7 @@ const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
 const newArray = ref()
 const scaleItems = ref([])
 const selectedItemName = ref(''); // 初始化选中的选项为空
+const rowItemData = ref()
 const selectOptions = ref([
   { label: "Option 1", value: "option1" },
   { label: "Option 2", value: "option2" },
@@ -352,6 +366,7 @@ function handleOptionClick(name, action, rowData) {
     dialogVisible.value = true;
     selectedItemName.value = name
     console.log('点击了操作列，当前行数据：', rowData);
+    rowItemData.value = rowData.metadata
     // props.value = rowData
   } else if (action === 'Delete') {
     // 跳转到删除页面

@@ -9,8 +9,10 @@
               <el-input v-model="props" style="width: 100%;"></el-input>
             </template>
             <template v-else-if="formItem.type === 'combobox'">
-              <el-select v-model="formData[formItem.path]" style="width: 100%;">
-                <el-option v-for="(option, index) in formItem.data" :key="index" :label="option.label" :value="option.value" />
+              <el-select v-model="formData[formItem.path]" style="width: 100%;" >
+                <el-option v-for="(option, index) in getFormDataValue(formItem.data, newArray)" :key="index" :label="option.label" :value="option.value">
+
+                </el-option>
               </el-select>
             </template>
             <!-- 可以根据需要添加其他类型的表单组件 -->
@@ -128,7 +130,7 @@
               v-else-if="item.kind === 'action'"
               placeholder="请选择"
               style="width: 100px">
-            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.name, action.type, scope.row)" />
+            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />
           </el-select>
           <span v-else>
             {{ getComplexDataDispose(scope.row, item.row) }}
@@ -150,25 +152,29 @@
         :title=selectedItemName
         width="50%">
       <div class="dialog-content">
-        <el-card v-for="(group, groupName) in scaleItems.data" :key="groupName" style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">
-          <el-form :model="group" :rules="getRules(group)">
-            <el-form-item v-for="(field, fieldName) in group" :key="fieldName" :label="field.value">
-              <template v-if="field.type === 'textbox'">
+        <el-card  style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">
+          <el-form v-for="group in scaleItems.data" :key="group.key" :model="group" :rules="getRules(group)" label-width="90px" label-position="left" >
+            <el-form-item  :label="group.label">
+              <template v-if="group.type === 'combobox'">
                 <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
-                <el-input  type="textarea"
-                           :rows="5"/>
+                <el-select style="width: 200px">
+                  <el-option></el-option>
+                </el-select>
               </template>
-              <template v-else-if="field.type === 'text'">
+              <template v-else-if="group.type === 'text'">
                 <!--              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>-->
-                <el-input v-model="replicaset" />
+                <el-input style="width: 200px"/>
+              </template>
+              <template v-if="group.type === 'range'">
+                <el-input-number v-model="group.lessThan" :min="1" :max="10"  />
               </template>
 <!--              <template v-else-if="field.type === 'select'">-->
 <!--                <el-select v-model="group[fieldName]" :placeholder="field.value">-->
 <!--                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>-->
 <!--                </el-select>-->
 <!--              </template>-->
-              <template v-else-if="field.type === 'select'">
-                <el-select v-model="group[fieldName]" :placeholder="field.value">
+              <template v-else-if="group.type === 'select'">
+                <el-select v-model="group[group]" :placeholder="group.value">
                   <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>
                 </el-select>
               </template>
@@ -196,7 +202,7 @@ import router from "@/router";
 import { onMounted, ref } from 'vue';
 import Stomp from 'stompjs';
 import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
-import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, getComplexDataDispose } from "@/api/common";
+import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, getComplexDataDispose, getFormDataValue } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
 // import '@/rabbitmq/websocket'
 // import Step1 from "@/views/guide/Step1.vue";
@@ -245,6 +251,7 @@ const pageSite = ref({limit:5,page:1})
 const tableDataLoaded = ref(false)
 const formData = ref<Record<string, string>>({}); // 表单数据对象
 const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
+const newArray = ref()
 const scaleItems = ref([])
 const selectedItemName = ref(''); // 初始化选中的选项为空
 const selectOptions = ref([
@@ -338,15 +345,15 @@ function submitForm() {
   frontendData(ListName, TableName, pageSite,tableColumns, tableData, allLabels.value, actions)
 }
 
-function handleOptionClick(name, type, rowData) {
-  if (type === 'Update') {
+function handleOptionClick(name, action, rowData) {
+  if (action === 'pod-action-scale') {
     // 跳转到更新页面
     // router.push('/test');
     dialogVisible.value = true;
     selectedItemName.value = name
     console.log('点击了操作列，当前行数据：', rowData);
-    props.value = rowData
-  } else if (type === 'Delete') {
+    // props.value = rowData
+  } else if (action === 'Delete') {
     // 跳转到删除页面
     router.push('/delete-page');
   }

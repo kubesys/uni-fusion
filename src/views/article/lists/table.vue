@@ -27,58 +27,6 @@
     <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;"><icon name="el-icon-RefreshRight" :size="18" /></el-button>
     <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;">查询</el-button>
 
-<!--    <el-table :data="tableData.items"-->
-<!--              :header-cell-style="{ color: '#000'}"-->
-<!--              :max-height="500"-->
-<!--              size="large">-->
-<!--      <el-table-column-->
-<!--          type="selection"-->
-<!--          width="55">-->
-<!--      </el-table-column>-->
-<!--      &lt;!&ndash; 列配置 &ndash;&gt;-->
-<!--      <template v-for="(column, index) in tableColumns" :key="index" :label="column.label">-->
-<!--        &lt;!&ndash; 自定义列内容 &ndash;&gt;-->
-<!--        <template v-if="column.kind === 'internalLink'">-->
-<!--          <template v-if="column.link.startsWith('@')">-->
-<!--            &lt;!&ndash; 内部链接 &ndash;&gt;-->
-<!--            <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
-<!--&lt;!&ndash;                            <a :href="generateLink(column, tableData)">{{ getLinkText(column, item) }}</a>&ndash;&gt;-->
-
-<!--            </el-table-column>-->
-<!--          </template>-->
-
-<!--          <template v-else>-->
-<!--            &lt;!&ndash; 外部链接 &ndash;&gt;-->
-<!--            <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
-<!--            </el-table-column>-->
-<!--          </template>-->
-<!--        </template>-->
-
-<!--        <template v-else-if="column.kind === 'externalLink'">-->
-<!--          <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
-<!--            <div v-if="column.row === 'status.phase'">🟢</div>-->
-<!--          </el-table-column>-->
-<!--        </template>-->
-
-<!--        <template v-else-if="column.kind === 'action'" >-->
-<!--          &lt;!&ndash; 操作列 &ndash;&gt;-->
-<!--          <el-table-column :key="column.row" :label="column.label" :prop="column.row">-->
-<!--            <template #default="scope">-->
-<!--              <el-select placeholder="请选择" style="width: 100px">-->
-<!--                <el-option v-for="(item, index) in actions" :key="index" :label="item.name" :value="item.type" @click="handleOptionClick(item.name, item.type, scope.row)">-->
-<!--                  {{ item.name }}-->
-<!--                </el-option>-->
-<!--              </el-select>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--        </template>-->
-
-<!--        <template v-else>-->
-<!--          &lt;!&ndash; 其他类型列 &ndash;&gt;-->
-<!--          <el-table-column :key="column.row" :label="column.label" :prop="column.row"></el-table-column>-->
-<!--        </template>-->
-<!--      </template>-->
-<!--    </el-table>-->
     <!-- Table table component -->
     <el-table
         :data="tableData.items"
@@ -150,7 +98,7 @@
     <el-dialog
         v-model="dialogVisible"
         :title=selectedItemName
-        width="50%">
+        width="60%">
 <!--      <div class="dialog-content">-->
 <!--        <el-card  style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">-->
 <!--          <el-form v-for="group in scaleItems.data" :key="group.key" :model="group" :rules="getRules(group)" label-width="90px" label-position="left" >-->
@@ -185,7 +133,13 @@
       <!-- 使用 vue-json-pretty 显示 JSON 数据 -->
 
       <el-scrollbar height="500px">
-        <vue-json-pretty :data="rowItemData"></vue-json-pretty>
+        <div  style="display: flex">
+          <vue-json-pretty :data="rowItemData" style="flex: 1"></vue-json-pretty>
+<!--          <textarea v-model="yaml" rows="10" cols="40"></textarea>-->
+          <pre>{{ yaml }}</pre>
+        </div>
+<!--        <pre>{{ rowItemData }}</pre>-->
+
       </el-scrollbar>
       <template #footer>
       <span class="dialog-footer">
@@ -213,12 +167,7 @@ import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue"
 // import Step1 from "@/views/guide/Step1.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
-
-const jsonData = ref({
-  name: 'John Doe',
-  age: 30,
-  email: 'johndoe@example.com',
-});
+import jsYaml from 'js-yaml';
 
 interface Option {
   label: string;
@@ -273,6 +222,23 @@ const selectOptions = ref([
   { label: "Option 2", value: "option2" },
 ]);
 
+const yaml = ref<string>('');
+
+watch(rowItemData, () => {
+  // 当 JSON 数据发生变化时，将其转换为 YAML
+  yaml.value = jsYaml.dump(rowItemData.value);
+}, { deep: true });
+
+watch(yaml, () => {
+  // 当 YAML 数据发生变化时，将其转换回 JSON
+  try {
+    rowItemData.value = jsYaml.load(yaml.value);
+  } catch (error) {
+    // 处理 YAML 解析错误
+    console.error('YAML 解析错误：', error);
+  }
+});
+
 onMounted(()=>{
   frontendFormSearch(TableName, formItems)
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
@@ -297,44 +263,6 @@ const getRules = (group) => {
   return rules;
 };
 
-// function generateExternalLink(column, rowData) {
-//   return 'https://www.baidu.com/' + rowData[column.row];
-// }
-// function generateLink(column, item) {
-//   if (column.link.startsWith('@')) {
-//     const tag = column.tag ? column.tag.split('##') : [];
-//     const linkParts = column.link.split(';');
-//     const apiVersion = getPropertyValue(item, linkParts[0].substring(1));
-//     const kind = getPropertyValue(item, linkParts[2]);
-//     return `/${apiVersion}/${kind}/${tag.join('/')}`;
-//   }
-//   return column.link;
-// }
-
-// function getLinkText(column, item) {
-//   if (column.link.startsWith('@')) {
-//     const tag = column.tag ? column.tag.split('##') : [];
-//     return this.getPropertyValue(item, tag[tag.length - 1]);
-//   }
-//   return column.label;
-// }
-// function getPropertyValue(item, propertyPath) {
-//   const properties = propertyPath.split('.');
-//   let value = item;
-//   for (let i = 0; i < properties.length; i++) {
-//     const property = properties[i];
-//     if (property.startsWith('@')) {
-//       value = value[property.substring(1)];
-//     } else if (property.includes('[') && property.includes(']')) {
-//       const arrayProperty = property.substring(0, property.indexOf('['));
-//       const index = parseInt(property.substring(property.indexOf('[') + 1, property.indexOf(']')));
-//       value = value[arrayProperty][index];
-//     } else {
-//       value = value[property];
-//     }
-//   }
-//   return value;
-// }
 function getTerminalAddr(json, item) {
   return item
 }

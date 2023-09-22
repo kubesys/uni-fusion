@@ -13,6 +13,7 @@
     "@element-plus/icons-vue": "^2.0.6",
     "@highlightjs/vue-plugin": "^2.1.0",
     "@types/amqplib": "^0.10.1",
+    "@types/js-yaml": "^4.0.6",
     "@types/stompjs": "^2.3.5",
     "@wangeditor/editor": "^5.1.12",
     "@wangeditor/editor-for-vue": "^5.1.12",

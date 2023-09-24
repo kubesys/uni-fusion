@@ -17,6 +17,7 @@
     "@types/stompjs": "^2.3.5",
     "@wangeditor/editor": "^5.1.12",
     "@wangeditor/editor-for-vue": "^5.1.12",
+    "ace-builds": "^1.28.0",
     "amqplib": "^0.10.3",
     "axios": "^0.27.2",
     "css-color-function": "^1.3.3",
@@ -35,6 +36,7 @@
     "vue-echarts": "^6.6.0",
     "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.0.16",
+    "vue3-ace-editor": "^2.2.3",
     "vue3-video-play": "^1.3.1-beta.6",
     "vuedraggable": "^4.1.0"
   },

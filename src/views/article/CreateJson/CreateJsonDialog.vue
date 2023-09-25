@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-dialog v-model="dialogVisible" width="60%">
-      <el-scrollbar height="600px">
+    <el-dialog v-model="dialogVisible" width="80%">
+      <el-scrollbar height="800px">
         <div class="create-title">
           创建{{ dialogName }}
         </div>
@@ -14,7 +14,8 @@
           <!--        </div>-->
 
           <div >
-            <div class="card">
+            <div class="table_section">
+
               <!-- 原card 数据 -->
               <!--            <el-card v-for="(group, groupName) in currentStepGroups" :key="groupName" style="border: 1px solid #d2d2d2; width: 1000px; margin-top: 10px; margin-left: 30px">-->
               <!--              <el-form :model="group" :rules="getRules(group)">-->
@@ -48,38 +49,53 @@
               <!--            </el-card>-->
 
               <!--            <pre> {{ formData }} </pre>-->
-              <el-card style="border: 1px solid #d2d2d2; width: 1000px; margin-top: 10px; margin-left: 30px">
-                <el-form :model="formData" ref="formDataRef">
+              <div style=" margin-top: 10px; margin-left: 30px;flex: 1">
+                <span style="font-size: 20px">基本信息:</span>
+                <el-form :model="formData" ref="formDataRef" label-width="auto" label-position="right">
                   <el-form-item
                       v-for="(variable, key) in spec.variables"
                       :label="variable.label"
                       :key="key"
                   >
                     <template v-if="variable.type === 'text' && key.startsWith('metadata')">
-                      <el-input v-model="formData.metadata.name"></el-input>
+                      <el-input v-model="formData.metadata.name" style="width: 400px"></el-input>
                     </template>
                     <template v-else-if="variable.type === 'text' && key.startsWith('spec')">
-                      <el-input v-model="formData.spec.containers[0].name"></el-input>
+                      <el-input v-model="formData.spec.containers[0].name" ></el-input>
                     </template>
                     <template v-else-if="variable.type === 'combox'">
-                      <el-select v-model="formData[key]">
-                        <el-option
-                            v-for="option in variable.options"
-                            :key="option.value"
-                            :label="option.label"
-                            :value="option.value"
-                        ></el-option>
-                      </el-select>
+<!--                      <el-select v-model="formData[key]">-->
+<!--                        <el-option-->
+<!--                            v-for="option in variable.options"-->
+<!--                            :key="option.value"-->
+<!--                            :label="option.label"-->
+<!--                            :value="option.value"-->
+<!--                        ></el-option>-->
+<!--                      </el-select>-->
+                      <el-button type="primary" style="" @click="comboxDrawer = true">
+                        镜像列表
+                      </el-button>
+
+                      <el-drawer v-model="comboxDrawer"  :with-header="false">
+                        <span>镜像列表列</span>
+                      </el-drawer>
                     </template>
                     <!-- 处理其他字段类型 -->
                   </el-form-item>
                 </el-form>
-              </el-card>
+              </div>
 <!--              <pre> {{ jsonFormdata }} </pre>-->
-              <v-ace-editor v-model:value="jsonFormdata"
-                            mode="json"
-                            theme="twilight"
-                            style="height: 300px" />
+              <el-divider direction="vertical" style="margin-left: 100px; height: auto"/>
+              <div class="ace_editor">
+                <v-ace-editor v-model:value="jsonFormdata"
+                              lang="json"
+                              theme="cobalt"
+                              style="height: 400px"
+                              readonly="true"
+                              :options="{
+                                fontSize: 15
+                              }"/>
+              </div>
             </div>
             <div class="controls__wrap" style="float: right; margin-right: 100px;margin-top: 100px">
               <div v-if="active != 2 ">
@@ -104,6 +120,7 @@
 import { ref, reactive, onMounted, watch } from 'vue';
 // import {Edit} from "@element-plus/icons-vue";
 import { VAceEditor } from "vue3-ace-editor";
+import './ace.config'
 
 const switchvalue = ref(true)
 const dialogVisible = ref(false)
@@ -117,27 +134,27 @@ const spec = ref({
   },
   "variables": {
     "metadata.name": {
-      "label": "名称",
+      "label": "metadata名称:",
       "type": "text",
       "regexp": [
         "A-Za-z"
       ]
     },
     "spec.containers[0].name": {
-      "label": "名称",
+      "label": "container名称:",
       "type": "text",
       "regexp": [
         "A-Za-z"
       ]
     },
     "spec.containers[0].image": {
-      "label": "镜像",
+      "label": "镜像:",
       "type": "combox",
       "kind": "ConfigMap",
       "name": "busybox"
     },
     "spec.containers[0].env": {
-      "label": "环境变量",
+      "label": "环境变量:",
       "required": false,
       "type": "map",
       "keyRegexp": [
@@ -148,7 +165,7 @@ const spec = ref({
       ]
     },
     "spec.containers[0].port": {
-      "label": "开放端口",
+      "label": "开放端口:",
       "required": false,
       "type": "list",
       "regexp": [
@@ -156,7 +173,7 @@ const spec = ref({
       ]
     },
     "spec.containers[0].command": {
-      "label": "启动指令",
+      "label": "启动指令:",
       "required": false,
       "type": "list",
       "regexp": [
@@ -164,7 +181,7 @@ const spec = ref({
       ]
     },
     "spec.containers[0].args": {
-      "label": "启动参数",
+      "label": "启动参数:",
       "required": false,
       "type": "list",
       "regexp": [
@@ -486,8 +503,15 @@ defineExpose({
   width: 20%;
 }
 
-.card{
+.table_section{
+  display: flex;
   height: 100%;
+}
+
+.ace_editor{
+  width: 600px;
+  margin-top: 10px;
+  margin-left: 40px;
 }
 
 .el-step__title {

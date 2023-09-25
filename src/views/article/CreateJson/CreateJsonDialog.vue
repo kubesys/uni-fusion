@@ -57,28 +57,57 @@
                       :label="variable.label"
                       :key="key"
                   >
+                    <template v-if="variable.required === false">
+                      (非必填)
+                    </template>
                     <template v-if="variable.type === 'text' && key.startsWith('metadata')">
-                      <el-input v-model="formData.metadata.name" style="width: 400px"></el-input>
+                      <el-input v-model="formData.metadata.name" ></el-input>
                     </template>
                     <template v-else-if="variable.type === 'text' && key.startsWith('spec')">
                       <el-input v-model="formData.spec.containers[0].name" ></el-input>
                     </template>
                     <template v-else-if="variable.type === 'combox'">
-<!--                      <el-select v-model="formData[key]">-->
-<!--                        <el-option-->
-<!--                            v-for="option in variable.options"-->
-<!--                            :key="option.value"-->
-<!--                            :label="option.label"-->
-<!--                            :value="option.value"-->
-<!--                        ></el-option>-->
-<!--                      </el-select>-->
+                      <!--                      <el-select v-model="formData[key]">-->
+                      <!--                        <el-option-->
+                      <!--                            v-for="option in variable.options"-->
+                      <!--                            :key="option.value"-->
+                      <!--                            :label="option.label"-->
+                      <!--                            :value="option.value"-->
+                      <!--                        ></el-option>-->
+                      <!--                      </el-select>-->
                       <el-button type="primary" style="" @click="comboxDrawer = true">
                         镜像列表
                       </el-button>
 
                       <el-drawer v-model="comboxDrawer"  :with-header="false">
                         <span>镜像列表列</span>
+                        <el-select v-model="formData.spec.containers[0].image" class="m-2" placeholder="Select">
+                          <el-option
+                              v-for="item in ImageOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                          />
+                        </el-select>
                       </el-drawer>
+                    </template>
+                    <template v-else-if="variable.type === 'map'">
+                      <el-input v-model="keyValue.value1"  placeholder="name" />
+                      <el-input v-model="keyValue.value2"  placeholder="value" />
+                      <el-button type="primary" @click="addKeyValuePair" style="margin-top: 10px">确认</el-button>
+                    </template>
+                    <template v-if="key.includes('port')">
+                      <el-input v-model="portValue.value2" placeholder="value" />
+                      <el-button type="primary" @click="addPortPair" style="margin-top: 10px">确认</el-button>
+                    </template>
+                    <template v-else-if="variable.type === 'list' && !key.includes('port')">
+                      <el-input
+                          v-model="commandValue"
+                          :rows="2"
+                          type="textarea"
+                          placeholder="请输入指令"
+                      />
+                      <el-button @click="addCommand" style="margin-top: 10px">确认</el-button>
                     </template>
                     <!-- 处理其他字段类型 -->
                   </el-form-item>
@@ -90,7 +119,7 @@
                 <v-ace-editor v-model:value="jsonFormdata"
                               lang="json"
                               theme="cobalt"
-                              style="height: 400px"
+                              style="height: 500px"
                               readonly="true"
                               :options="{
                                 fontSize: 15
@@ -195,6 +224,39 @@ const formData = ref({
   // 初始化 formData 数据结构
 });
 
+const ImageOptions = [
+  {
+    value: 'my-image:latest',
+    label: 'my-image:latest'
+  },
+  {
+    value: 'nginx',
+    label: 'nginx'
+  }
+]
+
+const keyValue = ref({ value1: "", value2: "" });
+
+const addKeyValuePair = () => {
+  if (keyValue.value.value1 && keyValue.value.value2) {
+    formData.value.spec.containers[0].env.push({ "name": keyValue.value.value1, "value": keyValue.value.value2 });
+    // 清空输入
+    keyValue.value = { value1: "", value2: "" };
+  }
+};
+
+const portValue = ref({value1: "DATABASE_PORT", value2: ""})
+const addPortPair = () => {
+  if (portValue.value.value1 && portValue.value.value2) {
+    formData.value.spec.containers[0].env.push({ "name": portValue.value.value1, "value": portValue.value.value2 });
+    keyValue.value = { value1: "", value2: "" };
+  }
+}
+
+const commandValue = ref('')
+const addCommand = () => {
+  formData.value.spec.containers[0].command.push(commandValue.value)
+}
 // 处理特殊字段类型，比如 combox 的选项
 // onMounted(() => {
 //   for (const key in spec.value.variables) {
@@ -219,7 +281,7 @@ function generateInitialFormData() {
           image: '',
           port: [
             {
-              containerPort: 0,
+              containerPort: 80,
             },
           ],
           env: [],
@@ -441,36 +503,36 @@ const currentStep = ref('step1');
 //   currentStepGroups.value = scaleItems.spec[currentStep.value];
 // }
 
-function getRules(group) {
+function getRules() {
   // 在这里编写验证规则
   // 返回验证规则对象
   return {};
 }
 
-const hasNextStep = ref(false);
+// const hasNextStep = ref(false);
 const active = ref(0);
 
-function handleNextStep() {
-  const stepNames = Object.keys(scaleItems.spec);
-  const currentIndex = stepNames.indexOf(currentStep.value);
-  if (currentIndex < stepNames.length - 1) {
-    currentStep.value = stepNames[currentIndex + 1];
-    active.value = currentIndex + 1;
-    updateCurrentStepGroups();
-  }
-  hasNextStep.value = currentIndex < stepNames.length - 2;
-}
+// function handleNextStep() {
+//   const stepNames = Object.keys(scaleItems.spec);
+//   const currentIndex = stepNames.indexOf(currentStep.value);
+//   if (currentIndex < stepNames.length - 1) {
+//     currentStep.value = stepNames[currentIndex + 1];
+//     active.value = currentIndex + 1;
+//     updateCurrentStepGroups();
+//   }
+//   hasNextStep.value = currentIndex < stepNames.length - 2;
+// }
 
-function handlePrevStep() {
-  const stepNames = Object.keys(scaleItems.spec);
-  const currentIndex = stepNames.indexOf(currentStep.value);
-  if (currentIndex > 0) {
-    currentStep.value = stepNames[currentIndex - 1];
-    active.value = currentIndex - 1;
-    updateCurrentStepGroups();
-  }
-  hasNextStep.value = currentIndex < stepNames.length - 2;
-}
+// function handlePrevStep() {
+//   const stepNames = Object.keys(scaleItems.spec);
+//   const currentIndex = stepNames.indexOf(currentStep.value);
+//   if (currentIndex > 0) {
+//     currentStep.value = stepNames[currentIndex - 1];
+//     active.value = currentIndex - 1;
+//     updateCurrentStepGroups();
+//   }
+//   hasNextStep.value = currentIndex < stepNames.length - 2;
+// }
 
 const dialogName = ref('')
 const showAndInit = (listName:any) => {
@@ -485,8 +547,8 @@ defineExpose({
 </script>
 <style>
 .create-title{
-  margin-left: 50px;
-  margin-top: 50px;
+  margin-left: 40px;
+  margin-top: 35px;
   font-size: 40px;
 }
 

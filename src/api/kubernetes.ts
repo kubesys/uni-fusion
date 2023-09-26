@@ -85,3 +85,7 @@ export function listResources(params : any) {
 export function updateResource(params : any){
     return axios.post( '/kubesys/kube/updateResource', params)
 }
+
+export function createResource(params: any){
+    return axios.post('/kubesys/kube/createResource', params)
+}

@@ -1,11 +1,10 @@
-import { getResource, listResources, updateResource } from "@/api/kubernetes"
+import { getResource, listResources, updateResource,createResource } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
 
 export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='test'){
   const MAX_RETRIES = 3;
   const fetchData = (retryCount = 0) => {
     if (retryCount >= MAX_RETRIES) {
-      console.error("Maximum retry count reached.");
       ElMessage.error('lack of kind.')
       return;
     }
@@ -147,7 +146,7 @@ export function frontendAction(TableName:string, step: [], region = 'test', retr
   getResourceData(1);
 }
 
-export function frontendCreate(TableName:string, step: [], region = 'test', retryCount = 3) {
+export function frontendCreateTemplate(TableName:string, step: [], region = 'test', retryCount = 3) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -192,6 +191,20 @@ export function frontendUpdate(rowData:object, region = 'test', retryCount = 3) 
   };
 
   updateResourceData(1);
+}
+
+export function validResponse(response:any) {
+  return response != null && response.hasOwnProperty('code') && response.code === 20000
+}
+export function frontendCreate(jsonData:any, region = 'test'){
+  createResource({
+    region: region,
+    data: jsonData
+  }).then((resp)=>{
+    if(resp){
+      ElMessage.success('创建成功.')
+    }
+  })
 }
 
 /************************

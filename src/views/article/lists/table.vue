@@ -1,4 +1,10 @@
 <template>
+  <template class="host-header-list">
+    <table-type />
+    <div class="host-state">
+      <annular :key="annular"/>
+    </div>
+  </template>
   <div class="frontendTable_container">
     <!-- The Form section of the Table page -->
     <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 30px">
@@ -43,6 +49,7 @@
           v-for="item in tableColumns"
           align="center"
           :key="item.key"
+          sortable
           :label="item.label"
       >
         <template #default="scope">
@@ -160,13 +167,15 @@ import router from "@/router";
 import { onMounted, ref } from 'vue';
 import Stomp from 'stompjs';
 import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
-import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, getComplexDataDispose, getFormDataValue } from "@/api/common";
+import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
 // import '@/rabbitmq/websocket'
 // import Step1 from "@/views/guide/Step1.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import jsYaml from 'js-yaml';
+import TableType from "@/views/article/lists/tableType.vue";
+import Annular from "@/views/article/lists/annular.vue";
 
 interface Option {
   label: string;
@@ -268,6 +277,7 @@ function getTerminalAddr(json, item) {
 
 // 创建对话框的引用
 const creatDialog = ref()
+const annular = ref(0)
 
 function submitForm() {
   const key = "metadata##name"
@@ -278,18 +288,17 @@ function submitForm() {
   frontendData(ListName, TableName, pageSite,tableColumns, tableData, allLabels.value, actions)
 }
 
-function handleOptionClick(name, action, rowData) {
+function handleOptionClick(dialogname, action, rowData) {
   if (action === 'pod-action-scale') {
     // 跳转到更新页面
     // router.push('/test');
     dialogVisible.value = true;
-    selectedItemName.value = name
+    selectedItemName.value = dialogname
     console.log('点击了操作列，当前行数据：', rowData);
     rowItemData.value = rowData.metadata
     // props.value = rowData
-  } else if (action === 'Delete') {
-    // 跳转到删除页面
-    router.push('/delete-page');
+  } else if (action === 'DELETE') {
+    frontendDelete(ListName, rowData.metadata.name)
   }
 }
 
@@ -327,6 +336,7 @@ function onFailed(msg: any) {
 function responseCallback(msg: any) {
   console.log("MQ msg => " + msg.body);
   submitForm()
+  annular.value += 1
   // location.reload();
 }
 
@@ -344,6 +354,28 @@ onMounted(()=>{connect()})
 </script>
 
 <style lang="scss" scoped>
+.host-header-list{
+  flex: 1;
+  width: 100%;
+  display: flex;
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.host-state{
+  display: flex;
+  text-align: right;
+  flex: 0;
+}
+
+.frontendTable_container{
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 //修改行内线
 :deep(.el-table td),
 .building-top :deep(.el-table th.is-leaf) {

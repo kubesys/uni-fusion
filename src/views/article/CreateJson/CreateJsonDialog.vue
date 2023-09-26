@@ -19,7 +19,7 @@
                     <template v-if="variable.required === false">
                       (非必填)
                       <template v-if="variable.type === 'map'">
-                        <el-input v-model="keyValue.value1"  placeholder="name" />
+                        <el-input v-model="keyValue.value1"  placeholder="name"/>
                         <el-input v-model="keyValue.value2"  placeholder="value" />
                         <el-button  @click="addKeyValuePair" style="margin-top: 10px">确认</el-button>
                       </template>

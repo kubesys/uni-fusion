@@ -1,8 +1,8 @@
-import { getResource, listResources, updateResource,createResource } from "@/api/kubernetes"
+import { getResource, listResources, updateResource, createResource, deleteResource } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
 
 export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='test'){
-  const MAX_RETRIES = 3;
+  const MAX_RETRIES = 5;
   const fetchData = (retryCount = 0) => {
     if (retryCount >= MAX_RETRIES) {
       ElMessage.error('lack of kind.')
@@ -71,7 +71,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
   return [tableData, tableColumns];
 }
 
-export function frontendMeta(TableName:string, descItem: [], region = 'test', retryCount = 3) {
+export function frontendMeta(TableName:string, descItem: [], region = 'test', retryCount = 5) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -96,7 +96,7 @@ export function frontendMeta(TableName:string, descItem: [], region = 'test', re
   getResourceData(1); // 初始化时发送请求
 }
 
-export function frontendFormSearch(TableName:string, formItem: [], region = 'test', retryCount = 3) {
+export function frontendFormSearch(TableName:string, formItem: [], region = 'test', retryCount = 5) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -201,8 +201,22 @@ export function frontendCreate(jsonData:any, region = 'test'){
     region: region,
     data: jsonData
   }).then((resp)=>{
-    if(resp){
+    if(resp.data.code == 20000){
+      console.log(resp.data.code)
       ElMessage.success('创建成功.')
+    }
+  })
+}
+
+export function frontendDelete(Listname:string, name:string, region = 'test'){
+  deleteResource({
+    fullkind: Listname,
+    name: name,
+    namespace: "default",
+    region: region
+  }).then((resp)=>{
+    if(resp.data.code == 20000){
+      ElMessage.success('删除成功.')
     }
   })
 }

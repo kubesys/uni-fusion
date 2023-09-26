@@ -120,9 +120,9 @@ watch(
           echartsInstance.value.dispose()
         }
       })
-      // 在这里可以执行你想要的操作
     }
 )
+
 
 // watch([tableData.value.resultRun, tableData.value.resultPen], ([newResultRun, newResultPen], [oldResultRun, oldResultPen]) => {
 //   console.log(`resultRun 变化了，新值为 ${newResultRun}，旧值为 ${oldResultRun}`);

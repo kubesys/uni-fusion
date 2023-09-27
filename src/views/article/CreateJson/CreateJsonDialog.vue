@@ -12,40 +12,10 @@
                 <span style="font-size: 15px;color: #c0c4cc;">基本信息</span>
                 <el-form :model="formData" ref="formDataRef" label-width="auto" label-position="right" style="margin-top: 20px">
                   <el-form-item
-                      v-for="(variable, key) in spec.variables"
+                      v-for="(variable, key) in templateSpec.variables"
                       :label="variable.label"
                       :key="key"
                   >
-                    <template v-if="variable.required === false">
-                      (非必填)
-                      <template v-if="variable.type === 'map'">
-                        <el-input v-model="keyValue.value1"  placeholder="name"/>
-                        <el-input v-model="keyValue.value2"  placeholder="value" />
-                        <el-button  @click="addKeyValuePair" style="margin-top: 10px">确认</el-button>
-                      </template>
-                      <template v-if="key.includes('port')">
-                        <el-input v-model="portValue.value2" placeholder="value" />
-                        <el-button  @click="addPortPair" style="margin-top: 10px">确认</el-button>
-                      </template>
-                      <template v-else-if="variable.type === 'list' && variable.label === '启动指令:' ">
-                        <el-input
-                            v-model="commandValue"
-                            :rows="2"
-                            type="textarea"
-                            placeholder="请输入指令"
-                        />
-                        <el-button @click="addCommand" style="margin-top: 10px">确认</el-button>
-                      </template>
-                      <template v-else-if="variable.type === 'list' && variable.label === '启动参数:'">
-                        <el-input
-                            v-model="argsValue"
-                            :rows="2"
-                            type="textarea"
-                            placeholder="请输入参数"
-                        />
-                        <el-button @click="addArgs" style="margin-top: 10px">确认</el-button>
-                      </template>
-                    </template>
                     <template v-if="variable.type === 'text' && key.startsWith('metadata')">
                       <el-input v-model="formData.metadata.name" ></el-input>
                     </template>
@@ -76,6 +46,36 @@
                           />
                         </el-select>
                       </el-drawer>
+                    </template>
+                    <template v-if="variable.required === false">
+                      (非必填)
+                      <template v-if="variable.type === 'map'">
+                        <el-input v-model="keyValue.value1"  placeholder="name"/>
+                        <el-input v-model="keyValue.value2"  placeholder="value" />
+                        <el-button  @click="addKeyValuePair" style="margin-top: 10px">确认</el-button>
+                      </template>
+                      <template v-if="key.includes('port')">
+                        <el-input v-model="portValue.value2" placeholder="value" />
+                        <el-button  @click="addPortPair" style="margin-top: 10px">确认</el-button>
+                      </template>
+                      <template v-else-if="variable.type === 'list' && variable.label === '启动指令:' ">
+                        <el-input
+                            v-model="commandValue"
+                            :rows="2"
+                            type="textarea"
+                            placeholder="请输入指令"
+                        />
+                        <el-button @click="addCommand" style="margin-top: 10px">确认</el-button>
+                      </template>
+                      <template v-else-if="variable.type === 'list' && variable.label === '启动参数:'">
+                        <el-input
+                            v-model="argsValue"
+                            :rows="2"
+                            type="textarea"
+                            placeholder="请输入参数"
+                        />
+                        <el-button @click="addArgs" style="margin-top: 10px">确认</el-button>
+                      </template>
                     </template>
 
                     <!-- 处理其他字段类型 -->
@@ -109,7 +109,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from 'vue';
 // import {Edit} from "@element-plus/icons-vue";
-import { frontendCreate } from '@/api/common'
+import {frontendCreateTemplate, frontendCreate} from '@/api/common'
 import { VAceEditor } from "vue3-ace-editor";
 import './ace.config'
 
@@ -117,69 +117,9 @@ const switchvalue = ref(true)
 const dialogVisible = ref(false)
 const comboxDrawer = ref(false)
 
-const spec = ref({
-  // 你的规格数据
-  "template": {
-    "apiVersion": "v1",
-    "kind": "Pod"
-  },
-  "variables": {
-    "metadata.name": {
-      "label": "metadata名称:",
-      "type": "text",
-      "regexp": [
-        "A-Za-z"
-      ]
-    },
-    "spec.containers[0].name": {
-      "label": "container名称:",
-      "type": "text",
-      "regexp": [
-        "A-Za-z"
-      ]
-    },
-    "spec.containers[0].image": {
-      "label": "镜像:",
-      "type": "combox",
-      "kind": "ConfigMap",
-      "name": "busybox"
-    },
-    "spec.containers[0].env": {
-      "label": "环境变量:",
-      "required": false,
-      "type": "map",
-      "keyRegexp": [
-        "A-Za-z"
-      ],
-      "valueRegexp": [
-        "A-Za-z"
-      ]
-    },
-    "spec.containers[0].port": {
-      "label": "开放端口:",
-      "required": false,
-      "type": "list",
-      "regexp": [
-        "0-9"
-      ]
-    },
-    "spec.containers[0].command": {
-      "label": "启动指令:",
-      "required": false,
-      "type": "list",
-      "regexp": [
-        "A-Za-z"
-      ]
-    },
-    "spec.containers[0].args": {
-      "label": "启动参数:",
-      "required": false,
-      "type": "list",
-      "regexp": [
-        "A-Za-z"
-      ]
-    }
-  }
+const templateSpec = ref({
+  template: {},
+  variables: {}
 });
 
 const formData = ref({
@@ -228,8 +168,8 @@ const addArgs = () => {
 
 function generateInitialFormData() {
   const initialData = {
-    apiVersion: spec.value.template.apiVersion,
-    kind: spec.value.template.kind,
+    apiVersion: templateSpec.value.template.apiVersion,
+    kind: templateSpec.value.template.kind,
     metadata: {
       name: '',
     },
@@ -268,10 +208,14 @@ function getRules() {
 
 
 const dialogName = ref('')
-const showAndInit = (listName:any) => {
+const TableName = ref('')
+const showAndInit = (listName:any, tableName:any) => {
   dialogName.value = listName
+  TableName.value = tableName
   dialogVisible.value = true
+  frontendCreateTemplate(TableName.value, templateSpec)
 }
+
 
 function createButton(){
   console.log(jsonFormdata.value)

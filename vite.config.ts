@@ -41,7 +41,7 @@ export default defineConfig({
             resolves: [ElementPlusResolve()]
         }),
         createSvgIconsPlugin({
-            // 配置路劲在你的src里的svg存放文件
+            // 配置路径在你的src里的svg存放文件
             iconDirs: [fileURLToPath(new URL('./src/assets/icons', import.meta.url))],
             symbolId: 'local-icon-[dir]-[name]'
         }),

@@ -146,7 +146,7 @@ export function frontendAction(TableName:string, step: [], region = 'test', retr
   getResourceData(1);
 }
 
-export function frontendCreateTemplate(TableName:string, step: [], region = 'test', retryCount = 3) {
+export function frontendCreateTemplate(TableName:string, templateSpec: [], region = 'test', retryCount = 3) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -156,7 +156,7 @@ export function frontendCreateTemplate(TableName:string, step: [], region = 'tes
     })
         .then((resp) => {
           console.log(resp.data.data.spec);
-          step.value = resp.data.data.spec;
+          templateSpec.value = resp.data.data.spec;
         })
         .catch((error) => {
           console.error(error);

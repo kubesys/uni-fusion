@@ -29,7 +29,7 @@
       </el-row>
     </el-form>
     <!-- Table page action button -->
-    <el-button type="primary" @click="creatDialog.showAndInit(ListName)"  style="text-align: left; background-color: #3967FF;"><icon name="el-icon-Plus" :size="16" style="margin-right: 5px"/>创建</el-button>
+    <el-button type="primary" @click="creatDialog.showAndInit(ListName, TableName)"  style="text-align: left; background-color: #3967FF;"><icon name="el-icon-Plus" :size="16" style="margin-right: 5px"/>创建</el-button>
     <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;"><icon name="el-icon-RefreshRight" :size="18" /></el-button>
     <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;">查询</el-button>
 
@@ -157,7 +157,6 @@
     </el-dialog>
 
     <CreateJsonDialog ref="creatDialog"
-                      :listname=ListName
     />
   </div>
 </template>

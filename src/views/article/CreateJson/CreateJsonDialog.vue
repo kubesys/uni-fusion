@@ -166,6 +166,31 @@ const addArgs = () => {
   argsValue.value = ''
 }
 
+
+
+formData.value = generateInitialFormData();
+
+const jsonFormdata = ref(JSON.stringify(formData.value, null, 2));
+
+watch(formData, () => {
+  jsonFormdata.value = JSON.stringify(formData.value, null, 2);
+}, { deep: true });
+
+function getRules() {
+
+  return {};
+}
+
+
+const dialogName = ref('')
+const TableName = ref('')
+const showAndInit = (listName:any, tableName:any) => {
+  dialogName.value = listName
+  TableName.value = tableName
+  dialogVisible.value = true
+  frontendCreateTemplate(TableName.value, templateSpec)
+}
+
 function generateInitialFormData() {
   const initialData = {
     apiVersion: templateSpec.value.template.apiVersion,
@@ -191,29 +216,6 @@ function generateInitialFormData() {
     },
   };
   return initialData;
-}
-
-formData.value = generateInitialFormData();
-
-const jsonFormdata = ref(JSON.stringify(formData.value, null, 2));
-
-watch(formData, () => {
-  jsonFormdata.value = JSON.stringify(formData.value, null, 2);
-}, { deep: true });
-
-function getRules() {
-
-  return {};
-}
-
-
-const dialogName = ref('')
-const TableName = ref('')
-const showAndInit = (listName:any, tableName:any) => {
-  dialogName.value = listName
-  TableName.value = tableName
-  dialogVisible.value = true
-  frontendCreateTemplate(TableName.value, templateSpec)
 }
 
 

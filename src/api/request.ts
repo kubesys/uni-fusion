@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ElMessage } from 'element-plus'
+import element from "@/install/plugins/element";
 
 const _axios = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_API_BASE_URL
@@ -34,9 +36,9 @@ _axios.interceptors.response.use(
 
         console.error(error)
         if(error.response.status === 50000){
-            // 情况1
+            ElMessage.error('response is 50000')
         } else if(error.response.status === 401){
-            // 情况2
+            ElMessage.error('response is 401')
         }
 
         // return Promise.reject(error)

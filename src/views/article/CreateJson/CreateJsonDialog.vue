@@ -108,7 +108,6 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from 'vue';
-// import {Edit} from "@element-plus/icons-vue";
 import {frontendCreateTemplate, frontendCreate} from '@/api/common'
 import { VAceEditor } from "vue3-ace-editor";
 import './ace.config'
@@ -122,10 +121,10 @@ const templateSpec = ref({
   variables: {}
 });
 
-const formData = ref({
-  // 初始化 formData 数据结构
-});
+const formData = ref({});
 
+
+// 测试例子
 const ImageOptions = [
   {
     value: 'my-image:latest',
@@ -192,9 +191,12 @@ const showAndInit = (listName:any, tableName:any) => {
 }
 
 function generateInitialFormData() {
+  // 测试例子
   const initialData = {
-    apiVersion: templateSpec.value.template.apiVersion,
-    kind: templateSpec.value.template.kind,
+    // apiVersion: templateSpec.value.template.apiVersion,
+    // kind: templateSpec.value.template.kind,
+    apiVersion: 'apps/v1',
+    kind: 'pod',
     metadata: {
       name: '',
     },
@@ -217,7 +219,6 @@ function generateInitialFormData() {
   };
   return initialData;
 }
-
 
 function createButton(){
   console.log(jsonFormdata.value)

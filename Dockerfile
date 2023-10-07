@@ -15,4 +15,3 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /Frontend/test/dist /usr/share/nginx/html
 
-EXPOSE 80

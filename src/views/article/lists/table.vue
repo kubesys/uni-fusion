@@ -137,16 +137,13 @@
 <!--          </el-form>-->
 <!--        </el-card>-->
 <!--      </div>-->
-      <!-- 使用 vue-json-pretty 显示 JSON 数据 -->
 
+      <!-- 使用 vue-json-pretty 显示 JSON 数据 -->
       <el-scrollbar height="500px">
         <div  style="display: flex">
           <vue-json-pretty :data="rowItemData" style="flex: 1"></vue-json-pretty>
-<!--          <textarea v-model="yaml" rows="10" cols="40"></textarea>-->
           <pre>{{ yaml }}</pre>
         </div>
-<!--        <pre>{{ rowItemData }}</pre>-->
-
       </el-scrollbar>
       <template #footer>
       <span class="dialog-footer">
@@ -168,8 +165,6 @@ import Stomp from 'stompjs';
 import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
 import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
-// import '@/rabbitmq/websocket'
-// import Step1 from "@/views/guide/Step1.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import jsYaml from 'js-yaml';
@@ -200,11 +195,8 @@ const TableName = route.meta?.tablename
 const filter = route.meta?.filter || {}
 const props = ref('')
 const allLabels = ref(filter)
-console.log(allLabels.value)
 
 const dialogVisible = ref(false)
-
-console.log(ListName, TableName, props)
 
 // 列配置数据
 const tableColumns:tableColumns = ref([])
@@ -224,11 +216,7 @@ const newArray = ref()
 const scaleItems = ref([])
 const selectedItemName = ref(''); // 初始化选中的选项为空
 const rowItemData = ref()
-const selectOptions = ref([
-  { label: "Option 1", value: "option1" },
-  { label: "Option 2", value: "option2" },
-]);
-
+const selectOptions = ref([]);
 const yaml = ref<string>('');
 
 watch(rowItemData, () => {
@@ -241,7 +229,6 @@ watch(yaml, () => {
   try {
     rowItemData.value = jsYaml.load(yaml.value);
   } catch (error) {
-    // 处理 YAML 解析错误
     console.error('YAML 解析错误：', error);
   }
 });
@@ -255,6 +242,11 @@ onMounted(()=>{
 
 getComplexDataDispose
 
+/************************
+ *
+ *  页面操作
+ *
+ ***********************/
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
@@ -288,14 +280,10 @@ function submitForm() {
 }
 
 function handleOptionClick(dialogname, action, rowData) {
-  if (action === 'pod-action-scale') {
-    // 跳转到更新页面
-    // router.push('/test');
+  if (action === TableName + '-action-scale') {
     dialogVisible.value = true;
     selectedItemName.value = dialogname
-    console.log('点击了操作列，当前行数据：', rowData);
     rowItemData.value = rowData.metadata
-    // props.value = rowData
   } else if (action === 'DELETE') {
     frontendDelete(ListName, rowData.metadata.name)
   }

@@ -33,16 +33,6 @@ export function getMenu() {
     })
 }
 
-// all-menus
-// export function getAllMenus(){
-//     return axios.post( '/kubesys/kube/getResource',{
-//         fullkind:"doslab.io.Frontend",
-//         name:"all-menus",
-//         namespace:"default",
-//         region:"test"
-//     })
-// }
-
 // all-regions
 export function getRegions(){
     return axios.post( '/kubesys/kube/getResource',{

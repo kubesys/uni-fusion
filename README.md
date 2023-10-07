@@ -11,6 +11,7 @@
 
 安装依赖
 
+- npm install
 - yarn install
 
 运行

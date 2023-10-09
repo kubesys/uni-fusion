@@ -35,8 +35,11 @@
                         镜像列表
                       </el-button>
 
-                      <el-drawer v-model="comboxDrawer"  :with-header="false">
-                        <span>镜像列表列</span>
+                      <el-drawer v-model="comboxDrawer"  :with-header="false" :before-close="handleClose" size="800px">
+                        <span style="font-size: 16px">选择镜像</span>
+                        <el-divider>
+                          <el-icon><star-filled /></el-icon>
+                        </el-divider>
                         <el-select v-model="formData.spec.containers[0].image" class="m-2" placeholder="Select">
                           <el-option
                               v-for="item in ImageOptions"
@@ -45,6 +48,21 @@
                               :value="item.value"
                           />
                         </el-select>
+
+                        <el-table :data="tableData" stripe style="width: 100%">
+                          <el-table-column type="selection" width="55" />
+                          <el-table-column prop="name" label="名称" width="200" />
+                          <el-table-column prop="platform" label="平台" width="200" />
+                          <el-table-column prop="OS" label="操作系统" width="200"/>
+                          <el-table-column prop="Image" label="镜像格式" width="200"/>
+                        </el-table>
+
+                        <template #footer>
+                          <div style="flex: auto">
+                            <el-button >关闭</el-button>
+                            <el-button type="primary" >确认</el-button>
+                          </div>
+                        </template>
                       </el-drawer>
                     </template>
                     <template v-if="variable.required === false">
@@ -110,11 +128,14 @@
 import { ref, reactive, onMounted, watch } from 'vue';
 import {frontendCreateTemplate, frontendCreate} from '@/api/common'
 import { VAceEditor } from "vue3-ace-editor";
+import { StarFilled } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
 import './ace.config'
 
 const switchvalue = ref(true)
 const dialogVisible = ref(false)
 const comboxDrawer = ref(false)
+const tableData = ref([])
 
 const templateSpec = ref({
   template: {},
@@ -135,6 +156,16 @@ const ImageOptions = [
     label: 'nginx'
   }
 ]
+
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认关闭吗?')
+      .then(() => {
+        done()
+      })
+      .catch(() => {
+        // catch error
+      })
+}
 
 const keyValue = ref({ value1: "", value2: "" });
 

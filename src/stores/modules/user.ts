@@ -153,10 +153,6 @@ const useUserStore = defineStore({
                     })
                 };
             });
-            console.log(mergedMenu);
-            routes.forEach((route)=>{
-                console.log(`路由名称：${route.name}`);
-            })
             return mergedMenu
         },
         setSelectedCatalog(catalogPath:string) {

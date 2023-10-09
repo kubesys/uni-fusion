@@ -189,7 +189,6 @@ export function frontendUpdate(rowData:object, region = 'test', retryCount = 3) 
           }
         });
   };
-
   updateResourceData(1);
 }
 
@@ -221,11 +220,12 @@ export function frontendDelete(Listname:string, name:string, region = 'test'){
   })
 }
 
-/************************
+/******************************************************************************************
  *
  * Tabel various values
+ * Url: https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/gw06v8ohezh16l3u
  *
- ************************/
+ ******************************************************************************************/
 export function getComplexDataDispose(scope, rowKey){
   const value = getComplexValue(scope, rowKey)
   return value
@@ -346,48 +346,44 @@ export function getComplexValue(scope, key){
   }
 }
 
-export function getFormDataValue(data:any, newArray:any){
-  if(data.kind === 'ConfigMap'){
-    const newArrays = newArray
-    getResource({
-      fullkind: "ConfigMap",
-      name: data.name,
-      namespace: data.namespace,
-      region: "test"
-    }).then((resp)=>{
-      const cfg = resp.data.data.data
-      newArray = Object.keys(cfg).map(key => {
-        return { value: key, label: cfg[key] };
-      });
-      console.log(newArray)
-      return newArray
-    })
-    console.log(newArray)
-    return [
-      {
-        "value": "Completed",
-        "label": "执行完成"
-      },
-      {
-        "value": "Failed",
-        "label": "执行失败"
-      },
-      {
-        "value": "Pending",
-        "label": "挂起中"
-      },
-      {
-        "value": "Running",
-        "label": "运行中"
-      },
-      {
-        "value": "Terminating",
-        "label": "销毁中"
-      },
-      {
-        "value": "Unknown",
-        "label": "未知状态"
+
+/******************************************************************************************
+ *
+ * FormSearch various values
+ * Url: https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/ndh85sggwxtfw93v
+ *
+ ******************************************************************************************/
+export function ConfigMapValue(data:any,ConfigArray:any){
+  getResource({
+    fullkind: 'ConfigMap',
+    name: data.name,
+    namespace: data.namespace,
+    region: "test"
+  }).then((resp) => {
+      const result = resp.data.data.data
+      const newArrays = Object.keys(result).map(key => {
+        return { value: key, label: result[key] };
+      })
+      const Arr = []
+      for (const key in newArrays) {
+        // Vue.set(mapper, key, result[key])
+        Arr.push(newArrays[key]);
       }
-    ]
+      ConfigArray.value = Arr
+  })
+}
+
+export function getFormDataValue(data:any, optionArray:any){
+  if(data.kind === 'ConfigMap'){
+    ConfigMapValue(data, optionArray)
+  } else {
+    optionArray.value = [{value: 'ecs-253', label:'ecs-253'}]
   }
 }
+
+/******************************************************************************************
+ *
+ * Action various values
+ * Url: https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/ndh85sggwxtfw93v
+ *
+ ******************************************************************************************/

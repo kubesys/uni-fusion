@@ -15,9 +15,8 @@
               <el-input v-model="props" style="width: 100%;"></el-input>
             </template>
             <template v-else-if="formItem.type === 'combobox'">
-              <el-select v-model="formData[formItem.path]" style="width: 100%;" >
-                <el-option v-for="(option, index) in getFormDataValue(formItem.data, newArray)" :key="index" :label="option.label" :value="option.value">
-
+              <el-select v-model="propslecet[formItem.path]" style="width: 100%;" @click="getFormDataValueIndex(formItem.data)">
+                <el-option v-for="(option, index) in optionArray" :key="index" :label="option.label" :value="option.value">
                 </el-option>
               </el-select>
             </template>
@@ -153,8 +152,7 @@
       </template>
     </el-dialog>
 
-    <CreateJsonDialog ref="creatDialog"
-    />
+    <CreateJsonDialog ref="creatDialog"/>
   </div>
 </template>
 
@@ -194,8 +192,8 @@ const ListName = route.meta?.listname
 const TableName = route.meta?.tablename
 const filter = route.meta?.filter || {}
 const props = ref('')
+const propslecet = ref({})
 const allLabels = ref(filter)
-
 const dialogVisible = ref(false)
 
 // 列配置数据
@@ -212,7 +210,7 @@ const pageSite = ref({limit:5,page:1})
 const tableDataLoaded = ref(false)
 const formData = ref<Record<string, string>>({}); // 表单数据对象
 const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
-const newArray = ref()
+
 const scaleItems = ref([])
 const selectedItemName = ref(''); // 初始化选中的选项为空
 const rowItemData = ref()
@@ -247,6 +245,13 @@ getComplexDataDispose
  *  页面操作
  *
  ***********************/
+const optionArray = ref(
+
+)
+function getFormDataValueIndex(data:any){
+  getFormDataValue(data, optionArray)
+}
+
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)

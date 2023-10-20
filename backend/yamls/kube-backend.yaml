@@ -1,0 +1,51 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-backend"
+  namespace: "kube-stack"
+  labels: 
+    name: "kube-backend"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-backend"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-backend"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      containers:
+      - name: "kube-backend"
+        image: "registry.cn-beijing.aliyuncs.com/dosproj/backend:v#version#"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 30380
+        command: 
+        - "java"
+        - "-jar"
+        - "kube-backend.jar"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-backend
+  namespace: kube-stack
+  labels: 
+    name: kube-backend
+spec:
+  type: NodePort
+  ports:
+  - port: 30308
+    protocol: TCP
+    targetPort: 30308
+    name: kube-backend-port
+    nodePort: 30308
+  selector:
+    name: kube-backend

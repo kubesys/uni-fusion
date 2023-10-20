@@ -1,0 +1,35 @@
+# General configuration
+server:
+  address: 0.0.0.0
+  port: 30308
+  servlet:
+    context-path: /kubesys
+    
+spring:
+  datasource:
+    auth:
+      jdbcUrl: jdbc:postgresql://139.9.165.93:30306/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
+      #jdbcUrl: jdbc:postgresql://kube-database.kube-stack:5432/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
+      username: postgres
+      password: onceas
+      driverClassName: org.postgresql.Driver
+    kube:
+      jdbcUrl: jdbc:postgresql://139.9.165.93:30306/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
+      #jdbcUrl: jdbc:postgresql://kube-database.kube-stack:5432/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
+      username: postgres
+      password: onceas
+      driverClassName: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.generate-ddl: true
+      hibernate.hbm2ddl.auto: update
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+  jackson:
+    time-zone: GMT+8
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  
+swagger:
+  enabled: true

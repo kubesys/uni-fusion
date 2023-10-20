@@ -1,0 +1,59 @@
+  {
+  "metadata":{
+    "name":"node-formsearch"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "data":{
+      "items":[
+        {
+          "path":"metadata##name",
+          "label":"资源名称:",
+          "type":"textbox"
+        },
+        {
+          "label": "体系结构:",
+          "path": "status##nodeInfo##architecture",
+          "type": "combobox",
+          "data": {
+            "kind": "ConfigMap",
+            "namespace": "default",
+            "name": "arch-type"
+          }
+        },
+        {
+          "label": "资源角色:",
+          "path": "metadata##labels##kubernetes#io/role",
+          "type": "combobox",
+          "data": {
+            "kind": "ConfigMap",
+            "namespace": "default",
+            "name": "res-role"
+          }
+        },
+        {
+          "label": "资源类型:",
+          "path": "metadata##labels##kubernetes#io/type",
+          "type": "combobox",
+          "data": {
+            "kind": "ConfigMap",
+            "namespace": "default",
+            "name": "res-type"
+          }
+        },
+        {
+          "label": "资源状态:",
+          "path": "metadata##labels##kubernetes#io/status",
+          "type": "combobox",
+          "data": {
+            "kind": "ConfigMap",
+            "namespace": "default",
+            "name": "res-status"
+          }
+        }
+      ]
+    },
+    "type":"formsearch"
+  }
+}

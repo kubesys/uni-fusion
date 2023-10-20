@@ -1,0 +1,7 @@
+---
+apiVersion: doslab.io/v1
+kind: Log
+metadata:
+  name: test
+spec:
+  test: test

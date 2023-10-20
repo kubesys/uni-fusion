@@ -1,0 +1,20 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "kube-frontend"
+  namespace: "kube-stack"
+  labels:
+    name: "kube-frontend"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "kube-frontend"
+  template:
+    metadata:
+      labels:
+        name: "kube-frontend"
+    spec:
+      containers:
+        - name: "kube-frontend"
+          image: kube-frontend:1.0

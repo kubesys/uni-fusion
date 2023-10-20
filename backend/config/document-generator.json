@@ -1,0 +1,41 @@
+{
+	"name": "文档目录",
+	"values": {
+		"/specs": {
+			"name": "开发规范"
+		},
+		"/apis": {
+			"name": "接口文档"
+		},
+		"/exceptions": {
+			"name": "异常模型",
+			"scan": "io.github.kubesys.devfrk.tools.annotations.ExceptionDesc",
+			"groupBy": "group",
+			"values": [{
+				"type": "table",
+				"mapper": [{
+						"name": "错误代号",
+						"value": "id"
+					},
+					{
+						"name": "错误描述",
+						"value": "desc"
+					},
+					{
+						"name": "错误取值",
+						"value": "see"
+					}
+				]
+			}]
+		},
+		"/models": {
+			"name": "数据模型"
+		},
+		"/changelogs": {
+			"name": "开发周报"
+		},
+		"/resources": {
+			"name": "资源周报"
+		}
+	}
+}

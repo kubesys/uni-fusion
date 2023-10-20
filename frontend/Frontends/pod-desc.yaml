@@ -1,0 +1,12 @@
+{
+  "metadata":{
+    "name":"pod-desc"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "title": "Pod",
+    "desc": "xxx",
+    "type": "description"
+  }
+}

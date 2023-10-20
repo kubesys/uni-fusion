@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "name": "node-action"
+  },
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "spec": {
+    "data": [{
+      "name": "更新",
+      "type": "Update",
+      "json": "node-action-scale"
+    }, {
+      "name": "删除",
+      "type": "Delete",
+      "params": ["metdata##name", "metdata##namespace"]
+    },{
+      "name": "更换镜像",
+      "type": "Imange"
+    }]
+  }
+}

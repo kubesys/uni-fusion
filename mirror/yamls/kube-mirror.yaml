@@ -1,0 +1,46 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-mirror"
+  namespace: "kube-stack"
+  labels: 
+    name: "kube-mirror"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-mirror"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-mirror"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      containers:
+      - name: "kube-mirror"
+        image: "registry.cn-beijing.aliyuncs.com/dosproj/mirror:v#version#"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: jdbcUrl
+          value: "#jdbcUrl#"
+        - name: jdbcUser
+          value: "#jdbcUser#"
+        - name: jdbcPwd
+          value: "#jdbcPwd#"
+        - name: jdbcDriver
+          value: "#jdbcDriver#"
+        - name: kubeUrl
+          value: "#kubeUrl#"
+        - name: kubeToken
+          value: "#kubeToken#"
+        - name: kubeRegion
+          value: "#kubeRegion#"
+        command: 
+        - "java"
+        - "-jar"
+        - "kube-mirror.jar"

@@ -9,6 +9,7 @@ import io.github.kubesys.mirror.cores.DataTarget;
 import io.github.kubesys.mirror.datas.KubeDataModel;
 import io.github.kubesys.mirror.sources.AbstractKubeSource;
 import io.github.kubesys.mirror.sources.KubeSourceExtractor;
+import io.github.kubesys.mirror.sources.KubeSourceListener;
 import io.github.kubesys.mirror.targets.PostgresTarget;
 import io.github.kubesys.mirror.targets.RabbitMQTarget;
 import io.github.kubesys.mirror.utils.MirrorUtil;
@@ -37,6 +38,8 @@ public class MirrorServer {
 		AbstractKubeSource extrator = new KubeSourceExtractor(dbTarget);
 		extrator.startCollect();
 //		
+		AbstractKubeSource listener = new KubeSourceListener(dbTarget);
+		listener.startCollect();
 		
 		// 调试的时候用
 //		debug(extrator);

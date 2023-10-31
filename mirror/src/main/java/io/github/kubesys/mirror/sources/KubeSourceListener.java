@@ -3,6 +3,8 @@
  */
 package io.github.kubesys.mirror.sources;
 
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.kubesys.client.KubernetesClient;
 import io.github.kubesys.client.KubernetesConstants;
 import io.github.kubesys.client.KubernetesWatcher;
+import io.github.kubesys.client.cores.KubernetesRuleBase;
 import io.github.kubesys.client.utils.KubeUtil;
 import io.github.kubesys.mirror.cores.DataTarget;
 import io.github.kubesys.mirror.datas.KubeDataModel;
@@ -21,18 +24,7 @@ import io.github.kubesys.mirror.datas.KubeDataModel;
  * @since 2023/06/18
  *
  */
-@Deprecated
 public class KubeSourceListener extends AbstractKubeSource {
-
-	static JsonNode verbs;
-
-	static {
-		try {
-			verbs = new ObjectMapper().readTree(KubernetesConstants.KUBE_DEFAULT_KIND_VERBS);
-		} catch (JsonProcessingException e) {
-			// ignore here
-		}
-	}
 
 	/**
 	 * @param dataTarget dataTarget
@@ -44,58 +36,90 @@ public class KubeSourceListener extends AbstractKubeSource {
 
 	@Override
 	public void startCollect() throws Exception {
-		kubeClient.watchResources(KubernetesConstants.KUBD_FULLKIND_CUSTOMRESOURCEDEFINITION,
-				new CrdWatcher(kubeClient, KubernetesConstants.KUBD_FULLKIND_CUSTOMRESOURCEDEFINITION, this));
+		kubeClient.watchResources("apiextensions.k8s.io.CustomResourceDefinition", 
+				new NewResourceWacther(kubeClient, this));
 	}
 
-	/**
-	 * 
-	 * This is KubeSourceExtractor input
-	 * 
-	 * "storage.k8s.io.VolumeAttachment" : { "apiVersion" : "storage.k8s.io/v1",
-	 * "kind" : "VolumeAttachment", "plural" : "volumeattachments", "verbs" : [
-	 * "create", "delete", "deletecollection", "get", "list", "patch", "update",
-	 * "watch" ] }
-	 * 
-	 * @return { "apiVersion" : "storage.k8s.io/v1", "kind" : "VolumeAttachment",
-	 *         "plural" : "volumeattachments", "verbs" : [ "create", "delete",
-	 *         "deletecollection", "get", "list", "patch", "update", "watch" ] }
-	 */
-	static JsonNode toValue(JsonNode crd) {
-		ObjectNode value = new ObjectMapper().createObjectNode();
-		value.put(KubernetesConstants.KUBE_APIVERSION, KubeUtil.getCrdApiversion(crd));
-		value.put(KubernetesConstants.KUBE_KIND, KubeUtil.getCrdKind(crd));
-		value.put(KubernetesConstants.KUBE_PLURAL, KubeUtil.getCrdPlural(crd));
-		value.set(KubernetesConstants.KUBE_SPEC_NAMES_VERBS, verbs);
-		return value;
-	}
-	
-	
-	/**
-	 * @author wuheng@iscas.ac.cn
-	 * @version 0.1.0
-	 * @since   2023/06/22
-	 *
-	 */
-	static class CrdWatcher extends KubernetesWatcher {
-		
+
+	public static class NewResourceWacther extends KubernetesWatcher {
+
 		/**
-		 * 全称=group+kind
+		 * m_logger
 		 */
-		protected final String fullKind;
+		public static final Logger m_logger = Logger.getLogger(NewResourceWacther.class.getName());
 		
-		/**
-		 * 监听器
-		 */
+		static JsonNode verbs;
+
+		static {
+			try {
+				verbs = new ObjectMapper().readTree(KubernetesConstants.KUBE_DEFAULT_KIND_VERBS);
+			} catch (JsonProcessingException e) {
+				// ignore here
+			}
+		}
+		
+		
 		protected final KubeSourceListener listener;
 		
-		
-		protected CrdWatcher(KubernetesClient client, String fullKind, KubeSourceListener listener) {
+		public NewResourceWacther(KubernetesClient client, KubeSourceListener listener) {
 			super(client);
-			this.fullKind = fullKind;
 			this.listener = listener;
 		}
 
+		@Override
+		public void doAdded(JsonNode node) {
+			
+			JsonNode spec = node.get(KubernetesConstants.KUBE_SPEC);
+			String apiGroup  = spec.get(KubernetesConstants.KUBE_SPEC_GROUP).asText();
+			String version = spec.get(KubernetesConstants.KUBE_SPEC_VERSIONS)
+								.iterator().next().get(KubernetesConstants
+										.KUBE_SPEC_VERSIONS_NAME).asText();
+			String kind = spec.get(KubernetesConstants.KUBE_SPEC_NAMES).get(
+							KubernetesConstants.KUBE_SPEC_NAMES_KIND).asText();
+			
+			try {
+				client.getAnalyzer().registry.registerKinds(client, KubernetesConstants.VALUE_APIS + "/" + apiGroup + "/" + version);
+				listener.doStartCollect(apiGroup + "." + kind, toValue(node));
+			} catch (Exception e) {
+				m_logger.severe(e.toString());
+			}
+			
+		}
+
+
+
+		static JsonNode toValue(JsonNode crd) {
+			ObjectNode value = new ObjectMapper().createObjectNode();
+			value.put(KubernetesConstants.KUBE_APIVERSION, KubeUtil.getCrdApiversion(crd));
+			value.put(KubernetesConstants.KUBE_KIND, KubeUtil.getCrdKind(crd));
+			value.put(KubernetesConstants.KUBE_PLURAL, KubeUtil.getCrdPlural(crd));
+			value.set(KubernetesConstants.KUBE_SPEC_NAMES_VERBS, verbs);
+			return value;
+		}
+		
+		@Override
+		public void doDeleted(JsonNode node) {
+			
+			JsonNode spec = node.get(KubernetesConstants.KUBE_SPEC);
+			JsonNode names = spec.get(KubernetesConstants.KUBE_SPEC_NAMES);
+			
+			String shortKind = names.get(KubernetesConstants.KUBE_SPEC_NAMES_KIND).asText();
+			String apiGroup  = spec.get(KubernetesConstants.KUBE_SPEC_GROUP).asText();
+			String fullKind  = apiGroup + "." + shortKind;
+			
+			KubernetesRuleBase ruleBase = client.getAnalyzer().convertor.getRuleBase();
+			ruleBase.removeFullKind(shortKind, fullKind);
+			
+			ruleBase.removeKindBy(fullKind);
+			ruleBase.removeNameBy(fullKind);
+			ruleBase.removeGroupBy(fullKind);
+			ruleBase.removeVersionBy(fullKind);
+			ruleBase.removeNamespacedBy(fullKind);
+			ruleBase.removeApiPrefixBy(fullKind);
+			ruleBase.removeVerbsBy(fullKind);
+			
+			m_logger.info("unregister" + shortKind);
+		}
 
 		@Override
 		public void doModified(JsonNode node) {
@@ -103,35 +127,23 @@ public class KubeSourceListener extends AbstractKubeSource {
 		}
 
 		@Override
-		public void doDeleted(JsonNode node) {
-			String fullkind = KubeUtil.getFullkind(node);
-			fullkindToMeta.remove(fullkind);
-			ignoredFullkinds.remove(fullkind);
-			Thread thread = fullkindToWatcher.remove(fullkind);
-			thread.stop();
-		}
-
-		@Override
-		public void doAdded(JsonNode node) {
-			String fullkind = KubeUtil.getCRDFullkind(node);
-			JsonNode value = toValue(node);
-			try {
-				listener.doStartCollect(fullkind, value);
-			} catch (Exception e) {
-			}
-		}
-
-		@Override
 		public void doClose() {
-			try {
-				Thread.sleep(3000);
-				client.watchResources(KubernetesConstants.KUBD_FULLKIND_CUSTOMRESOURCEDEFINITION,
-						new CrdWatcher(client, KubernetesConstants.KUBD_FULLKIND_CUSTOMRESOURCEDEFINITION, listener));
-			} catch (Exception e) {
-				doClose();
+			while (true) {
+				try {
+					m_logger.info("watcher apiextensions.k8s.io.CustomResourceDefinition is crash");
+					m_logger.info("wait 5 seconds to restart watcher apiextensions.k8s.io.CustomResourceDefinition ");
+					Thread.sleep(5000);
+					client.watchResources("apiextensions.k8s.io.CustomResourceDefinition", 
+							KubernetesConstants.VALUE_ALL_NAMESPACES, 
+							new NewResourceWacther(client, listener));
+					break;
+				} catch (Exception e) {
+					m_logger.info("fail to restart watcher apiextensions.k8s.io.CustomResourceDefinition: " + e.toString());
+					Thread.currentThread().interrupt();
+				}
+				
 			}
 		}
 
 	}
-
 }

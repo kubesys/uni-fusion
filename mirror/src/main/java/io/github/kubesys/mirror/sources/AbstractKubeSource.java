@@ -32,7 +32,7 @@ import io.github.kubesys.mirror.utils.MirrorUtil;
  */
 public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 
-	protected final static Logger m_logger = Logger.getLogger(AbstractKubeSource.class.getName());
+	protected static final Logger m_logger = Logger.getLogger(AbstractKubeSource.class.getName());
 	
 	/**
 	 * 忽略得Kinds

@@ -120,8 +120,8 @@ public class PostgresClient   {
 			Object singleResult = query.getSingleResult();
 			transaction.commit();
 			return singleResult;
-		} catch (NoResultException ex) {
-			m_logger.warning("没有查询到任何结果");
+		} catch (Exception ex) {
+			m_logger.warning("执行错误" + ex);
 		} finally {
 			if (transaction.isActive()) {
 				transaction.rollback();
@@ -202,16 +202,19 @@ public class PostgresClient   {
 	}
 	
 	/**
-	 * @param sql        SQL
+	 * @param sql SQL
+	 * @return
 	 */
-	public void execWithoutResult(String sql) {
+	public boolean execWithoutResult(String sql) {
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
 			transaction.begin();
 			entityManager.createNativeQuery(sql).executeUpdate();
 			transaction.commit();
+			return true;
 		} catch (Exception ex) {
 			m_logger.warning("未知错误" + ex);
+			return false;
 		} finally {
 			if (transaction.isActive()) {
 				transaction.rollback();

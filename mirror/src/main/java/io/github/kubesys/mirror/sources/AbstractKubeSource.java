@@ -54,7 +54,7 @@ public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 	/**
 	 * 默认Kubernetes的URL
 	 */
-	static final String DEFAULT_URL = "https://10.96.0.1:443";
+	static final String DEFAULT_URL = "https://kubernetes.default:443";
 	
 	/**
 	 * Kubernetes的客户端
@@ -109,22 +109,6 @@ public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 	    		new KubeCollector(kubeClient,fullkind, this, dataTarget));
 	    fullkindToWatcher.put(fullkind, thread);
 	    
-//	    KubernetesRuleBase ruleBase = kubeClient.getAnalyzer().getRegistry().getRuleBase();
-//	    ruleBase.addFullKind(meta.getKind(), fullkind);
-//		ruleBase.addApiPrefix(fullkind, uri);
-//		ruleBase.addKind(fullkind, meta.getKind());
-//		ruleBase.addGroup(fullkind, getGroupByUrl(uri));
-//		ruleBase.addName(fullkind, resource.get(
-//						KubernetesConstants.KUBE_METADATA_NAME).asText());
-//		ruleBase.addNamespaced(fullkind, resource.get(
-//						KubernetesConstants.KUBE_RESOURCES_NAMESPACED).asBoolean());
-//		ruleBase.addVersion(fullkind, apiVersion);
-//		ruleBase.addVerbs(fullkind, (ArrayNode) resource.get("verbs"));
-//		
-//		m_logger.info("register " + fullKind + ": <" + getGroupByUrl(uri) + "," 
-//				+ apiVersion + ","
-//				+ resource.get(KubernetesConstants.KUBE_RESOURCES_NAMESPACED).asText() + ","
-//				+ uri + ">");
 	}
 	
 	protected synchronized void doStartCollect(String fullkind, JsonNode value) throws Exception {

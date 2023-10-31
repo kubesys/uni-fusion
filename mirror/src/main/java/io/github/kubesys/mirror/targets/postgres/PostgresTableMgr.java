@@ -3,6 +3,7 @@
  */
 package io.github.kubesys.mirror.targets.postgres;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -112,8 +113,11 @@ public class PostgresTableMgr {
 	 * @param table     表名，对应plural
 	 */
 	void createTable(String table) {
-		pgClient.execWithoutResult(CREATE_TABLE.replace(TABLE_NAME, table));
-		m_logger.info("create table '" + table + "' sucessfully.");
+		if (pgClient.execWithoutResult(CREATE_TABLE.replace(TABLE_NAME, table))) {
+			m_logger.info("create table '" + table + "' sucessfully.");
+			return;
+		}
+		throw new SQLGrammarException("table '" + table + "' has been created.", new SQLException());
 	}
 
 	/**

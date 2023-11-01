@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kube-database
+  namespace: kube-stack
+type: Opaque
+data:
+  password: b25jZWFzCg==
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kube-database
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: kube-database
+    namespace: kube-stack
+  hostPath:
+    path: /var/lib/doslab/postgres
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kube-database
+  namespace: kube-stack
+  labels:
+    name: "kube-database"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "15Gi"
+--- 
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-database"
+  namespace: "kube-stack"
+  labels: 
+    name: "kube-database"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-database"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-database"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      containers:
+      - name: "postgres"
+        image: "postgres:16.0-alpine"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 5432
+        env:
+        - name: "POSTGRES_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: kube-database
+              key: password
+        volumeMounts:
+        - name: "data"
+          mountPath: "/var/lib/postgresql"
+      - name: "adminer"
+        image: "adminer:4.8.1-standalone"
+        imagePullPolicy: "IfNotPresent"
+        ports: 
+        - containerPort: 8080
+      volumes: 
+      - name: "data"
+        persistentVolumeClaim:
+          claimName: kube-database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-database
+  namespace: kube-stack
+  labels: 
+    name: kube-database
+spec:
+  type: NodePort
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+    name: postgre-port
+    nodePort: 30306
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: adminer-port
+    nodePort: 30307
+  selector:
+    name: kube-database

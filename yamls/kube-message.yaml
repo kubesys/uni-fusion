@@ -1,0 +1,119 @@
+---
+apiVersion: "v1"
+kind: "Secret"
+metadata:
+  name: "kube-message"
+  namespace: "kube-stack"
+type: "Opaque"
+data:
+  username: "cmFiYml0bXE="
+  password: "b25jZWFzCg=="
+
+---
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+  name: "kube-message"
+spec:
+  accessModes:
+  - "ReadWriteOnce"
+  persistentVolumeReclaimPolicy: "Retain"
+  volumeMode: "Filesystem"
+  capacity:
+    storage: "20Gi"
+  hostPath:
+    path: "/var/lib/doslab/rabbitmq"
+  claimRef:
+    apiVersion: "v1"
+    kind: "PersistentVolumeClaim"
+    name: "kube-message"
+    namespace: "kube-stack"
+
+---
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: "kube-message"
+  namespace: "kube-stack"
+  labels:
+    name: "kube-message"
+spec:
+  accessModes:
+  - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "20Gi"
+
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "kube-message"
+  namespace: "kube-stack"
+  labels:
+    name: "kube-message"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "kube-message"
+  template:
+    metadata:
+      labels:
+        name: "kube-message"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        effect: "NoSchedule"
+      containers:
+      - name: "rabbitmq"
+        image: "rabbitmq:3.12.8-management"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: "RABBITMQ_DEFAULT_USER"
+          valueFrom:
+            secretKeyRef:
+              name: "kube-message"
+              key: "username"
+        - name: "RABBITMQ_DEFAULT_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: "kube-message"
+              key: "password"
+        args: null
+        ports:
+        - containerPort: 15672
+        - containerPort: 5672
+        volumeMounts:
+        - name: "data"
+          mountPath: "/var/lib/rabbitmq"
+      volumes:
+      - name: "data"
+        persistentVolumeClaim:
+          claimName: "kube-message"
+
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "kube-message"
+  namespace: "kube-stack"
+  labels:
+    name: "kube-message"
+spec:
+  type: "NodePort"
+  selector:
+    name: "kube-message"
+  ports:
+  - port: 15672
+    targetPort: 15672
+    nodePort: 30305
+    protocol: "TCP"
+    name: "management"
+  - port: 5672
+    targetPort: 5672
+    nodePort: 30304
+    protocol: "TCP"
+    name: "rabbitmq"

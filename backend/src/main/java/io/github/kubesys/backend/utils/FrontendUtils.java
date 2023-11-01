@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import io.github.kubesys.client.addons.KubernetesWriter;
+import io.github.kubesys.client.KubernetesWriter;
 
 /**
  * @author wuheng@otcaix.iscas.ac.cn

@@ -102,25 +102,8 @@ Add this dependency to your project's POM:
   <artifactId>mirror</artifactId>
   <version>0.2.7</version> 
 </dependency>
-```
-1. maven setting
 
-```
-<settings>
-    <!-- omitted xml -->
-    <servers>
-        <server>
-            <id>g-ubjg5602-iscas-system-maven</id>
-            <username>wuheng@iscas.ac.cn</username>
-            <password>[PASSWORD]</password>
-        </server>
-    </servers>
-</settings>
-```
 
-2. pom setting
-
-```
 <profiles>
     <profile>
         <id>Repository Proxy</id>
@@ -142,6 +125,20 @@ Add this dependency to your project's POM:
         </repositories>
     </profile>
 </profiles>
+```
+1. maven setting
+
+```
+<settings>
+    <!-- omitted xml -->
+    <servers>
+        <server>
+            <id>g-ubjg5602-iscas-system-maven</id>
+            <username>wuheng@iscas.ac.cn</username>
+            <password>[PASSWORD]</password>
+        </server>
+    </servers>
+</settings>
 ```
 
 ## Roadmap

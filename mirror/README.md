@@ -100,18 +100,49 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>io.github.kubesys</groupId>
   <artifactId>mirror</artifactId>
-  <version>0.2.6</version> 
+  <version>0.2.7</version> 
 </dependency>
+```
+1. maven setting
 
-<repositories>
-   <repository>
-       <id>pdos-repos</id>
-       <name>PDOS Releases</name>
-       <url>http://139.9.165.93:31016/repository/maven-public/</url>
-    </repository>
-</repositories>
+```
+<settings>
+    <!-- omitted xml -->
+    <servers>
+        <server>
+            <id>g-ubjg5602-iscas-system-maven</id>
+            <username>wuheng@iscas.ac.cn</username>
+            <password>[PASSWORD]</password>
+        </server>
+    </servers>
+</settings>
 ```
 
+2. pom setting
+
+```
+<profiles>
+    <profile>
+        <id>Repository Proxy</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <repositories>
+            <repository>
+                <id>g-ubjg5602-iscas-system-maven</id>
+                <name>maven</name>
+                <url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
+                <releases>
+                    <enabled>true</enabled>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+            </repository>
+        </repositories>
+    </profile>
+</profiles>
+```
 
 ## Roadmap
 

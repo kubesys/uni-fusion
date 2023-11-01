@@ -33,13 +33,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<repositories>
-		<repository>
-			<id>pdos-repos</id>
-			<name>PDOS Releases</name>
-			<url>http://139.9.165.93:31016/repository/maven-public/</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
 		<dependency>

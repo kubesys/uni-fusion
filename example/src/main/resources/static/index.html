@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打开控制台</title>
+    <!-- 引入 layui 框架 -->
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+<body>
+<script src="layui/layui.js"></script>
+<script src="layui/extends/loadBar.js"></script>
+<script src="layui/extends/webframe.js"></script>
+<button id="openConsoleButton">打开控制台</button>
+
+<script>
+    layui.define(['layer','webframe','form'], function () {
+        var webframe = layui.webframe,
+            form = layui.form;
+        const openConsoleButton = document.getElementById("openConsoleButton");
+        openConsoleButton.addEventListener("click", function () {
+            webframe.loadHtml(null, "GET", "/VmInstance/viewNoVnc", null, function (res) {
+                layui.layer.open({
+                    type: 1,
+                    title: "控制台",
+                    resize: false,
+                    skin: 'layui-layer-fix-select',
+                    area: ["98%", "98%"],
+                    content: res.html,
+                    success: function (layero, index) {
+                        form.PopupDialogCallback[index] = function (object) {
+                            layui.layer.close(index);
+                        }
+                    },
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>

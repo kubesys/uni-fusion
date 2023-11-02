@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.github.kubesys.client.KubernetesClient;
 import io.github.kubesys.client.KubernetesConstants;
 import io.github.kubesys.client.KubernetesWatcher;
+import io.github.kubesys.client.exceptions.KubernetesConnectionException;
 import io.github.kubesys.client.utils.KubeUtil;
 import io.github.kubesys.mirror.cores.DataSource;
 import io.github.kubesys.mirror.cores.DataTarget;
@@ -86,11 +87,17 @@ public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 		if (file.exists()) {
 			return new KubernetesClient();
 		} else {
-			return new KubernetesClient(
+			try {
+				return new KubernetesClient(
 					MirrorUtil.getEnv(Environment.ENV_KUBE_URL, DEFAULT_URL),
 					System.getenv(Environment.ENV_KUBE_TOKEN));
+			} catch (KubernetesConnectionException ex) {
+				m_logger.severe(ex.toString());
+				System.exit(1);
+			}
 		}
 		
+		return null;
 	}
 
 	/**

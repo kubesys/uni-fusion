@@ -35,12 +35,14 @@ public class RabbitMQClient {
 	/**
 	 * 默认用户名
 	 */
-	static final String DEFAULT_USERNAME = "rabbitmq";
+//	static final String DEFAULT_USERNAME = "rabbitmq";
+	static final String DEFAULT_USERNAME = "guest";
 
 	/**
 	 * 默认密码
 	 */
-	static final String DEFAULT_PASSWORD = "onceas";
+//	static final String DEFAULT_PASSWORD = "onceas";
+	static final String DEFAULT_PASSWORD = "guest";
 
 	/**
 	 * 默认队列数据超时时间

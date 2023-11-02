@@ -6,7 +6,7 @@ metadata:
   namespace: "kube-stack"
 type: "Opaque"
 data:
-  username: "cmFiYml0bXE="
+  username: "cmFiYml0bXEK"
   password: "b25jZWFzCg=="
 
 ---
@@ -69,19 +69,19 @@ spec:
         effect: "NoSchedule"
       containers:
       - name: "rabbitmq"
-        image: "rabbitmq:3.12.8-management"
+        image: "rabbitmq:3.12.7-management"
         imagePullPolicy: "IfNotPresent"
-        env:
-        - name: "RABBITMQ_DEFAULT_USER"
-          valueFrom:
-            secretKeyRef:
-              name: "kube-message"
-              key: "username"
-        - name: "RABBITMQ_DEFAULT_PASS"
-          valueFrom:
-            secretKeyRef:
-              name: "kube-message"
-              key: "password"
+#        env:
+#        - name: "RABBITMQ_DEFAULT_USER"
+#          valueFrom:
+#            secretKeyRef:
+#              name: "kube-message"
+#              key: "username"
+#        - name: "RABBITMQ_DEFAULT_PASS"
+#          valueFrom:
+#            secretKeyRef:
+#              name: "kube-message"
+#              key: "password"
         args: null
         ports:
         - containerPort: 15672

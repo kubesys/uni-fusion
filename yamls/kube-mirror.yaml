@@ -23,24 +23,19 @@ spec:
           effect: NoSchedule
       containers:
       - name: "kube-mirror"
-        image: "registry.cn-beijing.aliyuncs.com/dosproj/mirror:v#version#"
+        image: "registry.cn-beijing.aliyuncs.com/dosproj/mirror:v0.2.7"
         imagePullPolicy: "IfNotPresent"
         env:
-        - name: jdbcUrl
-          value: "#jdbcUrl#"
-        - name: jdbcUser
-          value: "#jdbcUser#"
-        - name: jdbcPwd
-          value: "#jdbcPwd#"
-        - name: jdbcDriver
-          value: "#jdbcDriver#"
-        - name: kubeUrl
-          value: "#kubeUrl#"
-        - name: kubeToken
-          value: "#kubeToken#"
         - name: kubeRegion
-          value: "#kubeRegion#"
+          value: "local"
         command: 
         - "java"
         - "-jar"
         - "kube-mirror.jar"
+        volumeMounts:
+        - name: "cert"
+          mountPath: "/etc/kubernetes/admin.conf"
+      volumes: 
+      - name: "cert"
+        hostPath:
+          path: /root/.kube/config

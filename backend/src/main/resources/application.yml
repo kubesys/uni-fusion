@@ -4,7 +4,7 @@ server:
   port: 30308
   servlet:
     context-path: /kubesys
-    
+
 spring:
   datasource:
     auth:
@@ -34,6 +34,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .html
+
 swagger:
   enabled: true

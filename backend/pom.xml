@@ -10,7 +10,7 @@
 	<description>backend</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 		<kubemirror.version>0.2.8</kubemirror.version>
 		<kubespring.version>2.2.4</kubespring.version>
 		<keycloak.version>21.1.1</keycloak.version>
@@ -54,6 +54,33 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- 新增 -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.31</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.5.20</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.java-websocket</groupId>
+			<artifactId>Java-WebSocket</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -154,7 +181,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -225,7 +252,7 @@
           </repositories>
       </profile>
 	</profiles>
-	
+
 	<distributionManagement>
         <repository>
             <!--必须与 settings.xml 的 id 一致-->

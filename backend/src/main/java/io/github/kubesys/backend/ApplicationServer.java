@@ -34,16 +34,16 @@ import jakarta.persistence.PersistenceContext;
  * @author wuheng@iscas.ac.cn
  * @version 1.2.0
  * @since 2023.06.28
- * 
+ *
  *        <p>
  *        启动backend服务，可以进一步对以下进行配置
- * 
+ *
  *        <li><code>src/main/resources/application.yml<code>
  *        <li><code>src/main/resources/log4j.properties<code>
- * 
+ *
  */
 
-@ComponentScan(basePackages = { "io.github.kubesys.backend.services", "io.github.kubesys.backend.clients" })
+@ComponentScan(basePackages = { "io.github.kubesys.backend.services", "io.github.kubesys.backend.clients", "io.github.kubesys.backend.controller"})
 @EntityScan(basePackages = { "io.github.kubesys.backend.models" })
 @EnableTransactionManagement
 @EnableJpaRepositories
@@ -52,7 +52,7 @@ public class ApplicationServer extends HttpServer {
 
 	/**
 	 * 启动Backend服务
-	 * 
+	 *
 	 * @param args 启动参数，默认是空
 	 * @throws Exception 初始化启动失败报错即退出
 	 */
@@ -60,21 +60,21 @@ public class ApplicationServer extends HttpServer {
 		SpringApplication.run(ApplicationServer.class, args);
 
 	}
-	
+
 	@Bean(name = BeanConstants.AUTHING)
 	public HttpAuthingInterceptor interceptor() {
 		return new DefaultHttpAuthing();
 	}
 
 	/*******************************************************
-	 * 
+	 *
 	 * 配置两个数据源，见application.yml ChatGPT告诉我的，不要问我为啥？
-	 * 
+	 *
 	 ********************************************************/
 	/**
 	 * 配置application.yml中spring.jpa
 	 * 注意：本框架必须配置jpa
-	 * 
+	 *
 	 * @return JpaProperties
 	 */
 	@Bean(name = "jpa")
@@ -86,7 +86,7 @@ public class ApplicationServer extends HttpServer {
 	/**
 	 * 将application.yml中spring.jpa转化为Properties
 	 * 注意：本框架必须配置jpa
-	 * 
+	 *
 	 * @param jpaProperties   org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
 	 * @return java.util.Properties
 	 */
@@ -100,7 +100,7 @@ public class ApplicationServer extends HttpServer {
 	//-----------------------------------------------------------------------------------------
 	/**
 	 * 配置application.yml中spring.datasource.auth
-	 * 
+	 *
 	 * @return DataSource
 	 */
 	@Bean(name = "authDataSource")
@@ -111,7 +111,7 @@ public class ApplicationServer extends HttpServer {
 
 	/**
 	 * 创建相关的EntityManager，供SQL查询使用
-	 * 
+	 *
 	 * @param dataSource
 	 * @param properties
 	 * @return
@@ -133,11 +133,11 @@ public class ApplicationServer extends HttpServer {
 		return entityManagerFactoryBean.getObject().createEntityManager();
 
 	}
-	
+
 	//-----------------------------------------------------------------------------------------
 	/**
 	 * 配置application.yml中spring.datasource.kube
-	 * 
+	 *
 	 * @return DataSource
 	 */
 	@Bean(name = "kubeDataSource")
@@ -149,7 +149,7 @@ public class ApplicationServer extends HttpServer {
 
 	/**
 	 * 创建相关的EntityManager，供SQL查询使用
-	 * 
+	 *
 	 * @param dataSource
 	 * @param properties
 	 * @return
@@ -168,12 +168,12 @@ public class ApplicationServer extends HttpServer {
 		entityManagerFactoryBean.afterPropertiesSet();
 		return entityManagerFactoryBean.getObject().createEntityManager();
 	}
-	
+
 	//-----------------------------------------------------------------------------------------
 	// 我认为这是一个Spring bug，不清楚为啥会创建jpaSharedEM_entityManagerFactory
 	@Bean(name = "jpaSharedEM_entityManagerFactory")
 	public void springCompatibility() {
-		
+
 	}
 
 }

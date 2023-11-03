@@ -85,7 +85,7 @@ public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 		
 		File file = new File(MirrorConstants.KUBE_CA_PATH);
 		if (file.exists()) {
-			return new KubernetesClient();
+			return new KubernetesClient(file);
 		} else {
 			try {
 				return new KubernetesClient(

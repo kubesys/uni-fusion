@@ -34,7 +34,7 @@ spec:
         - "kube-mirror.jar"
         volumeMounts:
         - name: "cert"
-          mountPath: "/etc/kubernetes/admin.conf"
+          mountPath: "/root/.kube/config"
       volumes: 
       - name: "cert"
         hostPath:

@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<kubemirror.version>0.2.8</kubemirror.version>
-		<kubespring.version>2.2.3</kubespring.version>
+		<kubespring.version>2.2.4</kubespring.version>
 		<keycloak.version>21.1.1</keycloak.version>
 	</properties>
 	<dependencies>

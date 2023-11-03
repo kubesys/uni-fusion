@@ -154,4 +154,84 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<!-- Source -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>${maven.source.version}</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Javadoc -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven.javadoc.version}</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- GPG -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven.gpg.version}</version>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+          <id>Repository Proxy</id>
+          <activation>
+              <activeByDefault>true</activeByDefault>
+          </activation>
+          <repositories>
+              <repository>
+                  <id>g-ubjg5602-iscas-system-maven</id>
+                  <name>maven</name>
+                  <url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
+                  <releases>
+                      <enabled>true</enabled>
+                  </releases>
+                  <snapshots>
+                      <enabled>true</enabled>
+                  </snapshots>
+              </repository>
+          </repositories>
+      </profile>
+	</profiles>
+	
+	<distributionManagement>
+        <repository>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>g-ubjg5602-iscas-system-maven</id>
+            <name>maven</name>
+            <url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
+        </repository>
+    </distributionManagement>
 </project>

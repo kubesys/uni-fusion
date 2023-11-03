@@ -35,6 +35,7 @@ import io.github.kubesys.mirror.utils.SQLUtil;
  * - Database
  *    - GetResource
  *    - ListResources
+ *    - CountResources
  * - Metadata
  *    - getMetadata
  *    
@@ -228,6 +229,30 @@ public class KubeService extends AbstractHttpHandler {
 			throw ex;
 		}
 		return json;
+	}
+	
+	/**
+	 * count KubernetesClient.listResources
+	 * 
+	 * @param fullkind                    kind
+	 * @param namespace               namespace
+	 * @return json                   json
+	 * @throws Exception              exception
+	 */
+	public long countResources(
+			String fullkind,
+			Map<String, String> labels,
+			String region)
+			throws Exception {
+		
+		JsonNode kindDesc = kubeClient.getKubeClient(region).getKindDesc().get(fullkind);
+		
+		String plural = kindDesc.get("plural").asText();
+		String table = SQLUtil.table(plural);
+		
+		return postgresClient.countObjects(fullkind,
+				new PostgresSQLBuilder().countSQL(table, region, labels));
+		
 	}
 
 }

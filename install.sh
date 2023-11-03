@@ -10,15 +10,23 @@
 
 VERSION="0.2"
 
+token_file="kube-token"
+
 third_parts=("kube-database"  "kube-message")
 
-#our_system=("kube-mirror")
 our_system=("kube-mirror" "kube-backend")
 
 database=("kubestack" "kubeauth")
 
+curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-token.yaml?version=$VERSION" -o kube-token.yaml
+curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-database.yaml?version=$VERSION" -o kube-database.yaml
+curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-message.yaml?version=$VERSION" -o kube-message.yaml
+curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-mirror.yaml?version=$VERSION" -o kube-mirror.yaml
+curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-backend.yaml?version=$VERSION" -o kube-backend.yaml
+
 function wait-ready()
 {
+  kubectl apply -f $1.yaml
   while true
   do
     status=$(kubectl get po -A | grep "$1" | awk '{print$4}')

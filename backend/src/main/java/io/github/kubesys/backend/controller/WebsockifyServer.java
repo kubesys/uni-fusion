@@ -1,7 +1,6 @@
 package io.github.kubesys.backend.controller;
 
 
-import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -14,6 +13,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 
 /**
@@ -21,9 +21,10 @@ import java.util.HashMap;
  * @since 11.01
  */
 
-@Slf4j
 public class WebsockifyServer extends WebSocketServer {
 
+	static final Logger m_logger = Logger.getLogger(WebsockifyServer.class.getName());
+	
     public WebsockifyServer(InetSocketAddress address, String tcpHost, int tcpPort) {
         super(address);
         this.tcpHost = tcpHost;
@@ -39,7 +40,7 @@ public class WebsockifyServer extends WebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         //conn.send("Welcome to the server!"); //This method sends a message to the new client
         //broadcast("new connection: " + handshake.getResourceDescriptor()); //This method sends a message to all clients connected
-        log.info("new connection to " + conn.getRemoteSocketAddress());
+    	m_logger.info("new connection to " + conn.getRemoteSocketAddress());
 
         try {
             //String getParams = handshake.getResourceDescriptor().split("\\?")[1]; // GET-Parameter abrufen
@@ -72,7 +73,7 @@ public class WebsockifyServer extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        log.info("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
+    	m_logger.info("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
         Socket tcpSocket = connections.get(conn);
         if(!tcpSocket.isClosed()){
             try {
@@ -119,7 +120,7 @@ public class WebsockifyServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        log.info("server started successfully");
+    	m_logger.info("server started successfully");
     }
 
    // @Override

@@ -1,14 +1,11 @@
 package io.github.kubesys.backend.utils;
 
 
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  * @author bingshuai@nj.iscas.ac.cn
  * @since 11.01
  */
-@Slf4j
 public class WebViews {
     public static final String VIEW_PREFIX = "views/";
 

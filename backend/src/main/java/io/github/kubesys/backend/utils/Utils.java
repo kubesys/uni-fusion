@@ -1,7 +1,5 @@
 package io.github.kubesys.backend.utils;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -15,7 +13,6 @@ import java.util.regex.Pattern;
  * @since 11.01
  */
 
-@Slf4j
 public class Utils {
 
     private Utils() {}

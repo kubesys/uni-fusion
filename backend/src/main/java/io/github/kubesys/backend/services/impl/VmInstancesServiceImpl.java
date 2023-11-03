@@ -18,29 +18,28 @@ import io.github.kubesys.backend.services.IVmInstancesService;
 import io.github.kubesys.backend.utils.Utils;
 //import com.qnkj.core.base.BaseEntityUtils;
 //import com.qnkj.core.utils.ProfileUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.java_websocket.server.WebSocketServer;
 import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author bingshuai@nj.iscas.ac.cn
  * @since 11.01
  */
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class VmInstancesServiceImpl implements IVmInstancesService {
-//    private final IKubeStackService kubeStackService;
 
+	static final Logger m_logger = Logger.getLogger(VmInstancesServiceImpl.class.getName());
 
     private static Map<String,Integer> ports = new HashMap<>();
     private static Integer websockifyServerPort = 6088;
+    
+    
     @Override
     public Integer startWebsockifyServer() throws Exception {
         try {
@@ -51,7 +50,7 @@ public class VmInstancesServiceImpl implements IVmInstancesService {
             //String key = Md5Util.get(vmInstance.zone+vmInstance.name);
             String key = Md5Util.get("zone-1"+"test123");
             if (ports.containsKey(key)) {
-                log.info("key: " + ports.get(key));
+            	m_logger.info("key: " + ports.get(key));
                 return ports.get(key);
             }
             //String vncServcieIP = kubeStackService.getVmVncServiceIp("zone-1","test123");
@@ -61,10 +60,6 @@ public class VmInstancesServiceImpl implements IVmInstancesService {
             }
             ports.put(key,websockifyServerPort);
             websockifyServerPort ++;
-            log.info("vms : {}","mytest0916");
-            log.info("vncServcieIP : {}",vncServcieIP);
-            log.info("port : {}","5903");
-            log.info("websockifyServerPort : {}",websockifyServerPort);
             new Thread(new Runnable() {
                 @Override
                 public void run() {

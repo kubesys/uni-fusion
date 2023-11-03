@@ -7,7 +7,7 @@
 ##
 ###############################################
 
-MAVEN="maven:3.8.5-openjdk-17-slim"
+MAVEN="maven:3.6.3-openjdk-17"
 
 ###############################################
 ##
@@ -29,7 +29,8 @@ version=$(cat pom.xml | grep version | head -1 | awk -F">" '{print$2}' | awk -F"
 cp target/$mirror-$version.jar docker/kube-$mirror.jar
 cp -r config docker/config
 
-repo="registry.cn-beijing.aliyuncs.com/dosproj"
+repo="g-ubjg5602-docker.pkg.coding.net/iscas-system/containers"
+#repo="registry.cn-beijing.aliyuncs.com/dosproj"
 
 docker buildx create --name mybuilder --driver docker-container
 docker buildx use mybuilder

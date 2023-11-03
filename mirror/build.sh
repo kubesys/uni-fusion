@@ -7,7 +7,7 @@
 ##
 ###############################################
 
-MAVEN="maven:3.6.3-openjdk-11"
+MAVEN="maven:3.6.3-openjdk-17"
 
 ###############################################
 ##
@@ -29,7 +29,8 @@ withjar="jar-with-dependencies"
 
 \cp target/$mirror-$version-$withjar.jar docker/kube-$mirror.jar
 
-repo="registry.cn-beijing.aliyuncs.com/dosproj"
+repo="g-ubjg5602-docker.pkg.coding.net/iscas-system/containers"
+#repo="registry.cn-beijing.aliyuncs.com/dosproj"
 
 docker buildx create --name mybuilder --driver docker-container
 docker buildx use mybuilder

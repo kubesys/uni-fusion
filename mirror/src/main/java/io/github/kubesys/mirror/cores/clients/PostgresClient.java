@@ -190,9 +190,7 @@ public class PostgresClient   {
 			transaction.commit();
 			return new ObjectMapper().readTree(mutipleResults.toString());
 		} catch (JsonProcessingException e) {
-			m_logger.warning("结果转JSON失败" + e);
 		} catch (NoResultException ex) {
-			m_logger.warning("没有查询到任何结果" + ex);
 		} finally {
 			if (transaction.isActive()) {
 				transaction.rollback();
@@ -213,7 +211,6 @@ public class PostgresClient   {
 			transaction.commit();
 			return true;
 		} catch (Exception ex) {
-			m_logger.warning("未知错误" + ex);
 			return false;
 		} finally {
 			if (transaction.isActive()) {

@@ -53,21 +53,36 @@ public class PostgresSQLBuilder {
 	
 	/**
 	 * @param table       表名
+	 * @param region      region
 	 * @param dataLabels  JSON中任何字符串字段
 	 * @return 模糊匹配结果
 	 */
-	public String countSQL(String table, Map<String, String> dataLabels) {
+	public String countSQL(String table, String region, Map<String, String> dataLabels) {
 		
 		dataLabels = (dataLabels == null) ? new HashMap<>() : dataLabels;
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(COUNT_SQL.replace(TABLE_NAME, table));
+		
+		if (region != null) {
+			sb.append("region = " + region).append(WHERE_AND);
+		}
+		
 		for (Map.Entry<String, String> entry : dataLabels.entrySet()) {
 			String key = entry.getKey();
 		    String value = entry.getValue();
 		    sb.append(SQLUtil.jsonKey(key)).append(" like '%").append(value).append("%'").append(WHERE_AND);
 		}
 		return (dataLabels.size() == 0) ? sb.substring(0, sb.length() - 7) : sb.substring(0, sb.length() - 4);
+	}
+	
+	/**
+	 * @param table       表名
+	 * @param dataLabels  JSON中任何字符串字段
+	 * @return 模糊匹配结果
+	 */
+	public String countSQL(String table, Map<String, String> dataLabels) {
+		return countSQL(table, null, dataLabels);
 	}
 	
 	/**

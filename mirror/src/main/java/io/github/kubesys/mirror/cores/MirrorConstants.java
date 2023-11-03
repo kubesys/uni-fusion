@@ -30,8 +30,8 @@ public final class MirrorConstants {
 	/**
 	 * CA 
 	 */
-//	public static final String KUBE_CA_PATH            = "/root/.kube/config";
-	public static final String KUBE_CA_PATH            = "cert/admin.conf";
+	public static final String KUBE_CA_PATH            = "/root/.kube/config";
+	
 	/**
 	 * 取值为-/
 	 */

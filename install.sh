@@ -63,6 +63,8 @@ do
     wait-ready $pod
 done
 
+sleep 20
+
 pod_name=$(kubectl get po -A | grep kube-database | awk '{print$2}') 
 timestamp=$(date +"%Y-%m-%d %H:%M:%S.%6N")
  
@@ -70,6 +72,15 @@ timestamp=$(date +"%Y-%m-%d %H:%M:%S.%6N")
 kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_user\" (\"name\", \"createdat\", \"updatedat\", \"password\", \"role\", \"token\") VALUES('admin','$timestamp','$timestamp','b25jZWFzCg==', 'admin','');"
 #
 IP=$(cat /root/.kube/config | grep server | awk '{print$2}')
-TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\",\"token\": \"$TOKEN\"}}');"
 
+
+TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client-token- | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+
+if [[ -z $TOKEN ]]
+then
+  TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client-token | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+fi
+
+
+echo "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"
+kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"

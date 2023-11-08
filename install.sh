@@ -60,7 +60,7 @@ done
 
 for pod in "${our_system[@]}"
 do
-    wait-for-ready $pod
+    wait-ready $pod
 done
 
 pod_name=$(kubectl get po -A | grep kube-database | awk '{print$2}') 

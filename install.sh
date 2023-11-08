@@ -40,6 +40,8 @@ function wait-ready()
   done
 }
 
+kubectl create ns kube-stack
+
 function create-database()
 {
   pod_name=$(kubectl get po -A | grep kube-database | awk '{print$2}')

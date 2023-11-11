@@ -1,0 +1,54 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "all-routes-test"
+  },
+  "spec": {
+    "catalogs": [{
+      "name": "环境信息",
+      "path": "/envInfo"
+    },
+      {
+        "name": "应用管理",
+        "path": "/appMgr"
+      }
+    ],
+    "groups": [{
+      "name": "平台信息",
+      "path": "/envInfo/basicInfo"
+    }
+    ],
+    "items": [{
+      "component": "article/lists/index",
+      "name": "平台Pod",
+      "kind": "Node",
+      "path": "/envInfo/basicInfo/node"
+    },
+      {
+        "component": "article/lists/index",
+        "name": "系统Pod",
+        "kind": "Pod",
+        "path": "/envInfo/basicInfo/pod"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "Namespace",
+        "kind": "Namespace",
+        "path": "/envInfo/basicInfo/namespace"
+      },
+      {
+        "component": "article/dashboard/index",
+        "source": "http://133.133.137.74:5173/",
+        "name": "系统概览",
+        "path": "/envInfo/basicInfo/index"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "应用",
+        "kind": "apps.Deployment",
+        "path": "/envInfo/basicInfo/deployment"
+      }
+    ]
+  }
+}

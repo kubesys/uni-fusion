@@ -9,7 +9,7 @@
     "typings/**/*.d.ts"
   ],
   "compilerOptions": {
-    "isolatedModules": true,
+    "isolatedModules": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

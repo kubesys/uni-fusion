@@ -1,0 +1,62 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "pod-action-scale",
+    "namespace": "default"
+  },
+  "spec": {
+    "data": [{
+      "target": "spec.replicas",
+      "label": "扩容",
+      "type": "range",
+      "greatThan": "@spec.replicas",
+      "lessThan": 10
+    },
+      {
+        "target": "spec.template.spec.containers[0].env.SONARQUBE_JDBC_USERNAME",
+        "label": "更新用户名",
+        "type": "text",
+        "regexp": "as"
+      },
+      {
+        "target": "spec.template.spec.containers[0].image",
+        "label": "变更镜像",
+        "type": "combobox",
+        "link": {
+          "kind": "ConfigMap",
+          "namespace": "default",
+          "name": "pod-status"
+          {
+            "apiVersion": "doslab.io/v1",
+            "kind": "Frontend",
+            "metadata": {
+              "name": "pod-action-scale",
+              "namespace": "default"
+            },
+            "spec": {
+              "data": [{
+                "target": "spec.replicas",
+                "label": "扩容",
+                "type": "range",
+                "greatThan": "@spec.replicas",
+                "lessThan": 10
+              },
+                {
+                  "target": "spec.template.spec.containers[0].env.SONARQUBE_JDBC_USERNAME",
+                  "label": "更新用户名",
+                  "type": "text",
+                  "regexp": "as"
+                },
+                {
+                  "target": "spec.template.spec.containers[0].image",
+                  "label": "变更镜像",
+                  "type": "combobox",
+                  "link": {
+                    "kind": "ConfigMap",
+                    "namespace": "default",
+                    "name": "pod-status"
+                  }
+                }]
+            }
+          }

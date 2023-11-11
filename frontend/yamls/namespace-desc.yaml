@@ -1,0 +1,12 @@
+{
+  "metadata":{
+    "name":"namespace-desc"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "title": "Namespace",
+    "desc": "Namespace可以看成是隔离组件。",
+    "type": "description"
+  }
+}

@@ -3,7 +3,6 @@ package io.github.kubesys.backend.services.impl;
 //import com.github.restapi.XN_Content;
 //import com.github.restapi.XN_Query;
 
-import io.github.kubesys.backend.utils.Md5Util;
 import io.github.kubesys.backend.controller.WebsockifyServer;
 
 //import com.qnkj.clouds.modules.VmInstances.entitys.VmInstances;
@@ -38,8 +37,8 @@ public class VmInstancesServiceImpl implements IVmInstancesService {
 
     private static Map<String,Integer> ports = new HashMap<>();
     private static Integer websockifyServerPort = 6088;
-    
-    
+
+
     @Override
     public Integer startWebsockifyServer() throws Exception {
         try {
@@ -48,13 +47,13 @@ public class VmInstancesServiceImpl implements IVmInstancesService {
                 throw new Exception("端口为空");
             }
             //String key = Md5Util.get(vmInstance.zone+vmInstance.name);
-            String key = Md5Util.get("zone-1"+"test123");
+            String key = Utils.get("zone-1"+"test123");
             if (ports.containsKey(key)) {
             	m_logger.info("key: " + ports.get(key));
                 return ports.get(key);
             }
             //String vncServcieIP = kubeStackService.getVmVncServiceIp("zone-1","test123");
-            String vncServcieIP = "133.133.135.131";
+            String vncServcieIP = "133.133.135.134";
             if (Utils.isEmpty(vncServcieIP)) {
                 throw new Exception("VNC服务IP为空");
             }

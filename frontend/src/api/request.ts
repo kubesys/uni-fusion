@@ -2,8 +2,9 @@ import axios from "axios";
 import { ElMessage } from 'element-plus'
 import element from "@/install/plugins/element";
 
+
 const _axios = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_API_BASE_URL
+    baseURL: window.g.baseURL
 })
 
 

@@ -1,0 +1,94 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "pod-table"
+  },
+  "spec": {
+    "data": [{
+      "label": "Pod名",
+      "row": "metadata.name"
+    },
+      {
+        "label": "IP地址ַ",
+        "row": "status.podIP"
+      },
+      {
+        "kind": "internalLink",
+        "label": "命名空间",
+        "row": "metadata.namespace",
+        "internalLink": {
+          "kind": "Namespace"
+        }
+      },
+      {
+        "kind": "internalLink",
+        "label": "父类资源名",
+        "link": "@metadata.ownerReferences[0].apiVersion;.;metadata.ownerReferences[0].kind",
+        "row": "metadata.ownerReferences[0].name",
+        "internalLink": {
+          "kind": "@metadata.ownerReferences[0].apiVersion+metadata.ownerReferences[0].kind",
+          "item": "@metadata.ownerReferences[0].name"
+        }
+      },
+      {
+        "label": "所在主机",
+        "kind": "internalLink",
+        "tag": "metadata##name",
+        "row": "spec.nodeName",
+        "internalLink": {
+          "kind": "Node"
+        }
+      },
+      {
+        "label": "创建时间",
+        "row": "metadata.creationTimestamp"
+      },
+      {
+        "kind": "terminalLink",
+        "label": "远程连接",
+        "terminalLink": {
+          "icon": "a.icon",
+          "target": "http://139.9.165.93:32071?pod={1}&namespace={2}",
+          "values": [
+            "metadata.name",
+            "metadata.namespace"
+          ]
+        }
+      },
+      {
+        "label": "运行状态",
+        "row": "status.phase",
+        "iconLink": [
+          {
+            "value": "正常运行",
+            "icon": "running.icon"
+          },
+          {
+            "value": "失败停止",
+            "icon": "fail.icon"
+          }
+        ]
+      },
+      {
+        "kind": "action",
+        "label": "更多操作",
+        "actionLink": [
+          {
+            "label": "更新",
+            "action": "UPDATE"
+          },
+          {
+            "label": "删除",
+            "action": "DELETE"
+          },
+          {
+            "label": "扩容",
+            "action": "pod-action-scale"
+          }
+        ]
+      }
+    ],
+    "type": "table"
+  }
+}

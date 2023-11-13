@@ -24,6 +24,8 @@ curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-mess
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-mirror.yaml?version=$VERSION" -o kube-mirror.yaml
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-backend.yaml?version=$VERSION" -o kube-backend.yaml
 
+kubectl apply -f kube-token.yaml
+
 function wait-ready()
 {
   kubectl apply -f $1.yaml

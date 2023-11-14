@@ -70,8 +70,8 @@ sleep 20
 pod_name=$(kubectl get po -A | grep kube-database | awk '{print$2}') 
 timestamp=$(date +"%Y-%m-%d %H:%M:%S.%6N")
  
-#
-kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_user\" (\"name\", \"createdat\", \"updatedat\", \"password\", \"role\", \"token\") VALUES('admin','$timestamp','$timestamp','b25jZWFzCg==', 'admin','');"
+# echo -n onceas | base64
+kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_user\" (\"name\", \"createdat\", \"updatedat\", \"password\", \"role\", \"token\") VALUES('admin','$timestamp','$timestamp','b25jZWFz', 'admin','');"
 #
 IP=$(cat /root/.kube/config | grep server | awk '{print$2}')
 

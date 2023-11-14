@@ -1,7 +1,7 @@
 import { getResource, listResources, updateResource, createResource, deleteResource } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
 
-export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='test'){
+export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local'){
   const MAX_RETRIES = 5;
   const fetchData = (retryCount = 0) => {
     if (retryCount >= MAX_RETRIES) {
@@ -71,7 +71,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
   return [tableData, tableColumns];
 }
 
-export function frontendMeta(TableName:string, descItem: [], region = 'test', retryCount = 5) {
+export function frontendMeta(TableName:string, descItem: [], region = 'local', retryCount = 5) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -96,7 +96,7 @@ export function frontendMeta(TableName:string, descItem: [], region = 'test', re
   getResourceData(1); // 初始化时发送请求
 }
 
-export function frontendFormSearch(TableName:string, formItem: [], region = 'test', retryCount = 5) {
+export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 5) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -121,7 +121,7 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'tes
   getResourceData(1);
 }
 
-export function frontendAction(TableName:string, step: [], region = 'test', retryCount = 3) {
+export function frontendAction(TableName:string, step: [], region = 'local', retryCount = 3) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -146,7 +146,7 @@ export function frontendAction(TableName:string, step: [], region = 'test', retr
   getResourceData(1);
 }
 
-export function frontendCreateTemplate(TableName:string, templateSpec: [], region = 'test', retryCount = 3) {
+export function frontendCreateTemplate(TableName:string, templateSpec: [], region = 'local', retryCount = 3) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -171,7 +171,7 @@ export function frontendCreateTemplate(TableName:string, templateSpec: [], regio
   getResourceData(1);
 }
 
-export function frontendUpdate(rowData:object, region = 'test', retryCount = 3) {
+export function frontendUpdate(rowData:object, region = 'local', retryCount = 3) {
   const updateResourceData = (retry:any) => {
     updateResource({
       region: region,
@@ -207,7 +207,7 @@ export function frontendCreate(jsonData:any, region = 'test'){
   })
 }
 
-export function frontendDelete(Listname:string, name:string, region = 'test'){
+export function frontendDelete(Listname:string, name:string, region = 'local'){
   deleteResource({
     fullkind: Listname,
     name: name,
@@ -227,8 +227,25 @@ export function frontendDelete(Listname:string, name:string, region = 'test'){
  *
  ******************************************************************************************/
 export function getComplexDataDispose(scope, rowKey){
-  const value = getComplexValue(scope, rowKey)
-  return value
+  if (rowKey.includes(';/;') && rowKey.indexOf('#') == -1){
+    const value = getIncludesValue(scope, rowKey)
+    return value
+  } else {
+    const value = getComplexValue(scope, rowKey)
+    return value
+  }
+}
+
+export function getIncludesValue(scope, key){
+  let result = scope
+  var arr = []
+  key.split(';/;').forEach((item)=>{
+    console.log(item)
+    const x = getComplexValue(scope, item)
+    arr.push(x)
+  })
+  arr.join('/')
+  return arr.join('/')
 }
 
 export function getComplexValue(scope, key){
@@ -344,6 +361,16 @@ export function getComplexValue(scope, key){
     }
     return result
   }
+}
+
+export function getTerminalAddr(scope, item) {
+  var str = item.target
+  var n = ''
+  item.values.forEach((item)=>{
+    n = getComplexValue(scope, item)
+  })
+  var nstr = str.replace(/\{[^\}]+\}/,n);
+  return nstr
 }
 
 

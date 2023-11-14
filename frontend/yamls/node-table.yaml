@@ -13,6 +13,10 @@
       "tag": "status.addresses[0].address"
     },
       {
+        "label": "资源名",
+        "row": "metadata.name"
+      },
+      {
         "label": "资源角色",
         "row": "metadata.labels.kubernetes#io/role;/;metadata.labels.kubernetes#io/status;/;metadata.labels.kubernetes#io/type"
       },
@@ -31,9 +35,11 @@
       {
         "kind": "internalLink",
         "label": "关联实例",
-        "link": "Pod",
         "row": "@metadata.name",
-        "tag": "spec##nodeName"
+        "internalLink": {
+          "kind": "Pod",
+          "item": "spec##nodeName"
+        }
       },
       {
         "label": "资源配置(CPU/内存)",
@@ -45,6 +51,17 @@
         "tag": "metadata.name",
         "label": "健康状态",
         "row": "status.conditions[0].type;|;status.conditions[4].type"
+      },
+      {
+        "kind": "terminalLink",
+        "label": "远程连接",
+        "terminalLink": {
+          "icon": "a.icon",
+          "target": "http://133.133.135.134:30200/ssh/host/{hostIP}",
+          "values": [
+            "status.addresses[0].address"
+          ]
+        }
       },
       {
         "kind": "action",

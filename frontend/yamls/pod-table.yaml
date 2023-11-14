@@ -49,7 +49,7 @@
         "label": "远程连接",
         "terminalLink": {
           "icon": "a.icon",
-          "target": "http://139.9.165.93:32071?pod={1}&namespace={2}",
+          "target": "http://133.133.135.134:30201/?pod={1}&namespace={2}",
           "values": [
             "metadata.name",
             "metadata.namespace"

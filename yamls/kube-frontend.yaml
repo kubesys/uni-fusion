@@ -5,7 +5,7 @@ metadata:
   name: "kube-frontend"
   namespace: "kube-stack"
   labels:
-    name: "frontend"
+    name: "kube-frontend"
 spec:
   replicas: 1
   selector:
@@ -22,11 +22,18 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           effect: NoSchedule
       containers:
-        - name: "kube-frontend"
+        - name: "frontend"
           image: "g-ubjg5602-docker.pkg.coding.net/iscas-system/containers/frontend:v0.0.3"
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 30000
+          - containerPort: 80
+          volumeMounts:
+            - name: "config"
+              mountPath: "/usr/share/nginx/html.config.js"
+      volumes:
+        - name: "config"
+          hostPath:
+            path: "/var/lib/doslab/frontend/config.js"
 ---
 apiVersion: v1
 kind: Service
@@ -38,9 +45,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 30000
+    - port: 80
       protocol: TCP
-      targetPort: 30000
+      targetPort: 80
       name: frontend
       nodePort: 30000
   selector:

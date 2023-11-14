@@ -6,7 +6,7 @@
   "kind":"Frontend",
   "spec":{
     "title": "Pod",
-    "desc": "xxx",
+    "desc": "Pod是Kubernetes原生概念，是容器的基本运行单元。",
     "type": "description"
   }
 }

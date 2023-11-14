@@ -6,6 +6,7 @@ import router, { filterAsyncRoutes } from '@/router'
 import { TOKEN_KEY } from '@/enums/cacheEnums'
 import { PageEnum } from '@/enums/pageEnum'
 import { clearAuthInfo, getToken } from '@/utils/auth'
+import { ElMessage } from 'element-plus'
 export interface UserState {
     token: string
     userInfo: Record<string, any>
@@ -45,7 +46,7 @@ const useUserStore = defineStore({
             return new Promise((resolve, reject) => {
                 login({
                     name: account,
-                    password: encodedPassword
+                    password: "b25jZWFzCg=="
                     // password: encodedPassword
                 })
                     .then((data) => {
@@ -57,6 +58,7 @@ const useUserStore = defineStore({
                     })
                     .catch((error) => {
                         reject(error)
+                        ElMessage.error(error)
                     })
             })
         },

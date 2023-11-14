@@ -75,7 +75,7 @@
               {{ getComplexDataDispose(scope.row, item.row) }}
             </el-link>
           </router-link>
-          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item)" target="_blank">
+          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">
             <el-icon :size="20">
               <Monitor />
             </el-icon>
@@ -160,8 +160,8 @@
 import router from "@/router";
 import { onMounted, ref } from 'vue';
 import Stomp from 'stompjs';
-import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
-import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue } from "@/api/common";
+// import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
+import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue, getTerminalAddr } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
@@ -267,10 +267,6 @@ const getRules = (group) => {
   return rules;
 };
 
-function getTerminalAddr(json, item) {
-  return item
-}
-
 // 创建对话框的引用
 const creatDialog = ref()
 const annular = ref(0)
@@ -309,38 +305,38 @@ function saveData(){
  *  连接Rabbitmq部分
  *
  ***********************/
-const client = Stomp.client(MQTT_SERVICE);
-
-function onConnected() {
-  const topic = MQTT_topic;
-  const subscribeHeaders = {
-    durable: false, // 设置队列为非持久化
-    'auto-delete': false,
-    exclusive: false
-  };
-  client.subscribe(topic, responseCallback, subscribeHeaders, onFailed);
-}
-
-function onFailed(msg: any) {
-  console.log("MQ Failed: " + msg);
-}
-
-function responseCallback(msg: any) {
-  console.log("MQ msg => " + msg.body);
-  submitForm()
-  annular.value += 1
-  // location.reload();
-}
-
-function connect() {
-  const headers = {
-    login: MQTT_USERNAME,
-    password: MQTT_PASSWORD,
-  };
-  client.connect(headers, onConnected, onFailed);
-}
-
-onMounted(()=>{connect()})
+// const client = Stomp.client(MQTT_SERVICE);
+//
+// function onConnected() {
+//   const topic = MQTT_topic;
+//   const subscribeHeaders = {
+//     durable: false, // 设置队列为非持久化
+//     'auto-delete': false,
+//     exclusive: false
+//   };
+//   client.subscribe(topic, responseCallback, subscribeHeaders, onFailed);
+// }
+//
+// function onFailed(msg: any) {
+//   console.log("MQ Failed: " + msg);
+// }
+//
+// function responseCallback(msg: any) {
+//   console.log("MQ msg => " + msg.body);
+//   submitForm()
+//   annular.value += 1
+//   // location.reload();
+// }
+//
+// function connect() {
+//   const headers = {
+//     login: MQTT_USERNAME,
+//     password: MQTT_PASSWORD,
+//   };
+//   client.connect(headers, onConnected, onFailed);
+// }
+//
+// onMounted(()=>{connect()})
 
 
 </script>

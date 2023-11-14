@@ -29,7 +29,7 @@ export function getMenu() {
         fullkind:"doslab.io.Frontend",
         name:"all-routes-test",
         namespace:"default",
-        region:"test"
+        region:"local"
     })
 }
 
@@ -39,7 +39,7 @@ export function getRegions(){
         fullkind:"doslab.io.Frontend",
         name:"all-regions",
         namespace:"default",
-        region:"test"
+        region:"local"
     })
 }
 

@@ -11,6 +11,8 @@ RUN cd /kube-frontend \
 
 FROM nginx as nginx
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=build /kube-frontend/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]

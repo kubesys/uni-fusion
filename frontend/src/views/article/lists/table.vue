@@ -7,7 +7,7 @@
   </template>
   <div class="frontendTable_container">
     <!-- The Form section of the Table page -->
-    <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 30px">
+    <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 10px">
       <el-row>
         <el-col v-for="formItem in formItems" :key="formItem.path" :span="7" style="margin-right: 20px">
           <el-form-item :label="formItem.label">
@@ -77,7 +77,7 @@
           </router-link>
           <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">
             <el-icon :size="20">
-              <Monitor />
+              <component :is="item.terminalLink.icon"></component>
             </el-icon>
           </el-link>
           <el-select
@@ -157,11 +157,10 @@
 </template>
 
 <script setup lang="ts">
-import router from "@/router";
 import { onMounted, ref } from 'vue';
-import Stomp from 'stompjs';
+// import Stomp from 'stompjs';
 // import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
-import { frontendFormSearch, frontendData, frontendAction, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue, getTerminalAddr } from "@/api/common";
+import { frontendFormSearch, frontendData, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue, getTerminalAddr } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
@@ -185,6 +184,7 @@ interface tableColumns {
   row: string;
   internalLink: object;
   actionLink: object;
+  terminalLink: object
 }
 
 const route = useRoute()
@@ -234,7 +234,7 @@ watch(yaml, () => {
 onMounted(()=>{
   frontendFormSearch(TableName, formItems)
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
-  frontendAction(TableName, scaleItems)
+  // frontendAction(TableName, scaleItems)
   tableDataLoaded.value = true
 })
 

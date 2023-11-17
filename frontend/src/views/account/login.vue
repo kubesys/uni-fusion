@@ -3,7 +3,7 @@
         <div class="flex-1 flex items-center justify-center">
             <div class="login-card flex rounded-md">
                 <div class="flex-1 h-full hidden md:inline-block">
-                    <image-contain src='src/assets/images/login.png' :width="500" height="100%" />
+                    <image-contain src='/login.png' :width="500" height="100%" />
                 </div>
                 <div
                     class="login-form bg-body flex flex-col justify-center px-10 py-10 md:w-[400px] w-[375px] flex-none mx-auto"

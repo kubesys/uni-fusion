@@ -31,7 +31,7 @@ frontendMeta(tablename, descItem);
 }
 
 .header-introduce .header-introduce-detail{
-  font-size: 10px;
+  font-size: 12px;
   color: #909399;
 }
 </style>

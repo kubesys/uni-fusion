@@ -1,5 +1,6 @@
 import { getResource, listResources, updateResource, createResource, deleteResource } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
+import {stubString} from "lodash-es";
 
 export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local'){
   const MAX_RETRIES = 5;
@@ -16,7 +17,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       labels: allLabels,
       region: region
     }).then((resp)=>{
-      console.log(resp.data.data.items);
+      resp.data.data.items
       tableData.value = resp.data.data;
 
       /***********************
@@ -24,12 +25,12 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
        * Echarts data
        *
        ***********************/
-      let resultRun = 0
-      let resultPen = 0
+      var resultRun = 0
+      var resultPen = 0
       tableData.value.items.forEach((item:any)=>{
-        if (item.status.phase === 'Running'){
+        if (item.status !== undefined && item.status.phase === 'Running'){
           resultRun++
-        } else if(item.status.phase !== 'Running'){
+        } else if(item.status !== undefined && item.status.phase !== 'Running'){
           resultPen++
         }
       })
@@ -42,20 +43,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
         namespace: "default",
         region: region
       }).then((resp) => {
-        console.log(resp.data.data.spec.data);
         tableColumns.value = resp.data.data.spec.data;
-
-        getResource({
-          fullkind: "doslab.io.Frontend",
-          name: TableName + '-action',
-          namespace: "default",
-          region: region
-        }).then((resp)=>{
-          console.log(resp.data.data.spec.data)
-          actions.value = resp.data.data.spec.data
-        }).catch((error)=>{
-          fetchData(retryCount + 1);
-        })
 
       }).catch((error) => {
         console.error("Inner request failed.");
@@ -80,7 +68,6 @@ export function frontendMeta(TableName:string, descItem: [], region = 'local', r
       region: region
     })
         .then((resp) => {
-          console.log(resp.data.data.spec);
           descItem.value = resp.data.data.spec;
         })
         .catch((error) => {
@@ -105,7 +92,6 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
       region: region
     })
         .then((resp) => {
-          console.log(resp.data.data.spec.data.items);
           formItem.value = resp.data.data.spec.data.items;
         })
         .catch((error) => {
@@ -121,30 +107,30 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
   getResourceData(1);
 }
 
-export function frontendAction(TableName:string, step: [], region = 'local', retryCount = 3) {
-  const getResourceData = (retry:any) => {
-    getResource({
-      fullkind: "doslab.io.Frontend",
-      name: TableName + '-action-scale',
-      namespace: "default",
-      region: region
-    })
-        .then((resp) => {
-          console.log(resp.data.data.spec);
-          step.value = resp.data.data.spec;
-        })
-        .catch((error) => {
-          console.error(error);
-          if (retry < retryCount) {
-            getResourceData(retry + 1);
-          } else {
-            console.error('Request failed.');
-          }
-        });
-  };
-
-  getResourceData(1);
-}
+// export function frontendAction(TableName:string, step: [], region = 'local', retryCount = 3) {
+//   const getResourceData = (retry:any) => {
+//     getResource({
+//       fullkind: "doslab.io.Frontend",
+//       name: TableName + '-action-scale',
+//       namespace: "default",
+//       region: region
+//     })
+//         .then((resp) => {
+//           console.log(resp.data.data.spec);
+//           step.value = resp.data.data.spec;
+//         })
+//         .catch((error) => {
+//           console.error(error);
+//           if (retry < retryCount) {
+//             getResourceData(retry + 1);
+//           } else {
+//             console.error('Request failed.');
+//           }
+//         });
+//   };
+//
+//   getResourceData(1);
+// }
 
 export function frontendCreateTemplate(TableName:string, templateSpec: [], region = 'local', retryCount = 3) {
   const getResourceData = (retry:any) => {
@@ -178,7 +164,6 @@ export function frontendUpdate(rowData:object, region = 'local', retryCount = 3)
       data: rowData
     })
         .then((resp) => {
-          console.log(resp);
         })
         .catch((error) => {
           console.error(error);
@@ -201,7 +186,6 @@ export function frontendCreate(jsonData:any, region = 'test'){
     data: jsonData
   }).then((resp)=>{
     if(resp.data.code == 20000){
-      console.log(resp.data.code)
       ElMessage.success('创建成功.')
     }
   })
@@ -240,7 +224,6 @@ export function getIncludesValue(scope, key){
   let result = scope
   var arr = []
   key.split(';/;').forEach((item)=>{
-    console.log(item)
     const x = getComplexValue(scope, item)
     arr.push(x)
   })
@@ -258,10 +241,8 @@ export function getComplexValue(scope, key){
   if (key.startsWith('@')) {
     let newkey = '';
     key.substring(1).split('+').forEach((item) => {
-      console.log(item)
       if (item.includes('apiVersion')) {
         const apiVersion = result[item];
-        console.log(apiVersion)
         if (apiVersion) {
           newkey += apiVersion.split('/')[0];
         } else {
@@ -335,6 +316,8 @@ export function getComplexValue(scope, key){
       result = '🔴'
     } else if (result === 'Ready') {
       result = '🟢'
+    } else if (result === 'Shutdown') {
+      result = '🔴'
     }
     else if ((result + '').endsWith('Ki')) {
       result = (Number(result.substring(0, result.length - 2).trim())/1024/1024).toFixed(2) + 'GB'
@@ -364,12 +347,21 @@ export function getComplexValue(scope, key){
 }
 
 export function getTerminalAddr(scope, item) {
-  var str = item.target
-  var n = ''
-  item.values.forEach((item)=>{
-    n = getComplexValue(scope, item)
-  })
-  var nstr = str.replace(/\{[^\}]+\}/,n);
+  let str = item.target
+  let n = ''
+  if (str.includes('/e/')) {
+    item.values.forEach((item)=>{
+      const id = getComplexValue(scope, item + '.lastState.terminated.containerID')
+      if (typeof(id) == "string") {
+        n = id.substring('docker://'.length);
+      }
+    })
+  } else {
+    item.values.forEach((item)=>{
+      n = getComplexValue(scope, item)
+    })
+  }
+  let nstr = str.replace(/\{[^\}]+\}/,n);
   return nstr
 }
 

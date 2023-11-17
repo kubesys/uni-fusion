@@ -1,49 +1,49 @@
 <template>
     <div id="myChart" :style="{ width: '70px', height: '52px' ,flex: 1}"></div>
     <div style="margin-right: 10px; flex: 1">
-        <div style="float:left; margin-top: 10px; font-size: 10px">
+        <div style="float:left; margin-top: 10px; font-size: 12px">
             总数
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; font-weight: bolder; font-size: 10px">
+        <div style="float:left;margin-top: 3px;  margin-right:30px; font-weight: bolder; font-size: 12px">
             {{tableData.metadata.totalCount}}
         </div>
     </div>
     <div style="margin-right: 20px; flex: 1">
         <span style="float:left; width: 3px; height: 30px; background: #57D344; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 10px">
+        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
             运行中
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 10px">
+        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
           {{ tableData.resultRun }}
         </div>
     </div>
 
     <div style="margin-right: 20px; flex: 1">
         <span style="float:left; width: 3px; height: 30px; background: red; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 10px">
+        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
             已停止
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 10px">
+        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
           {{ tableData.resultPen }}
         </div>
     </div>
 
     <div style="margin-right: 20px; flex: 1">
         <span style="float:left; width: 3px; height: 30px; background: #dbdde0; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 10px">
+        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
             其他
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 10px">
+        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
             0
         </div>
     </div>
 
     <div style="margin-right: 20px; flex: 1">
         <span style="float:left; width: 3px; height: 30px; background: #96989b; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 10px">
+        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
             回收站
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 10px">
+        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
             0
         </div>
     </div>

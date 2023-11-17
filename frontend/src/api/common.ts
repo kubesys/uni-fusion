@@ -318,6 +318,8 @@ export function getComplexValue(scope, key){
       result = '🟢'
     } else if (result === 'Shutdown') {
       result = '🔴'
+    } else if (result === 'Active') {
+      result = '🟢'
     }
     else if ((result + '').endsWith('Ki')) {
       result = (Number(result.substring(0, result.length - 2).trim())/1024/1024).toFixed(2) + 'GB'
@@ -333,7 +335,7 @@ export function getComplexValue(scope, key){
       result = '公有云资源'
     } else if (result === 'edge') {
       result = '边缘端设备'
-    } else if (result === 'leader') {
+    } else if (result === 'master') {
       result = '主控节点'
     } else if (result === 'worker') {
       result = '工作节点'

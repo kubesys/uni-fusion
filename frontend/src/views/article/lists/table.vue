@@ -160,7 +160,7 @@
 import { onMounted, ref } from 'vue';
 // import Stomp from 'stompjs';
 // import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
-import { frontendFormSearch, frontendData, frontendUpdate, frontendDelete, getComplexDataDispose, getFormDataValue, getTerminalAddr } from "@/api/common";
+import { frontendFormSearch, frontendData, frontendUpdate, getComplexDataDispose, getFormDataValue, getTerminalAddr, actionDataValue } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
@@ -281,13 +281,7 @@ function submitForm() {
 }
 
 function handleOptionClick(dialogname, action, rowData) {
-  if (action === TableName + '-action-scale') {
-    dialogVisible.value = true;
-    selectedItemName.value = dialogname
-    rowItemData.value = rowData.metadata
-  } else if (action === 'DELETE') {
-    frontendDelete(ListName, rowData.metadata.name)
-  }
+  actionDataValue(TableName, ListName, dialogVisible, selectedItemName, rowItemData, dialogname, action, rowData)
 }
 
 const replicaset = ref<number>(0);

@@ -180,7 +180,8 @@ export function frontendUpdate(rowData:object, region = 'local', retryCount = 3)
 export function validResponse(response:any) {
   return response != null && response.hasOwnProperty('code') && response.code === 20000
 }
-export function frontendCreate(jsonData:any, region = 'test'){
+
+export function frontendCreate(jsonData:any, region = 'local'){
   createResource({
     region: region,
     data: jsonData
@@ -328,7 +329,6 @@ export function getComplexValue(scope, key){
     } else if ((result + '').endsWith('Ti')) {
       result = (Number(result.substring(0, result.length - 2).trim())*1024).toFixed(2) + 'GB'
     }
-    // Resource classification:  https://www.yuque.com/kubesys/kube-frontend/ipnl6c
     else if (result === 'local') {
       result = '本地服务器'
     } else if (result === 'cloud') {
@@ -408,3 +408,16 @@ export function getFormDataValue(data:any, optionArray:any){
  * Url: https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/ndh85sggwxtfw93v
  *
  ******************************************************************************************/
+export function actionDataValue(TableName:string, ListName:string, dialogVisible, selectedItemName, rowItemData, dialogname:string, action:string, rowData:any){
+  if (action === TableName + '-action-scale') {
+    dialogVisible.value = true;
+    selectedItemName.value = dialogname
+    rowItemData.value = rowData.metadata
+  } else if (action === 'DELETE') {
+    frontendDelete(ListName, rowData.metadata.name)
+  } else if (action === 'UPDATE') {
+    dialogVisible.value = true;
+    selectedItemName.value = dialogname
+    rowItemData.value = rowData.metadata
+  }
+}

@@ -1,5 +1,5 @@
 img="frontend"
-version="0.0.3"
+version="0.0.4"
 repo="g-ubjg5602-docker.pkg.coding.net/iscas-system/containers"
 
 docker buildx create --name mybuilder --driver docker-container

@@ -46,19 +46,24 @@ const useUserStore = defineStore({
             return new Promise((resolve, reject) => {
                 login({
                     name: account,
-                    password: "b25jZWFzCg=="
+                    password: encodedPassword
                     // password: encodedPassword
                 })
                     .then((data) => {
-                        console.log(data.data.data)
-                        // this.token = data
-                        cache.set(TOKEN_KEY, data.data.data)
-                        localStorage.setItem('token', data.data.data)
-                        resolve(data)
+                        if(data.data.code == 20000){
+                            console.log(data.data.data)
+                            ElMessage.success('登录成功！')
+                            // this.token = data
+                            cache.set(TOKEN_KEY, data.data.data)
+                            resolve(data)
+                        } else if (data.data.exId == 300){
+                            ElMessage.error('账号或密码错误，请检查！')
+                        } else {
+                            ElMessage.error('lack of kind')
+                        }
                     })
                     .catch((error) => {
                         reject(error)
-                        ElMessage.error(error)
                     })
             })
         },

@@ -8,7 +8,9 @@
                 <div
                     class="login-form bg-body flex flex-col justify-center px-10 py-10 md:w-[400px] w-[375px] flex-none mx-auto"
                 >
-                    <div class="text-center text-4xl font-medium mb-8" style="font-weight: bold">{{ config.webName }}</div>
+                    <div class="text-center text-4xl font-medium mb-8" style="font-weight: bold">
+                      云计算平台
+                    </div>
                     <el-form ref="formRef" :model="formData" size="large" :rules="rules">
                         <el-form-item prop="account">
                             <el-input
@@ -65,7 +67,6 @@ const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const remAccount = ref(false)
-const config = computed(() => appStore.config)
 const formData = reactive({
     account: '',
     password: ''

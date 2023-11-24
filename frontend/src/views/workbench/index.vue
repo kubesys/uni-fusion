@@ -131,7 +131,7 @@
 </template>
 
 <script lang="ts" setup name="workbench">
-import { getWorkbench } from '@/api/app'
+
 import vCharts from 'vue-echarts'
 import menu_admin from './image/menu_admin.png'
 import menu_role from './image/menu_role.png'
@@ -241,23 +241,8 @@ const workbenchData: any = reactive({
     }
 })
 
-// 获取工作台主页数据
-const getData = async () => {
-    const res = await getWorkbench()
-    workbenchData.version = res.version
-    workbenchData.today = res.today
-    workbenchData.visitor = res.visitor
 
-    // 清空echarts 数据
-    workbenchData.visitorOption.xAxis.data = []
-    workbenchData.visitorOption.series[0].data = []
 
-    // 写入从后台拿来的数据
-    workbenchData.visitorOption.xAxis.data = res.visitor.date
-    workbenchData.visitorOption.series[0].data = res.visitor.list
-}
-
-getData()
 </script>
 
 <style lang="scss" scoped></style>

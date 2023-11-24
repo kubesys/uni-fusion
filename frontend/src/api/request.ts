@@ -1,24 +1,27 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
+import cache from '@/utils/cache'
+import { TOKEN_KEY } from '@/enums/cacheEnums'
 import element from "@/install/plugins/element";
 
 
-// const _axios = axios.create({
-//     baseURL: window.g.baseURL
-// })
-
 const _axios = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_API_BASE_URL
+    baseURL: window.g.baseURL
 })
+
+// const _axios = axios.create({
+//     baseURL: import.meta.env.VITE_BACKEND_API_BASE_URL
+// })
 
 
 _axios.interceptors.request.use(
     (config)=>{
-        const token = localStorage.getItem('token');
+        const token = cache.get(TOKEN_KEY);
         if ( token ) {
             // config.headers['Authorization'] = `Bearer ${token}`;
             // config.headers['user'] = 'admin';
             config.headers = {
+                Accept: '*/*',
                 Authorization : `Bearer ${token}`,
                 user : 'admin'
             }

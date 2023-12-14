@@ -49,7 +49,7 @@ public class KubernetesRBACTest {
 			}
 
 		};
-		limited.watchResources("Pod", KubernetesConstants.VALUE_ALL_NAMESPACES, watcher);
+		limited.watchResourcesByFullkindAndNamespace("Pod", KubernetesConstants.VALUE_ALL_NAMESPACES, watcher);
 	
 	}
 

@@ -144,7 +144,7 @@ public class KubernetesPoolClient {
 					m_logger.info("watcher apiextensions.k8s.io.CustomResourceDefinition is crash");
 					m_logger.info("wait 5 seconds to restart watcher apiextensions.k8s.io.CustomResourceDefinition ");
 					Thread.sleep(5000);
-					client.watchResources("apiextensions.k8s.io.CustomResourceDefinition", 
+					client.watchResourcesByFullkindAndNamespace("apiextensions.k8s.io.CustomResourceDefinition", 
 							KubernetesConstants.VALUE_ALL_NAMESPACES, 
 							new NewResourceWacther(client));
 					break;

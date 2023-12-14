@@ -135,7 +135,7 @@ public class KubeService extends AbstractHttpHandler {
 			String region) 
 			throws Exception {
 
-		return kubeClient.getKubeClient(region).deleteResource(fullkind, namespace, name);
+		return kubeClient.getKubeClient(region).deleteResourceByNamespaceAndName(fullkind, namespace, name);
 	}
 
 	/**

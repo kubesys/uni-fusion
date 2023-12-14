@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.kubesys.devfrk.spring.constants.BeanConstants;
 import io.github.kubesys.devfrk.spring.resp.HttpResponse;
-import io.github.kubesys.devfrk.tools.annotations.ExceptionDesc;
 import jakarta.annotation.Resource;
 
 /**
@@ -69,8 +68,7 @@ public class BackendResponse implements HttpResponse {
 		m_logger.warning("handle request error: " + ex);
 		try {
 			return ((BackendResponse) context.getBean(BeanConstants.RESPONSE))
-					.unwrap("fail", ex.getClass().getAnnotationsByType(
-							ExceptionDesc.class)[0].id(), ex);
+					.unwrap("fail", "500", ex);
 		} catch (Exception e) {
 			try {
 				return ((BackendResponse) context.getBean(BeanConstants.RESPONSE))

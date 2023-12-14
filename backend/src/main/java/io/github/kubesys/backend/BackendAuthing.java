@@ -20,7 +20,7 @@ import io.github.kubesys.devfrk.spring.cores.HttpAuthingInterceptor;
  * 
  * 
  */
-public class DefaultHttpAuthing implements HttpAuthingInterceptor  {
+public class BackendAuthing implements HttpAuthingInterceptor  {
 
 	/**
 	 * 数据库客户端

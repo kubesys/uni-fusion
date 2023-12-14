@@ -27,6 +27,7 @@ import io.github.kubesys.backend.models.kube.KubeBaseModel;
 import io.github.kubesys.devfrk.spring.HttpServer;
 import io.github.kubesys.devfrk.spring.constants.BeanConstants;
 import io.github.kubesys.devfrk.spring.cores.HttpAuthingInterceptor;
+import io.github.kubesys.devfrk.spring.resp.HttpResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -63,9 +64,19 @@ public class ApplicationServer extends HttpServer {
 
 	@Bean(name = BeanConstants.AUTHING)
 	public HttpAuthingInterceptor interceptor() {
-		return new DefaultHttpAuthing();
+		return new BackendAuthing();
 	}
 
+	/**
+	 * 可以通过Bean(name = "resp")自定义
+	 * 
+	 * @return 默认请求响应实现
+	 */
+	@Bean(name = BeanConstants.RESPONSE)
+	public HttpResponse getResponse() {
+		return new BackendResponse();
+	}
+	
 	/*******************************************************
 	 *
 	 * 配置两个数据源，见application.yml ChatGPT告诉我的，不要问我为啥？
@@ -175,5 +186,5 @@ public class ApplicationServer extends HttpServer {
 	public void springCompatibility() {
 
 	}
-
+	
 }

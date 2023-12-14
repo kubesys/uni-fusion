@@ -86,9 +86,6 @@ public class KubernetesPoolClient {
 			String version = spec.get(KubernetesConstants.KUBE_SPEC_VERSIONS)
 								.iterator().next().get(KubernetesConstants
 										.KUBE_SPEC_VERSIONS_NAME).asText();
-			String kind = spec.get(KubernetesConstants.KUBE_SPEC_NAMES).get(
-							KubernetesConstants.KUBE_SPEC_NAMES_KIND).asText();
-			
 			try {
 				client.getAnalyzer().registry.registerKinds(client, KubernetesConstants.VALUE_APIS + "/" + apiGroup + "/" + version);
 			} catch (Exception e) {

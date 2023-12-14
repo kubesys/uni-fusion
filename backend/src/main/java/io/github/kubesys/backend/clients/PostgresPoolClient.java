@@ -29,7 +29,6 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.Table;
-import jakarta.transaction.Transactional;
 
 /**
  * @author wuheng@iscas.ac.cn
@@ -83,7 +82,7 @@ public class PostgresPoolClient {
 		return kubeEntityManager;
 	}
 
-	public void createObject(String cls, JsonNode data) throws Exception {
+	public synchronized void createObject(String cls, JsonNode data) throws Exception {
 		
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
@@ -104,7 +103,7 @@ public class PostgresPoolClient {
 		
 	}
 
-	public void updateObject(String cls, JsonNode data) throws Exception {
+	public synchronized void updateObject(String cls, JsonNode data) throws Exception {
 		
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
@@ -122,8 +121,7 @@ public class PostgresPoolClient {
 		}
 	}
 
-	@Transactional
-	public void removeObject(String cls, JsonNode data) throws Exception {
+	public synchronized void removeObject(String cls, JsonNode data) throws Exception {
 		
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
@@ -143,7 +141,7 @@ public class PostgresPoolClient {
 	}
 
 	
-	public Object find(Class<?> cls, Object obj) throws Exception {
+	public synchronized Object find(Class<?> cls, Object obj) throws Exception {
 		EntityManager entityManager = getEntityManager(cls.getName());
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
@@ -165,7 +163,6 @@ public class PostgresPoolClient {
 		return listObjects(cls, data, 1, 10).get("data").get(0);
 	}
 
-	@Transactional
 	public long countObjects(String cls, SQLObject data) throws Exception {
 
 		SQLBuilder builder = new SQLBuilder();
@@ -180,7 +177,7 @@ public class PostgresPoolClient {
 	 * @param sql        SQL
 	 * @return           查询结果
 	 */
-	public long countObjects(String cls, String sql) {
+	public synchronized long countObjects(String cls, String sql) {
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
@@ -226,7 +223,7 @@ public class PostgresPoolClient {
 	 * @param sql        SQL
 	 * @return           查询结果
 	 */
-	public JsonNode listObjects(String cls, String sql) {
+	public synchronized JsonNode listObjects(String cls, String sql) {
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
@@ -253,7 +250,7 @@ public class PostgresPoolClient {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Object> execQuerySql(String cls, String sql, StringBuilder sb) {
+	private synchronized List<Object> execQuerySql(String cls, String sql, StringBuilder sb) {
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
@@ -273,7 +270,7 @@ public class PostgresPoolClient {
 		return null;
 	}
 
-	private long execCountSql(String cls, String sql) {
+	private synchronized long execCountSql(String cls, String sql) {
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
@@ -297,7 +294,7 @@ public class PostgresPoolClient {
 	 * @param sql        SQL
 	 * @return           查询结果
 	 */
-	public JsonNode getObject(String cls, String sql) {
+	public synchronized JsonNode getObject(String cls, String sql) {
 		EntityManager entityManager = getEntityManager(cls);
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {

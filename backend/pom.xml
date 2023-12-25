@@ -157,10 +157,15 @@
 								<resource>
 									<directory>${basedir}/src/main/java</directory>
 									<includes>
-										<include>**/*.json</include>
 										<include>**/*.conf</include>
 										<include>**/*.yml</include>
 										<include>**/*.properties</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${basedir}</directory>
+									<includes>
+										<include>**/*.json</include>
 									</includes>
 								</resource>
 							</resources>

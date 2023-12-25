@@ -10,7 +10,6 @@
 	<description>backend</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<kubemirror.version>0.3.1</kubemirror.version>
 		<kubespring.version>2.2.5</kubespring.version>
 		<keycloak.version>21.1.1</keycloak.version>
@@ -54,21 +53,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<!-- 新增 -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.31</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
 			<version>1.5.3</version>
 		</dependency>
-
-
 	</dependencies>
 	<build>
 		<plugins>
@@ -163,9 +158,10 @@
 									</includes>
 								</resource>
 								<resource>
-									<directory>${basedir}</directory>
+									<directory>${basedir}/config</directory>
+									<targetPath>${project.build.outputDirectory}/config</targetPath>
 									<includes>
-										<include>**/*.json</include>
+										<include>*.json</include>
 									</includes>
 								</resource>
 							</resources>
@@ -175,7 +171,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -227,32 +222,31 @@
 			</build>
 		</profile>
 		<profile>
-          <id>Repository Proxy</id>
-          <activation>
-              <activeByDefault>true</activeByDefault>
-          </activation>
-          <repositories>
-              <repository>
-                  <id>g-ubjg5602-iscas-system-maven</id>
-                  <name>maven</name>
-                  <url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
-                  <releases>
-                      <enabled>true</enabled>
-                  </releases>
-                  <snapshots>
-                      <enabled>true</enabled>
-                  </snapshots>
-              </repository>
-          </repositories>
-      </profile>
+			<id>Repository Proxy</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>g-ubjg5602-iscas-system-maven</id>
+					<name>maven</name>
+					<url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+		</profile>
 	</profiles>
-
 	<distributionManagement>
-        <repository>
-            <!--必须与 settings.xml 的 id 一致-->
-            <id>g-ubjg5602-iscas-system-maven</id>
-            <name>maven</name>
-            <url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
-        </repository>
-    </distributionManagement>
+		<repository>
+			<!--必须与 settings.xml 的 id 一致-->
+			<id>g-ubjg5602-iscas-system-maven</id>
+			<name>maven</name>
+			<url>https://g-ubjg5602-maven.pkg.coding.net/repository/iscas-system/jars/</url>
+		</repository>
+	</distributionManagement>
 </project>

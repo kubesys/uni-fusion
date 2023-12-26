@@ -1,0 +1,47 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "doslab.io.frontend-table"
+  },
+  "spec": {
+    "data": [
+      {
+        "label": "资源名",
+        "row": "metadata.name"
+      },
+      {
+        "kind": "internalLink",
+        "label": "命名空间",
+        "row": "metadata.namespace",
+        "tag": "metadata##name",
+        "internalLink": {
+          "kind": "Namespace"
+        }
+      },
+      {
+        "label": "描述信息",
+        "row": "spec.desc"
+      },
+      {
+        "label": "类型名",
+        "row": "spec.type"
+      },
+      {
+        "kind": "action",
+        "label": "更多操作",
+        "actionLink": [
+          {
+            "label": "更新",
+            "action": "UPDATE"
+          },
+          {
+            "label": "删除",
+            "action": "DELETE"
+          }
+        ]
+      }
+    ],
+    "type": "table"
+  }
+}

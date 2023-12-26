@@ -65,7 +65,17 @@
       },
       {
         "kind": "action",
-        "label": "更多操作"
+        "label": "更多操作",
+        "actionLink": [
+          {
+            "label": "更新",
+            "action": "UPDATE"
+          },
+          {
+            "label": "删除",
+            "action": "DELETE"
+          }
+        ]
       }
     ],
     "type": "table"

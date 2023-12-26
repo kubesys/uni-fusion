@@ -1,22 +1,15 @@
 import { getResource, listResources, updateResource, createResource, deleteResource } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
-import {stubString} from "lodash-es";
 
-export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local'){
-  const MAX_RETRIES = 5;
-  const fetchData = (retryCount = 0) => {
-    if (retryCount >= MAX_RETRIES) {
-      ElMessage.error('lack of kind.')
-      return;
-    }
-
+export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local', retryCount = 5 ){
+  const getResourceData = (retry:any) => {
     listResources({
       fullkind: ListName,
       page: pageSite.value.page,
       limit: pageSite.value.limit,
       labels: allLabels,
       region: region
-    }).then((resp)=>{
+    }).then((resp) => {
       resp.data.data.items
       tableData.value = resp.data.data;
 
@@ -27,10 +20,10 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
        ***********************/
       var resultRun = 0
       var resultPen = 0
-      tableData.value.items.forEach((item:any)=>{
-        if (item.status !== undefined && item.status.phase === 'Running'){
+      tableData.value.items.forEach((item: any) => {
+        if (item.status !== undefined && item.status.phase === 'Running') {
           resultRun++
-        } else if(item.status !== undefined && item.status.phase !== 'Running'){
+        } else if (item.status !== undefined && item.status.phase !== 'Running') {
           resultPen++
         }
       })
@@ -46,17 +39,22 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
         tableColumns.value = resp.data.data.spec.data;
 
       }).catch((error) => {
-        console.error("Inner request failed.");
-        fetchData(retryCount + 1); // 递归调用 fetchData 函数，并增加 retryCount
+        if (retry < retryCount) {
+          getResourceData(retry + 1);
+        } else {
+          ElMessage.error('Request failed' + TableName + '-table');
+        }
       });
     }).catch((error) => {
-      console.error("Outer request failed.");
-      fetchData(retryCount + 1);
+      if (retry < retryCount) {
+        getResourceData(retry + 1);
+      } else {
+        ElMessage.error('Request failed' + TableName + '-list');
+      }
     });
-  };
+  }
 
-  fetchData();
-  return [tableData, tableColumns];
+  getResourceData(1);
 }
 
 export function frontendMeta(TableName:string, descItem: [], region = 'local', retryCount = 5) {
@@ -74,13 +72,13 @@ export function frontendMeta(TableName:string, descItem: [], region = 'local', r
           console.error(error);
           if (retry < retryCount) {
             getResourceData(retry + 1);
-          } else {
-            console.error('Request failed.');
+          } else{
+            ElMessage.error('Request failed' + TableName + '-desc');
           }
         });
   };
 
-  getResourceData(1); // 初始化时发送请求
+  getResourceData(1);
 }
 
 export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 5) {
@@ -99,7 +97,7 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
           if (retry < retryCount) {
             getResourceData(retry + 1); // 重新发送
           } else {
-            console.error('Request failed.');
+            ElMessage.error('Request failed' + TableName + 'formsearch');
           }
         });
   };
@@ -149,7 +147,7 @@ export function frontendCreateTemplate(TableName:string, templateSpec: [], regio
           if (retry < retryCount) {
             getResourceData(retry + 1);
           } else {
-            console.error('Request failed.');
+            ElMessage.error('Request failed.');
           }
         });
   };
@@ -170,7 +168,7 @@ export function frontendUpdate(rowData:object, region = 'local', retryCount = 3)
           if (retry < retryCount) {
             updateResourceData(retry + 1);
           } else {
-            console.error('Request failed.');
+            ElMessage.error('Request failed.');
           }
         });
   };
@@ -381,16 +379,16 @@ export function ConfigMapValue(data:any,ConfigArray:any){
     namespace: data.namespace,
     region: "test"
   }).then((resp) => {
-      const result = resp.data.data.data
-      const newArrays = Object.keys(result).map(key => {
-        return { value: key, label: result[key] };
-      })
-      const Arr = []
-      for (const key in newArrays) {
-        // Vue.set(mapper, key, result[key])
-        Arr.push(newArrays[key]);
-      }
-      ConfigArray.value = Arr
+    const result = resp.data.data.data
+    const newArrays = Object.keys(result).map(key => {
+      return { value: key, label: result[key] };
+    })
+    const Arr = []
+    for (const key in newArrays) {
+      // Vue.set(mapper, key, result[key])
+      Arr.push(newArrays[key]);
+    }
+    ConfigArray.value = Arr
   })
 }
 

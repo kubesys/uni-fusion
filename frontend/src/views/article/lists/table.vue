@@ -12,7 +12,7 @@
         <el-col v-for="formItem in formItems" :key="formItem.path" :span="7" style="margin-right: 20px">
           <el-form-item :label="formItem.label">
             <template v-if="formItem.type === 'textbox'">
-              <el-input v-model="props" style="width: 100%;"></el-input>
+              <el-input v-model="propslecet[formItem.path]" style="width: 100%;" ></el-input>
             </template>
             <template v-else-if="formItem.type === 'combobox'">
               <el-select v-model="propslecet[formItem.path]" style="width: 100%;" @click="getFormDataValueIndex(formItem.data)">
@@ -39,7 +39,7 @@
         :max-height="500"
         highlight-current-row
         size="large">
-    >
+      >
       <el-table-column
           type="selection"
           width="55">
@@ -52,13 +52,13 @@
           :label="item.label"
       >
         <template #default="scope">
-<!--          <router-link-->
-<!--              v-if="item.kind === 'internalLink'"-->
-<!--              to="baidu">-->
-<!--            <el-link type="primary">-->
-<!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
-<!--            </el-link>-->
-<!--          </router-link>-->
+          <!--          <router-link-->
+          <!--              v-if="item.kind === 'internalLink'"-->
+          <!--              to="baidu">-->
+          <!--            <el-link type="primary">-->
+          <!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
+          <!--            </el-link>-->
+          <!--          </router-link>-->
           <router-link
               v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"
               :to="{
@@ -105,37 +105,37 @@
         v-model="dialogVisible"
         :title=selectedItemName
         width="60%">
-<!--      <div class="dialog-content">-->
-<!--        <el-card  style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">-->
-<!--          <el-form v-for="group in scaleItems.data" :key="group.key" :model="group" :rules="getRules(group)" label-width="90px" label-position="left" >-->
-<!--            <el-form-item  :label="group.label">-->
-<!--              <template v-if="group.type === 'combobox'">-->
-<!--                &lt;!&ndash;              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>&ndash;&gt;-->
-<!--                <el-select style="width: 200px">-->
-<!--                  <el-option></el-option>-->
-<!--                </el-select>-->
-<!--              </template>-->
-<!--              <template v-else-if="group.type === 'text'">-->
-<!--                &lt;!&ndash;              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>&ndash;&gt;-->
-<!--                <el-input style="width: 200px"/>-->
-<!--              </template>-->
-<!--              <template v-if="group.type === 'range'">-->
-<!--                <el-input-number v-model="group.lessThan" :min="1" :max="10"  />-->
-<!--              </template>-->
-<!--&lt;!&ndash;              <template v-else-if="field.type === 'select'">&ndash;&gt;-->
-<!--&lt;!&ndash;                <el-select v-model="group[fieldName]" :placeholder="field.value">&ndash;&gt;-->
-<!--&lt;!&ndash;                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>&ndash;&gt;-->
-<!--&lt;!&ndash;                </el-select>&ndash;&gt;-->
-<!--&lt;!&ndash;              </template>&ndash;&gt;-->
-<!--              <template v-else-if="group.type === 'select'">-->
-<!--                <el-select v-model="group[group]" :placeholder="group.value">-->
-<!--                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>-->
-<!--                </el-select>-->
-<!--              </template>-->
-<!--            </el-form-item>-->
-<!--          </el-form>-->
-<!--        </el-card>-->
-<!--      </div>-->
+      <!--      <div class="dialog-content">-->
+      <!--        <el-card  style="border:1px solid #d2d2d2; width: 1000px; margin-top:10px;">-->
+      <!--          <el-form v-for="group in scaleItems.data" :key="group.key" :model="group" :rules="getRules(group)" label-width="90px" label-position="left" >-->
+      <!--            <el-form-item  :label="group.label">-->
+      <!--              <template v-if="group.type === 'combobox'">-->
+      <!--                &lt;!&ndash;              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>&ndash;&gt;-->
+      <!--                <el-select style="width: 200px">-->
+      <!--                  <el-option></el-option>-->
+      <!--                </el-select>-->
+      <!--              </template>-->
+      <!--              <template v-else-if="group.type === 'text'">-->
+      <!--                &lt;!&ndash;              <el-input v-model="group[fieldName]" :placeholder="field.value"></el-input>&ndash;&gt;-->
+      <!--                <el-input style="width: 200px"/>-->
+      <!--              </template>-->
+      <!--              <template v-if="group.type === 'range'">-->
+      <!--                <el-input-number v-model="group.lessThan" :min="1" :max="10"  />-->
+      <!--              </template>-->
+      <!--&lt;!&ndash;              <template v-else-if="field.type === 'select'">&ndash;&gt;-->
+      <!--&lt;!&ndash;                <el-select v-model="group[fieldName]" :placeholder="field.value">&ndash;&gt;-->
+      <!--&lt;!&ndash;                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>&ndash;&gt;-->
+      <!--&lt;!&ndash;                </el-select>&ndash;&gt;-->
+      <!--&lt;!&ndash;              </template>&ndash;&gt;-->
+      <!--              <template v-else-if="group.type === 'select'">-->
+      <!--                <el-select v-model="group[group]" :placeholder="group.value">-->
+      <!--                  <el-option v-for="(option, optionIndex) in selectOptions" :key="optionIndex" :label="option.label" :value="option.value"></el-option>-->
+      <!--                </el-select>-->
+      <!--              </template>-->
+      <!--            </el-form-item>-->
+      <!--          </el-form>-->
+      <!--        </el-card>-->
+      <!--      </div>-->
 
       <!-- 使用 vue-json-pretty 显示 JSON 数据 -->
       <el-scrollbar height="500px">
@@ -254,7 +254,7 @@ function getFormDataValueIndex(data:any){
 
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
-  frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData,propslecet.value, actions)
 }
 
 const getRules = (group) => {
@@ -272,12 +272,7 @@ const creatDialog = ref()
 const annular = ref(0)
 
 function submitForm() {
-  const key = "metadata##name"
-  const selectObject = ref({
-    [key]: props
-  })
-  allLabels.value = Object.assign(allLabels.value, selectObject.value)
-  frontendData(ListName, TableName, pageSite,tableColumns, tableData, allLabels.value, actions)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData, propslecet.value, actions)
 }
 
 function handleOptionClick(dialogname, action, rowData) {

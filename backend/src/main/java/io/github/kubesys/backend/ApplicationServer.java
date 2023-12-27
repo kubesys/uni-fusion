@@ -183,8 +183,8 @@ public class ApplicationServer extends HttpServer {
 	//-----------------------------------------------------------------------------------------
 	// 我认为这是一个Spring bug，不清楚为啥会创建jpaSharedEM_entityManagerFactory
 	@Bean(name = "jpaSharedEM_entityManagerFactory")
-	public void springCompatibility() {
-
+	public boolean springCompatibility() {
+		return true;
 	}
 	
 }

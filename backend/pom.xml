@@ -11,7 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<kubemirror.version>0.3.1</kubemirror.version>
-		<kubespring.version>2.2.5</kubespring.version>
+		<kubespring.version>2.2.6</kubespring.version>
 		<keycloak.version>21.1.1</keycloak.version>
 	</properties>
 	<dependencies>
@@ -155,13 +155,6 @@
 										<include>**/*.conf</include>
 										<include>**/*.yml</include>
 										<include>**/*.properties</include>
-									</includes>
-								</resource>
-								<resource>
-									<directory>${basedir}/config</directory>
-									<targetPath>${project.build.outputDirectory}/config</targetPath>
-									<includes>
-										<include>*.json</include>
 									</includes>
 								</resource>
 							</resources>

@@ -32,17 +32,17 @@ public class MirrorServer {
 	public static void main(String[] args) throws Exception {
 		
 		DataTarget<KubeDataModel> dbTarget    = new PostgresTarget();
-//		DataTarget<KubeDataModel> msgTarget   = new RabbitMQTarget();
-//		dbTarget.setNext(msgTarget);
+		DataTarget<KubeDataModel> msgTarget   = new RabbitMQTarget();
+		dbTarget.setNext(msgTarget);
 		
 		AbstractKubeSource extrator = new KubeSourceExtractor(dbTarget);
-//		extrator.startCollect();
-//		
-//		AbstractKubeSource listener = new KubeSourceListener(dbTarget);
-//		listener.startCollect();
+		extrator.startCollect();
+		
+		AbstractKubeSource listener = new KubeSourceListener(dbTarget);
+		listener.startCollect();
 		
 		// 调试的时候用
-		debug(extrator);
+//		debug(extrator);
 	}
 
 	static void debug(AbstractKubeSource source) throws Exception {

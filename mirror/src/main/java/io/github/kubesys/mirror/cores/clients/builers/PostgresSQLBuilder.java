@@ -65,7 +65,7 @@ public class PostgresSQLBuilder {
 		sb.append(COUNT_SQL.replace(TABLE_NAME, table));
 		
 		if (region != null) {
-			sb.append("region = " + region).append(WHERE_AND);
+			sb.append("region = '" + region + "'").append(WHERE_AND);
 		}
 		
 		for (Map.Entry<String, String> entry : dataLabels.entrySet()) {
@@ -73,7 +73,7 @@ public class PostgresSQLBuilder {
 		    String value = entry.getValue();
 		    sb.append(SQLUtil.jsonKey(key)).append(" like '%").append(value).append("%'").append(WHERE_AND);
 		}
-		return (dataLabels.size() == 0) ? sb.substring(0, sb.length() - 7) : sb.substring(0, sb.length() - 4);
+		return (dataLabels.size() == 0) ? sb.substring(0, sb.length() - 5) : sb.substring(0, sb.length() - 4);
 	}
 	
 	/**

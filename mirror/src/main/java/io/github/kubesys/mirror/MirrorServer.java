@@ -32,24 +32,24 @@ public class MirrorServer {
 	public static void main(String[] args) throws Exception {
 		
 		DataTarget<KubeDataModel> dbTarget    = new PostgresTarget();
-		DataTarget<KubeDataModel> msgTarget   = new RabbitMQTarget();
-		dbTarget.setNext(msgTarget);
+//		DataTarget<KubeDataModel> msgTarget   = new RabbitMQTarget();
+//		dbTarget.setNext(msgTarget);
 		
 		AbstractKubeSource extrator = new KubeSourceExtractor(dbTarget);
-		extrator.startCollect();
+//		extrator.startCollect();
 //		
-		AbstractKubeSource listener = new KubeSourceListener(dbTarget);
-		listener.startCollect();
+//		AbstractKubeSource listener = new KubeSourceListener(dbTarget);
+//		listener.startCollect();
 		
 		// 调试的时候用
-//		debug(extrator);
+		debug(extrator);
 	}
 
 	static void debug(AbstractKubeSource source) throws Exception {
-//		JsonNode json = source.getKubeClient().getKindDesc().get("Pod");
-//		source.startCollect("Pod", MirrorUtil.toKubeMeta("Pod", json));
-		System.out.println(source.getKubeClient().getKindDesc());
-		JsonNode json = source.getKubeClient().getKindDesc().get("apiextensions.k8s.io.CustomResourceDefinition");
-		source.startCollect("apiextensions.k8s.io.CustomResourceDefinition", MirrorUtil.toKubeMeta("apiextensions.k8s.io.CustomResourceDefinition", json));
+		JsonNode json = source.getKubeClient().getKindDesc().get("Pod");
+		source.startCollect("Pod", MirrorUtil.toKubeMeta("Pod", json));
+//		System.out.println(source.getKubeClient().getKindDesc());
+//		JsonNode json = source.getKubeClient().getKindDesc().get("apiextensions.k8s.io.CustomResourceDefinition");
+//		source.startCollect("apiextensions.k8s.io.CustomResourceDefinition", MirrorUtil.toKubeMeta("apiextensions.k8s.io.CustomResourceDefinition", json));
 	}
 }

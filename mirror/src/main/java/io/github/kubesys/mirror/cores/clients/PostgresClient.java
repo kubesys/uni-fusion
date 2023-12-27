@@ -96,6 +96,9 @@ public class PostgresClient   {
 	        configuration.setProperty("hibernate.connection.password", password);
 	        configuration.setProperty("hibernate.connection.driver_class", jdbcDriver);
 	        configuration.setProperty("hibernate.connection.pool_size", poolSize);
+	        configuration.setProperty("hibernate.hikari.idleTimeout", "0");
+	        configuration.setProperty("hibernate.hikari.connectionTestQuery", "SELECT 1");
+	        configuration.setProperty("hibernate.hikari.maxLifetime", "0");
 	        
 	        // 构建SessionFactory
 	        SessionFactory sessionFactory = configuration.buildSessionFactory();

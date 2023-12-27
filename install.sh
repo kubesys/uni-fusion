@@ -12,7 +12,7 @@ VERSION="0.3"
 
 token_file="kube-token"
 
-third_parts=("kube-database"  "kube-message")
+third_parts=("kube-database"  "kube-message" "kube-caching")
 
 our_system=("kube-mirror" "kube-backend")
 

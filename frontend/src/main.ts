@@ -7,11 +7,13 @@ import 'virtual:svg-icons-register'
 import './static/iconfont/iconfont.css'
 import './Mock/Mock.js'
 // import './rabbitmq/websocket'
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/reset.css';
 import * as ECharts from 'echarts'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
-app.use(install)
+app.use(install).use(Antd)
 
 app.config.globalProperties.$ECharts = ECharts
 

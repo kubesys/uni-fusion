@@ -1,36 +1,23 @@
 <template>
-  <div class="wrap">
-    <div class="header">header</div>
-    <div class="main">
-      <div style="height: 300%">
-
-        <div class="content flex">
-          <div class="left">
-            left
-          </div>
-          <div class="center">
-            <div style="height: 300%">
-              <div>
-
-                center
-
-
-              </div>
-            </div>
-          </div>
-          <div class="right">
-            right
-          </div>
-        </div>
-
+  <el-dialog v-model="dialogVisible" width="80%" height="100%">
+    <div class="header" style="border-bottom:1px solid #dbdde0">
+      <div class="create-title" style="font-size: 16px; margin-left: 50px">
+        创建{{ dialogName }}
       </div>
     </div>
-    <div class="footer">footer</div>
-  </div>
+    <div class="sync-dialog">
+
+    </div>
+    <div class="footer" style="border-top:1px solid #dbdde0">footer</div>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+const dialogVisible = ref(false)
+
+const current = ref<number>(1);
+
 const templateDate = ref({
   "spec": {
     "template": {
@@ -140,9 +127,28 @@ const templateDate = ref({
     }
   }
 })
+
+const dialogName = ref('')
+const TableName = ref('')
+const showAndInit = (listName:any, tableName:any) => {
+  dialogName.value = listName
+  TableName.value = tableName
+  dialogVisible.value = true
+  // frontendCreateTemplate(TableName.value, templateSpec)
+}
+
+defineExpose({
+  showAndInit,
+})
+
 </script>
 
 <style scoped lang="scss">
+.sync-dialog {
+  height: 700px;
+  overflow: auto;
+}
+
 .wrap {
   display: -webkit-box;
   display: -webkit-flex;
@@ -157,11 +163,17 @@ const templateDate = ref({
   height: 100%;
 }
 
-.header, .footer {
+.header {
   height: 40px;
   line-height: 40px;
-  background-color: #D8D8D8;
-  text-align: center;
+  text-align: left;
+}
+
+.footer {
+  height: 40px;
+  text-align: right;
+  line-height: 40px;
+
 }
 
 .main {
@@ -173,25 +185,5 @@ const templateDate = ref({
   overflow: auto;
 }
 
-.content{
-  width: 100%;
-  background: bisque;
-  align-items: flex-start;
-  height: 100%;
-  overflow: hidden;
-}
-.left{
-  width: 300px;
-  background: yellowgreen;
-}
-.right{
-  width: 300px;
-  background: greenyellow;
-}
-.center{
-  flex-grow: 1;
-  background: aquamarine;
-  height: 100%;
-  overflow: auto;
-}
+
 </style>

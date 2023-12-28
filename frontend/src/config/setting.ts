@@ -1,6 +1,6 @@
 const defaultSetting = {
     isUniqueOpened: false, //只展开一个一级菜单
-    sideWidth: 200, //侧边栏宽度
+    sideWidth: 240, //侧边栏宽度
     sideTheme: 'light', //侧边栏主题
     // sideDarkColor: '#1d2124', //侧边栏深色主题颜色
     sideDarkColor: '#161f50', //侧边栏深色主题颜色

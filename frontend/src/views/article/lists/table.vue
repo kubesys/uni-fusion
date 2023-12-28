@@ -2,7 +2,7 @@
   <template class="host-header-list">
     <table-type />
     <div class="host-state">
-      <annular :key="annular"/>
+      <Annular :key="annular"/>
     </div>
   </template>
   <div class="frontendTable_container">
@@ -161,7 +161,7 @@ import { onMounted, ref } from 'vue';
 // import Stomp from 'stompjs';
 // import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
 import { frontendFormSearch, frontendData, frontendUpdate, getComplexDataDispose, getFormDataValue, getTerminalAddr, actionDataValue } from "@/api/common";
-import  CreateJsonDialog  from "@/views/article/CreateJson/CreateJsonDialog.vue";
+import  CreateJsonDialog  from "@/views/article/lists/template/createTemplate.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import jsYaml from 'js-yaml';

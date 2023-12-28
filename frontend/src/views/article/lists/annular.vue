@@ -5,7 +5,7 @@
             总数
         </div>
         <div style="float:left;margin-top: 3px;  margin-right:30px; font-weight: bolder; font-size: 12px">
-            {{tableData.metadata.totalCount}}
+            {{tableData.metadata.totalCount || 0}}
         </div>
     </div>
     <div style="margin-right: 20px; flex: 1">

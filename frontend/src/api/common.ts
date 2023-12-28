@@ -37,6 +37,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
         region: region
       }).then((resp) => {
         tableColumns.value = resp.data.data.spec.data;
+        console.log(tableColumns.value)
 
       }).catch((error) => {
         if (retry < retryCount) {
@@ -49,7 +50,14 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       if (retry < retryCount) {
         getResourceData(retry + 1);
       } else {
-        ElMessage.error('Request failed' + TableName + '-list');
+        getResource({
+          fullkind: "doslab.io.Frontend",
+          name: TableName + '-table',
+          namespace: "default",
+          region: region
+        }).then((resp) => {
+          tableColumns.value = resp.data.data.spec.data;
+        })
       }
     });
   }
@@ -419,3 +427,10 @@ export function actionDataValue(TableName:string, ListName:string, dialogVisible
     rowItemData.value = rowData.metadata
   }
 }
+
+/******************************************************************************************
+ *
+ * Create various values
+ * Url: https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/ccxy0kdbtsn023wl
+ *
+ ******************************************************************************************/

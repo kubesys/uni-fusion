@@ -6,18 +6,63 @@
       </div>
     </div>
     <div class="sync-dialog">
-      <div class="item1"></div>
-      <div class="item2"></div>
+      <div class="item1">
+        <a-steps
+            style="margin-left: 100px; margin-top: 10px; height: 200px"
+            progress-dot
+            :current="current"
+            active-color="#1890ff"
+            process-color="#52c41a"
+            direction="vertical"
+        >
+          <a-step v-for="(item, index) in templateDate.spec.stepName" :key="index">
+            <template #title>
+              <div class="step-title">{{ item.title }}</div>
+            </template>
+          </a-step>
+        </a-steps>
+      </div>
+      <div class="item2">
+        <a-card v-for="(group, groupName) in currentStepGroups" :key="groupName"  :tab-list="group.tabList" :active-tab-key="group.tabKey" style="border-bottom:1px solid #dbdde0;box-shadow: 0px 15px 5px -15px #c4c6c9;width: 100%; margin-top: 10px;">
+            <a-form :model="group" :label-col="labelCol" :wrapper-col="wrapperCol" >
+              <a-form-item v-for="(variable, key) in group.variables" :key="key" :label="variable.label">
+                <template v-if="variable.type === 'text' ">
+                  <a-input  ></a-input>
+                </template>
+                <template v-else-if="variable.type === 'select' " >
+                  <a-select  class="m-2" placeholder="Select">
+                  </a-select>
+                </template>
+                <template v-else-if="variable.type === 'radio'" >
+                  <a-radio-group >
+                    <el-radio :label="variable.data.label">{{ variable.data.label }}</el-radio>
+                  </a-radio-group>
+                </template>
+                <template v-else-if="variable.type === 'slider' " >
+                  <el-slider  show-input />
+                </template>
+                <template v-else-if="variable.type === 'number' " >
+                  <el-input-number  :min="1" :max="10" :step="variable.step"/>
+                </template>
+              </a-form-item>
+              <a-form-item v-for="(constants, key) in group.constants" :key="key" :label="constants.label">
+                <template v-if="constants.type === 'textbox' ">
+                  
+                </template>
+              </a-form-item>
+            </a-form>
+          </a-card>
+      </div>
     </div>
     <div class="footer" style="border-top:1px solid #dbdde0">footer</div>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 const dialogVisible = ref(false)
 
-const current = ref<number>(1);
+const current = ref<number>(0);
 
 const templateDate = ref({
   "spec": {
@@ -25,9 +70,25 @@ const templateDate = ref({
       "apiVersion": "v1",
       "kind": "VirtualMachine"
     },
+    "stepName": [
+      {
+        "title": "基础配置"
+      }, {
+        "title": "资源配置"
+      }, {
+        "title": "确认信息"
+      }
+    ],
     "data": {
       "step1": {
         "group1": {
+          "tabList": [
+            {
+              "key": "基础信息",
+              "tab": "基础信息"
+            }
+          ],
+          "tabKey": "基础信息",
           "constants": {
             "introduction": {
               "label": "简介",
@@ -49,6 +110,13 @@ const templateDate = ref({
           }
         },
         "group2": {
+          "tabList": [
+            {
+              "key": "基础规格",
+              "tab": "基础规格"
+            }
+          ],
+          "tabKey": "基础规格",
           "variables": {
             "spec.lifecycle.createAndStartVMFromISO.memory": {
               "label": "内存大小",
@@ -128,6 +196,19 @@ const templateDate = ref({
     }
   }
 })
+const labelCol = { style: { width: '70px' } };
+const wrapperCol = { span: 6 };
+
+const currentStep = ref('step1');
+const currentStepGroups = ref({});
+onMounted(() => {
+  updateCurrentStepGroups();
+});
+
+function updateCurrentStepGroups() {
+  currentStepGroups.value = templateDate.value.spec.data[currentStep.value];
+}
+
 
 const dialogName = ref('')
 const TableName = ref('')
@@ -152,13 +233,21 @@ defineExpose({
 }
 
 .item1 {
-  flex: 1; /* 占比为2 */
-  background-color: lightblue;
+  flex: 1;
+}
+
+.step-title {
+  text-align: left;
+  font-size: 14px;
+}
+
+:deep(.ant-steps-item::after) {
+  border-color: blue !important;
+  border-width: 2px !important;
 }
 
 .item2 {
-  flex: 4; /* 占比为1 */
-  background-color: lightcoral;
+  flex: 6;
 }
 
 .wrap {

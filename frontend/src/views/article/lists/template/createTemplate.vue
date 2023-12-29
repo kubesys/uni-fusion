@@ -6,7 +6,8 @@
       </div>
     </div>
     <div class="sync-dialog">
-
+      <div class="item1"></div>
+      <div class="item2"></div>
     </div>
     <div class="footer" style="border-top:1px solid #dbdde0">footer</div>
   </el-dialog>
@@ -147,6 +148,17 @@ defineExpose({
 .sync-dialog {
   height: 700px;
   overflow: auto;
+  display: flex;
+}
+
+.item1 {
+  flex: 1; /* 占比为2 */
+  background-color: lightblue;
+}
+
+.item2 {
+  flex: 4; /* 占比为1 */
+  background-color: lightcoral;
 }
 
 .wrap {

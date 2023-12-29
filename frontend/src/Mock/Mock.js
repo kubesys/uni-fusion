@@ -143,6 +143,70 @@ Mock.mock('http://localhost:5173/common/index/config',{
     }
 });
 
+Mock.mock('http://localhost:5173/kubesys/kube/route',{
+    code: 20000,
+    msg: "成功",
+    data: {
+            "apiVersion": "doslab.io/v1",
+            "kind": "Frontend",
+            "metadata": {
+                "name": "all-routes-test"
+            },
+            "spec": {
+                "catalogs": [{
+                    "name": "环境信息",
+                    "path": "/envInfo"
+                },
+                    {
+                        "name": "应用管理",
+                        "path": "/appMgr"
+                    }
+                ],
+                "groups": [{
+                    "name": "平台信息",
+                    "path": "/envInfo/basicInfo"
+                }
+                ],
+                "items": [{
+                    "component": "article/lists/index",
+                    "name": "平台Pod",
+                    "kind": "Node",
+                    "path": "/envInfo/basicInfo/node"
+                },
+                    {
+                        "component": "article/lists/index",
+                        "name": "系统Pod",
+                        "kind": "Pod",
+                        "path": "/envInfo/basicInfo/pod"
+                    },
+                    {
+                        "component": "article/lists/index",
+                        "name": "Namespace",
+                        "kind": "Namespace",
+                        "path": "/envInfo/basicInfo/namespace"
+                    },
+                    {
+                        "component": "article/dashboard/index",
+                        "source": "http://133.133.137.74:5173/",
+                        "name": "系统概览",
+                        "path": "/envInfo/basicInfo/index"
+                    },
+                    {
+                        "component": "article/lists/index",
+                        "name": "应用",
+                        "kind": "apps.Deployment",
+                        "path": "/envInfo/basicInfo/deployment"
+                    }
+                ]
+            }
+        }
+})
+
+Mock.mock('http://localhost:5173/kubesys/system/login',{
+    code: 20000,
+    data: "k4m9cmqtkhtz7dsocyh7n1q7fidf3fwhusgu5ajo8y4ludvecop7xa3xusombrdrmaiidaggd55662kwlxn14kbbauqzclmxk2kynhjwzlqr0asohesufhjfb7xzldfpnqwfqjxwr2rrupzxfbjvwx0xqxr4nicoo3wvdwq9h8ef0ccz6y2vnlnmum2nc3qxrnvbqzffbljoumrc8hb9bgzijzkdwewbagqlrmmwcgcgsavtb64llknhvaxfeqsf"
+})
+
 Mock.mock('http://localhost:5173/system/menu/route',{
     code:200,
     msg: "成功",

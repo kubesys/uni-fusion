@@ -111,7 +111,7 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
           if (retry < retryCount) {
             getResourceData(retry + 1); // 重新发送
           } else {
-            ElMessage.error('Request failed' + TableName + 'formsearch');
+            ElMessage.error('Request failed,' + TableName + 'formsearch');
           }
         });
   };

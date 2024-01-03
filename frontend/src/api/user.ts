@@ -25,7 +25,7 @@ export function getUserInfo() {
 
 // 菜单路由
 export function getMenu() {
-    return axios.post( '/kubesys/kube/route',{
+    return axios.post( '/kubesys/kube/getResource',{
         fullkind:"doslab.io.Frontend",
         name:"all-routes-test",
         namespace:"default",

@@ -13,11 +13,11 @@ import axios from "@/api/request";
 // }
 
 export function getResource(params : any) {
-    return axios.post( '/kubesys/system/getResource', params)
+    return axios.post( '/kubesys/kube/getResource', params)
 }
 
 export function listResources(params : any) {
-    return axios.post( '/kubesys/system/listResources', params)
+    return axios.post( '/kubesys/kube/listResources', params)
 }
 
 export function updateResource(params : any){

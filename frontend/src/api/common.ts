@@ -43,7 +43,6 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
         region: region
       }).then((resp) => {
         tableColumns.value = resp.data.data.spec.data;
-        console.log(tableColumns.value)
 
       }).catch((error) => {
         if (retry < retryCount) {
@@ -267,12 +266,12 @@ export function getComplexValue(scope, key){
         if (value !== undefined && value !== null) {
           newkey += '.' + value;
         } else {
-          console.log(2);
+          // console.log(2);
           // 处理 value 为 undefined 或 null 的情况
         }
       }
     });
-    console.log(newkey);
+    // console.log(newkey);
   }
 
 

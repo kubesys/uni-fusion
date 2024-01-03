@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" style="width:80%; height:100%" z-index="500">
+  <el-dialog v-model="dialogVisible" style="width:100%; height:100%" z-index="500">
     <div class="header" style="border-bottom:1px solid #dbdde0">
       <div class="create-title" style="font-size: 16px; margin-left: 50px">
         创建{{ dialogName }}
@@ -8,7 +8,7 @@
     <div class="sync-dialog">
       <div class="item1">
         <a-steps
-            style="margin-left: 150px; margin-top: 10px; height: 200px"
+            style="margin-left: 200px; margin-top: 10px; height: 200px"
             progress-dot
             :current="active"
             active-color="#1890ff"
@@ -36,10 +36,10 @@
                     >
               <a-form-item v-for="(variable, key) in group.variables" :key="key" :label="variable.label" labelAlign="left">
                 <template v-if="variable.type === 'text' ">
-                  <a-input  style="border-radius: 0px"/>
+                  <a-input  style="width: 300px; border-radius: 0px"/>
                 </template>
                 <template v-else-if="variable.type === 'select' " >
-                  <a-select  placeholder="Select" >
+                  <a-select style="width: 300px" placeholder="Select" >
 
                   </a-select>
                 </template>
@@ -83,25 +83,28 @@
                   </div>
                   <a-button type="link" @click="addDiv"><PlusOutlined />添加配置</a-button>
                 </template>
-
-                <template v-else-if="variable.type === 'confirm' " >
-                  <v-ace-editor v-model:value="jsonFormdata"
-                                lang="json"
-                                theme="cobalt"
-                                style="height: 500px"
-                                readonly="true"
-                                :options="{
-                                fontSize: 15
-                              }"/>
-                </template>
               </a-form-item>
               <a-form-item v-for="(constants, key) in group.constants" :key="key" :label="constants.label" labelAlign="left" >
                 <template v-if="constants.type === 'textbox' ">
-                  <a-textarea style="border-radius: 0px" :rows="3" :maxLength="256" @input="numLimit"/>
+                  <a-textarea style="width: 300px; border-radius: 0px" :rows="3" :maxLength="256" @input="numLimit"/>
                   <div class="textarea">{{ numberlimit }}/256</div>
                 </template>
               </a-form-item>
             </a-form>
+          <template v-if="group == 'confirm'" >
+<!--                              <v-ace-editor v-model:value="jsonFormdata"-->
+<!--                                            lang="json"-->
+<!--                                            theme="cobalt"-->
+<!--                                            style="height: 500px"-->
+<!--                                            readonly="true"-->
+<!--                                            :options="{-->
+<!--                                            fontSize: 15-->
+<!--                                          }"/>-->
+<!--            <pre>-->
+<!--              {{ jsonFormdata }}-->
+<!--            </pre>-->
+          </template>
+
           </a-card>
       </div>
     </div>
@@ -296,6 +299,7 @@ const templateDate = ref({
         }
       },
       "step3": {
+        "group" : "confirm"
       }
     }
   }
@@ -304,9 +308,6 @@ const templateDate = ref({
 function createJson(json) {
   const jsontemplate = {}
   let obj = { ...json.template, ...jsontemplate }
-  console.log(obj)
-  const arr = Object.values(json.data);
-  console.log(arr)
 
   for (const stepKey in json.data) {
     if (Object.hasOwnProperty.call(json.data, stepKey)) {
@@ -322,10 +323,8 @@ function createJson(json) {
             // 遍历每个变量
             for (const variableKey in group.variables) {
               if (Object.hasOwnProperty.call(group.variables, variableKey)) {
-                const variable = group.variables[variableKey];
-
-                // 在这里进行相应的处理
-                console.log(stepKey, groupKey, variableKey, variable);
+                // const variable = group.variables[variableKey];
+                // console.log( variableKey, variable);
 
                 let oj = {}
                 const arr1 = variableKey.split(".");
@@ -375,10 +374,11 @@ function createJson(json) {
   //   }
   // }
   //
-  console.log(obj)
+  return obj
 }
 
-const jsonFormdata = createJson(templateDate.value.spec)
+const jsonFormdata =  createJson(templateDate.value.spec)
+
 
 function assiginObj(target = {},sources= {}){
   const obj = target;
@@ -573,7 +573,7 @@ defineExpose({
 }
 
 .textarea{
-  width: 370px;
+  width: 330px;
   font-size: 10px;
   text-align: right;
   margin-top: -15px;

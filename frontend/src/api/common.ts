@@ -1,4 +1,11 @@
-import { getResource, listResources, updateResource, createResource, deleteResource } from "@/api/kubernetes"
+import {
+  getResourcetable,
+  listResources,
+  updateResource,
+  createResource,
+  deleteResource,
+  getResourcedesc, getResourceformsearch
+} from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
 
 export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local', retryCount = 5 ){
@@ -30,7 +37,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       tableData.value.resultRun = resultRun
       tableData.value.resultPen = resultPen
 
-      getResource({
+      getResourcetable({
         fullkind: "doslab.io.Frontend",
         name: TableName + '-table',
         namespace: "default",
@@ -50,7 +57,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       if (retry < retryCount) {
         getResourceData(retry + 1);
       } else {
-        getResource({
+        getResourcetable({
           fullkind: "doslab.io.Frontend",
           name: TableName + '-table',
           namespace: "default",
@@ -67,7 +74,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
 
 export function frontendMeta(TableName:string, descItem: [], region = 'local', retryCount = 5) {
   const getResourceData = (retry:any) => {
-    getResource({
+    getResourcedesc({
       fullkind: "doslab.io.Frontend",
       name: TableName + '-desc',
       namespace: "default",
@@ -91,7 +98,7 @@ export function frontendMeta(TableName:string, descItem: [], region = 'local', r
 
 export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 5) {
   const getResourceData = (retry:any) => {
-    getResource({
+    getResourceformsearch({
       fullkind: "doslab.io.Frontend",
       name: TableName + '-formsearch',
       namespace: "default",

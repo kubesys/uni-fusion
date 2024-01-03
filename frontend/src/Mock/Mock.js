@@ -147,64 +147,264 @@ Mock.mock('http://localhost:5173/kubesys/kube/route',{
     code: 20000,
     msg: "成功",
     data: {
-            "apiVersion": "doslab.io/v1",
-            "kind": "Frontend",
-            "metadata": {
-                "name": "all-routes-test"
+        "apiVersion": "doslab.io/v1",
+        "kind": "Frontend",
+        "metadata": {
+            "name": "all-routes-test"
+        },
+        "spec": {
+            "catalogs": [{
+                "name": "环境信息",
+                "path": "/envInfo"
             },
-            "spec": {
-                "catalogs": [{
-                    "name": "环境信息",
-                    "path": "/envInfo"
-                },
-                    {
-                        "name": "应用管理",
-                        "path": "/appMgr"
-                    }
-                ],
-                "groups": [{
-                    "name": "平台信息",
-                    "path": "/envInfo/basicInfo"
+                {
+                    "name": "应用管理",
+                    "path": "/appMgr"
                 }
-                ],
-                "items": [{
+            ],
+            "groups": [{
+                "name": "平台信息",
+                "path": "/envInfo/basicInfo"
+            }
+            ],
+            "items": [
+                {
                     "component": "article/lists/index",
-                    "name": "平台Pod",
+                    "name": "Node",
                     "kind": "Node",
                     "path": "/envInfo/basicInfo/node"
                 },
-                    {
-                        "component": "article/lists/index",
-                        "name": "系统Pod",
-                        "kind": "Pod",
-                        "path": "/envInfo/basicInfo/pod"
-                    },
-                    {
-                        "component": "article/lists/index",
-                        "name": "Namespace",
-                        "kind": "Namespace",
-                        "path": "/envInfo/basicInfo/namespace"
-                    },
-                    {
-                        "component": "article/dashboard/index",
-                        "source": "http://133.133.137.74:5173/",
-                        "name": "系统概览",
-                        "path": "/envInfo/basicInfo/index"
-                    },
-                    {
-                        "component": "article/lists/index",
-                        "name": "应用",
-                        "kind": "apps.Deployment",
-                        "path": "/envInfo/basicInfo/deployment"
-                    }
-                ]
-            }
+                {
+                    "component": "article/lists/index",
+                    "name": "Pod",
+                    "kind": "Pod",
+                    "path": "/envInfo/basicInfo/pod"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "Namespace",
+                    "kind": "Namespace",
+                    "path": "/envInfo/basicInfo/namespace"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "Deployment",
+                    "kind": "apps.Deployment",
+                    "path": "/envInfo/basicInfo/deployment"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "Frontend",
+                    "kind": "doslab.io.Frontend",
+                    "path": "/envInfo/basicInfo/frontend"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VirtualMachine",
+                    "kind": "doslab.io.VirtualMachine",
+                    "path": "/envInfo/basicInfo/vm"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VirtualMachinePool",
+                    "kind": "doslab.io.VirtualMachinePool",
+                    "path": "/envInfo/basicInfo/vmpool"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VirtualMachineDisk",
+                    "kind": "doslab.io.VirtualMachineDisk",
+                    "path": "/envInfo/basicInfo/disk"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VirtualMachineImages",
+                    "kind": "doslab.io.VirtualMachineImages",
+                    "path": "/envInfo/basicInfo/vmimage"
+                },
+                {
+                    "component": "article/dashboard/index",
+                    "source": "http://133.133.137.74:5173/",
+                    "name": "远程测试",
+                    "path": "/envInfo/basicInfo/index"
+                }
+            ]
         }
+    }
 })
 
 Mock.mock('http://localhost:5173/kubesys/system/login',{
     code: 20000,
     data: "k4m9cmqtkhtz7dsocyh7n1q7fidf3fwhusgu5ajo8y4ludvecop7xa3xusombrdrmaiidaggd55662kwlxn14kbbauqzclmxk2kynhjwzlqr0asohesufhjfb7xzldfpnqwfqjxwr2rrupzxfbjvwx0xqxr4nicoo3wvdwq9h8ef0ccz6y2vnlnmum2nc3qxrnvbqzffbljoumrc8hb9bgzijzkdwewbagqlrmmwcgcgsavtb64llknhvaxfeqsf"
+})
+
+Mock.mock('http://localhost:5173/kubesys/system/listResources',{
+    code: 20000,
+    data: null
+})
+
+Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
+    code: 20000,
+    data: {
+        "apiVersion": "doslab.io/v1",
+        "kind": "Frontend",
+        "metadata": {
+            "name": "pod-table"
+        },
+        "spec": {
+            "data": [{
+                "label": "Pod名",
+                "row": "metadata.name"
+            },
+                {
+                    "label": "IP地址ַ",
+                    "row": "status.podIP"
+                },
+                {
+                    "kind": "internalLink",
+                    "label": "命名空间",
+                    "row": "metadata.namespace",
+                    "internalLink": {
+                        "kind": "Namespace"
+                    }
+                },
+                {
+                    "kind": "internalLink",
+                    "label": "父类资源名",
+                    "link": "@metadata.ownerReferences[0].apiVersion;.;metadata.ownerReferences[0].kind",
+                    "row": "metadata.ownerReferences[0].name",
+                    "internalLink": {
+                        "kind": "@metadata.ownerReferences[0].apiVersion+metadata.ownerReferences[0].kind",
+                        "item": "@metadata.ownerReferences[0].name"
+                    }
+                },
+                {
+                    "label": "所在主机",
+                    "kind": "internalLink",
+                    "tag": "metadata##name",
+                    "row": "spec.nodeName",
+                    "internalLink": {
+                        "kind": "Node"
+                    }
+                },
+                {
+                    "label": "创建时间",
+                    "row": "metadata.creationTimestamp"
+                },
+                {
+                    "kind": "terminalLink",
+                    "label": "远程连接",
+                    "terminalLink": {
+                        "icon": "Monitor",
+                        "target": "http://133.133.135.134:30201/e/{containerID}",
+                        "values": [
+                            "status.containerStatuses[0]"
+                        ]
+                    }
+                },
+                {
+                    "kind": "terminalLink",
+                    "label": "容器日志",
+                    "terminalLink": {
+                        "icon": "Cellphone",
+                        "target": "http://133.133.135.134:30201/e/{containerID}?follow=1&tail=10",
+                        "values": [
+                            "status.containerStatuses[0]"
+                        ]
+                    }
+                },
+                {
+                    "label": "运行状态",
+                    "row": "status.phase",
+                    "iconLink": [
+                        {
+                            "value": "正常运行",
+                            "icon": "running.icon"
+                        },
+                        {
+                            "value": "失败停止",
+                            "icon": "fail.icon"
+                        }
+                    ]
+                },
+                {
+                    "kind": "action",
+                    "label": "更多操作",
+                    "actionLink": [
+                        {
+                            "label": "更新",
+                            "action": "UPDATE"
+                        },
+                        {
+                            "label": "删除",
+                            "action": "DELETE"
+                        },
+                        {
+                            "label": "扩容",
+                            "action": "pod-action-scale"
+                        }
+                    ]
+                }
+            ],
+            "type": "table"
+        }
+    }
+})
+
+Mock.mock('http://localhost:5173/kubesys/kube/getResource/desc',{
+    code: 20000,
+    data: {
+        "metadata":{
+            "name":"pod-desc"
+        },
+        "apiVersion":"doslab.io/v1",
+        "kind":"Frontend",
+        "spec":{
+            "title": "Pod",
+            "desc": "Pod是Kubernetes原生概念，是容器的基本运行单元。",
+            "type": "description"
+        }
+    }
+})
+
+Mock.mock('http://localhost:5173/kubesys/kube/getResource/formsearch',{
+    code: 20000,
+    data: {
+        "metadata": {
+            "name": "pod-formsearch"
+        },
+        "apiVersion": "doslab.io/v1",
+        "kind": "Frontend",
+        "spec": {
+            "data": {
+                "items": [{
+                    "label": "资源名称:",
+                    "path": "metadata##name",
+                    "type": "textbox"
+                },
+                    {
+                        "label": "所在主机:",
+                        "path": "spec##nodeName",
+                        "type": "combobox",
+                        "data": {
+                            "kind": "Node",
+                            "field": "metadata##name"
+                        }
+                    },
+                    {
+                        "label": "实例状态:",
+                        "path": "status##phase",
+                        "type": "combobox",
+                        "data": {
+                            "kind": "ConfigMap",
+                            "namespace": "default",
+                            "name": "pod-status"
+                        }
+                    }]
+            },
+            "type": "formsearch"
+        }
+    }
 })
 
 Mock.mock('http://localhost:5173/system/menu/route',{

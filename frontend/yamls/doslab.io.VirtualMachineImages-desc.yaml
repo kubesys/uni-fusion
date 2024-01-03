@@ -1,0 +1,12 @@
+{
+  "metadata":{
+    "name":"doslab.io.virtualmachineimages-desc"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "title": "镜像",
+    "desc": "云主机或云盘使用的镜像模板文件，包括两种类型：系统镜像、云盘镜像。",
+    "type": "description"
+  }
+}

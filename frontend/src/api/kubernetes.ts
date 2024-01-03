@@ -1,20 +1,23 @@
 import axios from "@/api/request";
 
-export function getResourcetable(params : any) {
-    return axios.post( 'http://localhost:5173/kubesys/kube/getResource/table', params)
-}
+// export function getResourcetable(params : any) {
+//     return axios.post( 'http://localhost:5173/kubesys/kube/getResource/table', params)
+// }
+//
+// export function getResourcedesc(params : any) {
+//     return axios.post( 'http://localhost:5173/kubesys/kube/getResource/desc', params)
+// }
+//
+// export function getResourceformsearch(params : any) {
+//     return axios.post( 'http://localhost:5173/kubesys/kube/getResource/formsearch', params)
+// }
 
-export function getResourcedesc(params : any) {
-    return axios.post( 'http://localhost:5173/kubesys/kube/getResource/desc', params)
+export function getResource(params : any) {
+    return axios.post( '/kubesys/system/getResource', params)
 }
-
-export function getResourceformsearch(params : any) {
-    return axios.post( 'http://localhost:5173/kubesys/kube/getResource/formsearch', params)
-}
-
 
 export function listResources(params : any) {
-    return axios.post( 'http://localhost:5173/kubesys/system/listResources', params)
+    return axios.post( '/kubesys/system/listResources', params)
 }
 
 export function updateResource(params : any){

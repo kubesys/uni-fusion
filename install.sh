@@ -21,6 +21,7 @@ database=("kubestack" "kubeauth")
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-token.yaml?version=$VERSION" -o kube-token.yaml
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-database.yaml?version=$VERSION" -o kube-database.yaml
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-message.yaml?version=$VERSION" -o kube-message.yaml
+curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-caching.yaml?version=$VERSION" -o kube-caching.yaml
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-mirror.yaml?version=$VERSION" -o kube-mirror.yaml
 curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kube-backend.yaml?version=$VERSION" -o kube-backend.yaml
 

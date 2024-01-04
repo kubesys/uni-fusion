@@ -42,12 +42,12 @@ function wait-ready()
   done
 }
 
-kubectl create ns kube-stack
+kubectl create ns kube-iscas
 
 function create-database()
 {
   pod_name=$(kubectl get po -A | grep kube-database | awk '{print$2}')
-  kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d postgres -c "CREATE DATABASE $1;"
+  kubectl exec -it $pod_name -n kube-iscas -- psql -h 127.0.0.1 -U postgres -d postgres -c "CREATE DATABASE $1;"
 }
 
 for pod in "${third_parts[@]}"
@@ -71,7 +71,7 @@ pod_name=$(kubectl get po -A | grep kube-database | awk '{print$2}')
 timestamp=$(date +"%Y-%m-%d %H:%M:%S.%6N")
  
 # echo -n onceas | base64
-kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_user\" (\"name\", \"createdat\", \"updatedat\", \"password\", \"role\", \"token\") VALUES('admin','$timestamp','$timestamp','b25jZWFz', 'admin','');"
+kubectl exec -it $pod_name -n kube-iscas -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_user\" (\"name\", \"createdat\", \"updatedat\", \"password\", \"role\", \"token\") VALUES('admin','$timestamp','$timestamp','b25jZWFz', 'admin','');"
 #
 IP=$(cat /root/.kube/config | grep server | awk '{print$2}')
 
@@ -85,4 +85,4 @@ fi
 
 
 echo "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"
-kubectl exec -it $pod_name -n kube-stack -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"
+kubectl exec -it $pod_name -n kube-iscas -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"

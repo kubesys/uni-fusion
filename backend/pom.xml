@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.kubesys</groupId>
 	<artifactId>backend</artifactId>
-	<version>0.3.2.1</version>
+	<version>0.3.2.2</version>
 	<packaging>jar</packaging>
 	<name>backend</name>
 	<description>backend</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<kubemirror.version>0.3.2.1</kubemirror.version>
+		<kubemirror.version>0.3.2.2</kubemirror.version>
 		<kubespring.version>2.2.7</kubespring.version>
 		<keycloak.version>21.1.1</keycloak.version>
 	</properties>

@@ -6,79 +6,184 @@
   },
   "spec": {
     "catalogs": [{
-      "name": "环境信息",
+      "name": "资源中心",
       "path": "/envInfo"
     },
       {
-        "name": "应用管理",
+        "name": "平台运维",
         "path": "/appMgr"
+      },
+      {
+        "name": "设置",
+        "path": "/config"
       }
     ],
     "groups": [{
-      "name": "平台信息",
+      "name": "云资源池",
       "path": "/envInfo/basicInfo"
-    }
-    ],
-    "items": [
+    }, {
+      "name": "硬件设施",
+      "path": "/envInfo/hardware"
+    }, {
+      "name": "网络资源",
+      "path": "/envInfo/resource"
+    }, {
+      "name": "网络服务",
+      "path": "/envInfo/service"
+    }, {
+      "name": "消息日志",
+      "path": "/appMgr/log"
+    }, {
+      "name": "设置",
+      "path": "/config/config"
+    }],
+    "items": [{
+      "component": "article/lists/index",
+      "label": "虚拟资源",
+      "name": "云主机",
+      "kind": "doslab.io.VirtualMachine",
+      "path": "/envInfo/basicInfo/vm"
+    },
       {
         "component": "article/lists/index",
-        "name": "Node",
-        "kind": "Node",
-        "path": "/envInfo/basicInfo/node"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "Pod",
-        "kind": "Pod",
-        "path": "/envInfo/basicInfo/pod"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "Namespace",
-        "kind": "Namespace",
-        "path": "/envInfo/basicInfo/namespace"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "Deployment",
-        "kind": "apps.Deployment",
-        "path": "/envInfo/basicInfo/deployment"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "Frontend",
-        "kind": "doslab.io.Frontend",
-        "path": "/envInfo/basicInfo/frontend"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "VirtualMachine",
-        "kind": "doslab.io.VirtualMachine",
-        "path": "/envInfo/basicInfo/vm"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "VirtualMachinePool",
-        "kind": "doslab.io.VirtualMachinePool",
-        "path": "/envInfo/basicInfo/vmpool"
-      },
-      {
-        "component": "article/lists/index",
-        "name": "VirtualMachineDisk",
+        "name": "云盘",
+        "label": "虚拟资源",
         "kind": "doslab.io.VirtualMachineDisk",
         "path": "/envInfo/basicInfo/disk"
       },
       {
         "component": "article/lists/index",
-        "name": "VirtualMachineImages",
-        "kind": "doslab.io.VirtualMachineImages",
+        "name": "云主机镜像",
+        "label": "虚拟资源",
+        "kind": "doslab.io.VirtualMachineImage",
+        "path": "/envInfo/basicInfo/disk"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "云盘镜像",
+        "label": "虚拟资源",
+        "kind": "doslab.io.VirtualMachineDiskImage",
+        "path": "/envInfo/basicInfo/disk"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "计算规格",
+        "kind": "doslab.io.VirtualMachineSpec",
         "path": "/envInfo/basicInfo/vmimage"
       },
       {
-        "component": "article/dashboard/index",
-        "source": "http://133.133.137.74:5173/",
-        "name": "远程测试",
-        "path": "/envInfo/basicInfo/index"
+        "component": "article/lists/index",
+        "name": "云盘规格",
+        "kind": "doslab.io.VirtualMachineDiskSpec",
+        "path": "/envInfo/basicInfo/vmimage"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "云主机快照",
+        "kind": "doslab.io.VirtualMachineSnapshot",
+        "path": "/envInfo/basicInfo/vmimage"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "云盘快照",
+        "kind": "doslab.io.VirtualMachineDiskSnapshot",
+        "path": "/envInfo/basicInfo/vmimage"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "区域",
+        "kind": "doslab.io.Zone",
+        "path": "/envInfo/hardware/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "集群",
+        "kind": "doslab.io.Cluster",
+        "path": "/envInfo/hardwareo/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "物理机",
+        "kind": "Node",
+        "path": "/envInfo/hardwareo/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "主存储",
+        "kind": "doslab.io.VirtualMachinePools",
+        "path": "/envInfo/hardwareo/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "二层网络",
+        "kind": "Node",
+        "path": "/envInfo/resource/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VXLAN Pool",
+        "kind": "kubeovn.io.Subnet",
+        "path": "/envInfo/resource/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "共有网络",
+        "kind": "kubeovn.io.IPPool",
+        "path": "/envInfo/resource/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "扁平网络",
+        "kind": "kubeovn.io.IP",
+        "path": "/envInfo/resource/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VPC网络",
+        "kind": "kubeovn.io.VPC",
+        "path": "/envInfo/resource/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VPC路由器",
+        "kind": "Node",
+        "path": "/envInfo/resource/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "安全组",
+        "kind": "kubeovn.io.SecurityGroup",
+        "path": "/envInfo/service/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "虚拟IP",
+        "kind": "kubeovn.io.OvnEip",
+        "path": "/envInfo/service/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "弹性IP",
+        "kind": "kubeovn.io.OvnFip",
+        "path": "/envInfo/service/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "端口转发",
+        "kind": "Node",
+        "path": "/envInfo/service/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "操作日志",
+        "kind": "doslab.io.Log",
+        "path": "/appMgr/log/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "全局设置",
+        "kind": "Node",
+        "path": "/config/config/node"
       }
     ]
   }

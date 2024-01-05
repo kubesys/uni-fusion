@@ -30,7 +30,7 @@ public class RabbitMQClient {
 	/**
 	 * 默认MQ地址
 	 */
-	static final String DEFAULT_URL = "amqp://kube-message.kube-stack:5672";
+	static final String DEFAULT_URL = "amqp://kube-message.kube-iscas:5672";
 
 	/**
 	 * 默认用户名

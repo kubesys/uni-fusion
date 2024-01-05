@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "name": "pod-formsearch"
+    "name": "doslab.io.virtualmachine-formsearch"
   },
   "apiVersion": "doslab.io/v1",
   "kind": "Frontend",
   "spec": {
     "data": {
       "items": [{
-        "label": "资源名称:",
+        "label": "云主机名称:",
         "path": "metadata##name",
         "type": "textbox"
       }]

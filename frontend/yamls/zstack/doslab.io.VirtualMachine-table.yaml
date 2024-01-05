@@ -2,20 +2,23 @@
   "apiVersion": "doslab.io/v1",
   "kind": "Frontend",
   "metadata": {
-    "name": "pod-table"
+    "name": "doslab.io.virtualmachine-table"
   },
   "spec": {
     "data": [{
-      "label": "Pod名",
+      "title": "名称",
+      "fixed": "left",
+      "dataIndex": "name",
+      "width": "300px",
       "row": "metadata.name"
     },
       {
-        "label": "IP地址ַ",
+        "title": "控制台ַ",
         "row": "status.podIP"
       },
       {
-        "kind": "internalLink",
-        "label": "命名空间",
+        "kind": "启用状态",
+        "title": "命名空间",
         "row": "metadata.namespace",
         "internalLink": {
           "kind": "Namespace"
@@ -23,7 +26,7 @@
       },
       {
         "kind": "internalLink",
-        "label": "父类资源名",
+        "title": "CPU",
         "link": "@metadata.ownerReferences[0].apiVersion;.;metadata.ownerReferences[0].kind",
         "row": "metadata.ownerReferences[0].name",
         "internalLink": {
@@ -32,7 +35,7 @@
         }
       },
       {
-        "label": "所在主机",
+        "title": "内存",
         "kind": "internalLink",
         "tag": "metadata##name",
         "row": "spec.nodeName",
@@ -41,29 +44,38 @@
         }
       },
       {
-        "label": "创建时间",
+        "title": "IPv4地址",
         "row": "metadata.creationTimestamp"
       },
       {
         "kind": "terminalLink",
-        "label": "远程连接",
+        "title": "远程连接",
         "terminalLink": {
-          "icon": "a.icon",
-          "target": "http://133.133.135.134:30201/?pod={1}&namespace={2}",
+          "icon": "Monitor",
+          "target": "http://133.133.135.134:30201/e/{containerID}",
           "values": [
-            "metadata.name",
-            "metadata.namespace"
+            "status.containerStatuses[0]"
           ]
         }
       },
       {
-        "label": "运行状态",
+        "kind": "terminalLink",
+        "title": "CPU架构",
+        "terminalLink": {
+          "icon": "Cellphone",
+          "target": "http://133.133.135.134:30201/e/{containerID}?follow=1&tail=10",
+          "values": [
+            "status.containerStatuses[0]"
+          ]
+        }
+      },
+      {
+        "title": "平台",
         "row": "status.phase",
-        "iconLink": [
-          {
-            "value": "正常运行",
-            "icon": "running.icon"
-          },
+        "iconLink": [{
+          "value": "正常运行",
+          "icon": "running.icon"
+        },
           {
             "value": "失败停止",
             "icon": "fail.icon"
@@ -71,13 +83,22 @@
         ]
       },
       {
+        "title": "所有者",
+        "width": "300px",
+        "row": "metadata.creationTimestamp"
+      },
+      {
+        "title": "创建时间",
+        "row": "metadata.creationTimestamp"
+      },
+      {
         "kind": "action",
-        "label": "更多操作",
-        "actionLink": [
-          {
-            "label": "更新",
-            "action": "UPDATE"
-          },
+        "title": "操作",
+        "fixed": "right",
+        "actionLink": [{
+          "label": "更新",
+          "action": "UPDATE"
+        },
           {
             "label": "删除",
             "action": "DELETE"

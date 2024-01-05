@@ -292,39 +292,52 @@ Mock.mock('http://localhost:5173/kubesys/kube/route-test',{
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "镜像",
-                    "label": "计算配置",
-                    "kind": "doslab.io.VirtualMachineImages",
-                    "path": "/envInfo/basicInfo/vmimage"
+                    "name": "云主机镜像",
+                    "label": "虚拟资源",
+                    "kind": "doslab.io.VirtualMachineImage",
+                    "path": "/envInfo/basicInfo/disk"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "云盘镜像",
+                    "label": "虚拟资源",
+                    "kind": "doslab.io.VirtualMachineDiskImage",
+                    "path": "/envInfo/basicInfo/disk"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "计算规格",
-                    "kind": "doslab.io.VirtualMachineImages",
+                    "kind": "doslab.io.VirtualMachineSpec",
                     "path": "/envInfo/basicInfo/vmimage"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "云盘规格",
-                    "kind": "doslab.io.VirtualMachineImages",
+                    "kind": "doslab.io.VirtualMachineDiskSpec",
                     "path": "/envInfo/basicInfo/vmimage"
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "快照",
-                    "kind": "doslab.io.VirtualMachineImages",
+                    "name": "云主机快照",
+                    "kind": "doslab.io.VirtualMachineSnapshot",
+                    "path": "/envInfo/basicInfo/vmimage"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "云盘快照",
+                    "kind": "doslab.io.VirtualMachineDiskSnapshot",
                     "path": "/envInfo/basicInfo/vmimage"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "区域",
-                    "kind": "Node",
+                    "kind": "doslab.io.Zone",
                     "path": "/envInfo/hardware/node"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "集群",
-                    "kind": "Node",
+                    "kind": "doslab.io.Cluster",
                     "path": "/envInfo/hardwareo/node"
                 },
                 {
@@ -336,13 +349,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/route-test',{
                 {
                     "component": "article/lists/index",
                     "name": "主存储",
-                    "kind": "Node",
-                    "path": "/envInfo/hardwareo/node"
-                },
-                {
-                    "component": "article/lists/index",
-                    "name": "镜像服务器",
-                    "kind": "Node",
+                    "kind": "doslab.io.VirtualMachinePools",
                     "path": "/envInfo/hardwareo/node"
                 },
                 {
@@ -354,25 +361,25 @@ Mock.mock('http://localhost:5173/kubesys/kube/route-test',{
                 {
                     "component": "article/lists/index",
                     "name": "VXLAN Pool",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.Subnet",
                     "path": "/envInfo/resource/node"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "共有网络",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.IPPool",
                     "path": "/envInfo/resource/node"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "扁平网络",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.IP",
                     "path": "/envInfo/resource/node"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "VPC网络",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.VPC",
                     "path": "/envInfo/resource/node"
                 },
                 {
@@ -383,38 +390,20 @@ Mock.mock('http://localhost:5173/kubesys/kube/route-test',{
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "路由器镜像",
-                    "kind": "Node",
-                    "path": "/envInfo/resource/node"
-                },
-                {
-                    "component": "article/lists/index",
-                    "name": "路由器规格",
-                    "kind": "Node",
-                    "path": "/envInfo/resource/node"
-                },
-                {
-                    "component": "article/lists/index",
-                    "name": "管理网络",
-                    "kind": "Node",
-                    "path": "/envInfo/resource/node"
-                },
-                {
-                    "component": "article/lists/index",
                     "name": "安全组",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.SecurityGroup",
                     "path": "/envInfo/service/node"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "虚拟IP",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.OvnEip",
                     "path": "/envInfo/service/node"
                 },
                 {
                     "component": "article/lists/index",
                     "name": "弹性IP",
-                    "kind": "Node",
+                    "kind": "kubeovn.io.OvnFip",
                     "path": "/envInfo/service/node"
                 },
                 {
@@ -425,19 +414,13 @@ Mock.mock('http://localhost:5173/kubesys/kube/route-test',{
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "负载均衡",
-                    "kind": "Node",
-                    "path": "/envInfo/service/node"
-                },
-                {
-                    "component": "article/lists/index",
                     "name": "操作日志",
-                    "kind": "Node",
+                    "kind": "doslab.io.Log",
                     "path": "/appMgr/log/node"
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "全局日志",
+                    "name": "全局设置",
                     "kind": "Node",
                     "path": "/config/config/node"
                 }

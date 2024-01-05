@@ -1,0 +1,42 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "doslab.io.virtualmachinedisk-table"
+  },
+  "spec": {
+    "data": [
+      {
+        "label": "名称",
+        "row": "metadata.name"
+      },
+      {
+        "label": "容量",
+        "row": "spec.domain.vcpu._current"
+      },
+      {
+        "label": "启用状态",
+        "row": "spec.powerstate"
+      },
+      {
+        "label": "创建时间",
+        "row": "metadata.managedFields[0].time"
+      },
+      {
+        "kind": "action",
+        "label": "更多操作",
+        "actionLink": [
+          {
+            "label": "更新",
+            "action": "UPDATE"
+          },
+          {
+            "label": "删除云盘",
+            "action": "DELETE"
+          }
+        ]
+      }
+    ],
+    "type": "table"
+  }
+}

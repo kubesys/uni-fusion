@@ -1,0 +1,65 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "doslab.io.virtualmachine-table"
+  },
+  "spec": {
+    "data": [
+      {
+        "label": "虚拟机名称",
+        "row": "metadata.name"
+      },
+      {
+        "label": "CPU",
+        "row": "spec.domain.vcpu._current"
+      },
+      {
+        "label": "内存(KB)",
+        "row": "spec.domain.currentMemory.text"
+      },
+      {
+        "label": "CPU架构",
+        "row": "spec.domain.os.type._arch"
+      },
+      {
+        "label": "类型",
+        "row": "spec.domain._type"
+      },
+      {
+        "label": "创建时间",
+        "row": "metadata.managedFields[0].time"
+      },
+      {
+        "label": "启用状态",
+        "row": "spec.powerstate"
+      },
+      {
+        "kind": "terminalLink",
+        "label": "远程连接",
+        "terminalLink": {
+          "icon": "Monitor",
+          "target": "http://133.133.135.134:6080?{port}",
+          "values": [
+            "port"
+          ]
+        }
+      },
+      {
+        "kind": "action",
+        "label": "更多操作",
+        "actionLink": [
+          {
+            "label": "更新",
+            "action": "UPDATE"
+          },
+          {
+            "label": "删除虚拟机",
+            "action": "DELETE"
+          }
+        ]
+      }
+    ],
+    "type": "table"
+  }
+}

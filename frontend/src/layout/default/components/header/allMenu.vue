@@ -8,20 +8,26 @@
           <input type="text" placeholder="  搜索">
         </div>
         <div class="showData" v-for="catalog in userStore.catalogs" :key="catalog.name">
-          <div class="line" />
-<!--          <div class="dataItems">-->
+
+          <a-divider style="border-color: #dbdde0; font-size: 12px" orientation="left" orientation-margin="0px">
+            <span style="color: #96989b">{{ catalog.name }}</span></a-divider>
+
+          <!--          <div class="dataItems">-->
 <!--            <el-row >-->
 <!--              <el-col v-for="data in row.items" :key="data.index" :span=data.span>-->
 <!--                {{data.name}}<div class="dataItems-main" v-for="items in data.classify">{{items}}</div>-->
 <!--              </el-col>-->
 <!--            </el-row>-->
 <!--          </div>-->
-          <div class="dataItems" >
+          <div class="dataItems" v-for="item in gropsItems" >
             <!--                        <a :href="`#${catalog.path}`" @click="handleCatalogClick(catalog)">{{ catalog.name }}</a>-->
-            <router-link :to=routes.path @click="handleCatalogClick(catalog)">{{ catalog.name }}</router-link>
-            <div class="showData_inner" v-for="group in userStore.groups" :key="group.name">
-              <span v-if="group.path.startsWith(catalog.path)" >
-                {{group.name}}
+
+            <div class="showData_inner" v-for="group in item" :key="group.name">
+              <span v-if="group.path.startsWith(catalog.path)">
+                <div style="font-size: 14px; font-weight: bolder">
+                  {{group.name}}
+                </div>
+
                 <div class="showData_inner_inner" v-for="item in userStore.menu" :key="item.name">
                   <router-link v-if="item.path.startsWith(group.path)" :to=item.path>
                     {{item.name}}
@@ -47,6 +53,25 @@ const userStore = useUserStore()
 
 const routes = useRoute()
 const title = routes.meta?.title
+
+const gropsItems = ref([])
+const groupByPath = (groups) => {
+  const grouped = {};
+  groups.forEach((group) => {
+    const path = group.path.split('/')[1];
+    if (!grouped[path]) {
+      grouped[path] = [];
+    }
+    grouped[path].push(group);
+  });
+  return Object.values(grouped);
+};
+
+onMounted(() => {
+  gropsItems.value = groupByPath(userStore.groups);
+});
+
+
 
 const handleCatalogClick = (catalog) => {
   // 更新 Store 中选中的catalog
@@ -103,15 +128,12 @@ const handleCatalogClick = (catalog) => {
   border: 1px solid #d2d2d2;
 }
 
-.showData .title {
-  color: #a8abb2;
-  font-size: 10px;
-  float: left;
-  margin-top: 15px;;
+.showData {
+  margin-right: 20px;
 }
 
 .showData_inner{
-  margin-top: 20px;
+  flex: 1;
   font-size: 16px;
   font-weight: normal;
 }
@@ -119,26 +141,18 @@ const handleCatalogClick = (catalog) => {
 .showData_inner_inner{
   margin-top: 10px;
   font-size: 13px;
-  color: #a8abb2;
+  color: #707275;
 }
 
-.line {
-  float: left;
-  margin-top: 24px;
-  margin-left: 10px;
-  width: 600px;
-  height: 1px;
-  background: #c0c4cc;
-}
 
 .dataItems {
   color: #0a0a0a;
   width: 100%;
   float: left;
-  margin-top: 20px;
+  margin-bottom: 5px;
   margin-left: 20px;
-  font-size: 20px;
-  font-weight: 700;
+
+  display: flex;
 }
 
 .dataItems-main {

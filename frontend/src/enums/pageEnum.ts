@@ -6,5 +6,4 @@ export enum PageEnum {
     // 404
     ERROR_404 = '/:pathMatch(.*)*',
     INDEX = '/',
-    GUIDE = '/test'
 }

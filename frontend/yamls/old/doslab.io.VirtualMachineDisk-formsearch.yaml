@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "name": "doslab.io.virtualmachinedisk-formsearch"
+  },
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "spec": {
+    "data": {
+      "items": [{
+        "label": "云盘名称:",
+        "path": "metadata##name",
+        "type": "textbox"
+      }]
+    },
+    "type": "formsearch"
+  }
+}

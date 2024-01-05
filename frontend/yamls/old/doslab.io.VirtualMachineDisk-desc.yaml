@@ -1,0 +1,12 @@
+{
+  "metadata":{
+    "name":"doslab.io.virtualmachinedisk-desc"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "title": "云盘规格",
+    "desc": "云盘涉及的容量大小的规格定义。",
+    "type": "description"
+  }
+}

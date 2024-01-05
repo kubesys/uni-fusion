@@ -1,0 +1,12 @@
+{
+  "metadata":{
+    "name":"doslab.io.virtualmachine-desc"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "title": "云主机",
+    "desc": "运行在物理机上的虚拟机实例，具有独立的IP地址，可以访问公共网络，运行应用服务。",
+    "type": "description"
+  }
+}

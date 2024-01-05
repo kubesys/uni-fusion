@@ -1,0 +1,12 @@
+{
+  "metadata":{
+    "name":"pod-desc"
+  },
+  "apiVersion":"doslab.io/v1",
+  "kind":"Frontend",
+  "spec":{
+    "title": "Pod",
+    "desc": "Pod是Kubernetes原生概念，是容器的基本运行单元。",
+    "type": "description"
+  }
+}

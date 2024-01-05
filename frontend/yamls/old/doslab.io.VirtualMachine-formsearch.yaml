@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "name": "doslab.io.virtualmachine-formsearch"
+  },
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "spec": {
+    "data": {
+      "items": [{
+        "label": "云主机名称:",
+        "path": "metadata##name",
+        "type": "textbox"
+      }]
+    },
+    "type": "formsearch"
+  }
+}

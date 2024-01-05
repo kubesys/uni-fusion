@@ -14,7 +14,7 @@
         <div class="flex-1  flex-col min-w-0">
 
 
-            <div class="app-main flex-1 min-h-0">
+            <div class="app-main flex-1 min-h-0" >
                 <layout-main />
             </div>
         </div>

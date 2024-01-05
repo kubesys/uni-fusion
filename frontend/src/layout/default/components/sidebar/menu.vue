@@ -5,6 +5,7 @@
         :style="isCollapsed ? '' : `--aside-width: ${width}px`"
     >
         <el-scrollbar>
+
             <el-menu
                 v-bind="config"
                 :default-active="activeMenu"
@@ -13,6 +14,7 @@
                 :unique-opened="uniqueOpened"
                 @select="$emit('select')"
             >
+
                 <menu-item
                     v-for="route in routes"
                     :key="route.path"
@@ -20,7 +22,10 @@
                     :route-path="route.path"
                     :popper-class="themeClass"
                 />
+
             </el-menu>
+
+
         </el-scrollbar>
     </div>
 </template>

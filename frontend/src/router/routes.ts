@@ -16,8 +16,10 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { PageEnum } from '@/enums/pageEnum'
 import Layout from '@/layout/default/index.vue'
+import HomePage from '@/layout/homepage/index.vue'
 
 export const LAYOUT = () => Promise.resolve(Layout)
+export const HOMEPAGE = () => Promise.resolve(HomePage)
 
 export const INDEX_ROUTE_NAME = Symbol()
 
@@ -35,12 +37,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/account/login.vue')
     },
     {
-        path: PageEnum.GUIDE,
-        component: () => import('@/views/guide/Step1.vue')
-    },
-    {
-        path: '/test1',
-        component: () => import('@/views/guide/Step2.vue')
+        path: '/home',
+        component: HOMEPAGE,
+        children: [
+            {
+                path: 'dashboard',
+                component: () => import('@/views/article/dashboard/dashboard.vue')
+            }
+        ]
     },
     {
         path: '/user',

@@ -1,5 +1,7 @@
 import {
-  getResource,
+  getResourceformsearch,
+  getResourcedesc,
+  getResourcetable,
   listResources,
   updateResource,
   createResource,
@@ -7,7 +9,7 @@ import {
 } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
 
-export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local', retryCount = 5 ){
+export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local', retryCount = 10 ){
   const getResourceData = (retry:any) => {
     listResources({
       fullkind: ListName,
@@ -36,7 +38,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       tableData.value.resultRun = resultRun
       tableData.value.resultPen = resultPen
 
-      getResource({
+      getResourcetable({
         fullkind: "doslab.io.Frontend",
         name: TableName + '-table',
         namespace: "default",
@@ -55,7 +57,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       if (retry < retryCount) {
         getResourceData(retry + 1);
       } else {
-        getResource({
+        getResourcetable({
           fullkind: "doslab.io.Frontend",
           name: TableName + '-table',
           namespace: "default",
@@ -70,9 +72,9 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
   getResourceData(1);
 }
 
-export function frontendMeta(TableName:string, descItem: [], region = 'local', retryCount = 5) {
+export function frontendMeta(TableName:string, descItem: [], region = 'local', retryCount = 10) {
   const getResourceData = (retry:any) => {
-    getResource({
+    getResourcedesc({
       fullkind: "doslab.io.Frontend",
       name: TableName + '-desc',
       namespace: "default",
@@ -94,9 +96,9 @@ export function frontendMeta(TableName:string, descItem: [], region = 'local', r
   getResourceData(1);
 }
 
-export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 5) {
+export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 10) {
   const getResourceData = (retry:any) => {
-    getResource({
+    getResourceformsearch({
       fullkind: "doslab.io.Frontend",
       name: TableName + '-formsearch',
       namespace: "default",
@@ -333,12 +335,8 @@ export function getComplexValue(scope, key){
     } else if (result === 'Active') {
       result = '🟢'
     }
-    else if ((result + '').endsWith('Ki')) {
-      result = (Number(result.substring(0, result.length - 2).trim())/1024/1024).toFixed(2) + 'GB'
-    } else if ((result + '').endsWith('Mi')) {
-      result = (Number(result.substring(0, result.length - 2).trim())/1024).toFixed(2) + 'GB'
-    } else if ((result + '').endsWith('Ti')) {
-      result = (Number(result.substring(0, result.length - 2).trim())*1024).toFixed(2) + 'GB'
+    else if (key.includes('Memory')) {
+      result = result/1024 + 'GB'
     }
     else if (result === 'local') {
       result = '本地服务器'

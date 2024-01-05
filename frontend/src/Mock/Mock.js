@@ -200,7 +200,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/route',{
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "VirtualMachine",
+                    "name": "云主机",
                     "kind": "doslab.io.VirtualMachine",
                     "path": "/envInfo/basicInfo/vm"
                 },
@@ -212,7 +212,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/route',{
                 },
                 {
                     "component": "article/lists/index",
-                    "name": "VirtualMachineDisk",
+                    "name": "云盘",
                     "kind": "doslab.io.VirtualMachineDisk",
                     "path": "/envInfo/basicInfo/disk"
                 },
@@ -232,6 +232,220 @@ Mock.mock('http://localhost:5173/kubesys/kube/route',{
         }
     }
 })
+
+Mock.mock('http://localhost:5173/kubesys/kube/route-test',{
+    code: 20000,
+    msg: "成功",
+    data: {
+        "apiVersion": "doslab.io/v1",
+        "kind": "Frontend",
+        "metadata": {
+            "name": "all-routes-test"
+        },
+        "spec": {
+            "catalogs": [{
+                "name": "资源中心",
+                "path": "/envInfo"
+            },
+                {
+                    "name": "平台运维",
+                    "path": "/appMgr"
+                },
+                {
+                    "name": "设置",
+                    "path": "/config"
+                }
+            ],
+            "groups": [{
+                "name": "云资源池",
+                "path": "/envInfo/basicInfo"
+            },{
+                "name": "硬件设施",
+                "path": "/envInfo/hardware"
+            },{
+                "name": "网络资源",
+                "path": "/envInfo/resource"
+            },{
+                "name": "网络服务",
+                "path": "/envInfo/service"
+            },{
+                "name": "消息日志",
+                "path": "/appMgr/log"
+            },{
+                "name": "设置",
+                "path": "/config/config"
+            }],
+            "items": [
+                {
+                    "component": "article/lists/index",
+                    "label": "虚拟资源",
+                    "name": "云主机",
+                    "kind": "doslab.io.VirtualMachine",
+                    "path": "/envInfo/basicInfo/vm"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "云盘",
+                    "label": "虚拟资源",
+                    "kind": "doslab.io.VirtualMachineDisk",
+                    "path": "/envInfo/basicInfo/disk"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "镜像",
+                    "label": "计算配置",
+                    "kind": "doslab.io.VirtualMachineImages",
+                    "path": "/envInfo/basicInfo/vmimage"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "计算规格",
+                    "kind": "doslab.io.VirtualMachineImages",
+                    "path": "/envInfo/basicInfo/vmimage"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "云盘规格",
+                    "kind": "doslab.io.VirtualMachineImages",
+                    "path": "/envInfo/basicInfo/vmimage"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "快照",
+                    "kind": "doslab.io.VirtualMachineImages",
+                    "path": "/envInfo/basicInfo/vmimage"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "区域",
+                    "kind": "Node",
+                    "path": "/envInfo/hardware/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "集群",
+                    "kind": "Node",
+                    "path": "/envInfo/hardwareo/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "物理机",
+                    "kind": "Node",
+                    "path": "/envInfo/hardwareo/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "主存储",
+                    "kind": "Node",
+                    "path": "/envInfo/hardwareo/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "镜像服务器",
+                    "kind": "Node",
+                    "path": "/envInfo/hardwareo/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "二层网络",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VXLAN Pool",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "共有网络",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "扁平网络",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VPC网络",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "VPC路由器",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "路由器镜像",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "路由器规格",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "管理网络",
+                    "kind": "Node",
+                    "path": "/envInfo/resource/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "安全组",
+                    "kind": "Node",
+                    "path": "/envInfo/service/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "虚拟IP",
+                    "kind": "Node",
+                    "path": "/envInfo/service/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "弹性IP",
+                    "kind": "Node",
+                    "path": "/envInfo/service/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "端口转发",
+                    "kind": "Node",
+                    "path": "/envInfo/service/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "负载均衡",
+                    "kind": "Node",
+                    "path": "/envInfo/service/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "操作日志",
+                    "kind": "Node",
+                    "path": "/appMgr/log/node"
+                },
+                {
+                    "component": "article/lists/index",
+                    "name": "全局日志",
+                    "kind": "Node",
+                    "path": "/config/config/node"
+                }
+            ]
+        }
+    }
+})
+
 
 Mock.mock('http://localhost:5173/kubesys/system/login',{
     code: 20000,
@@ -253,16 +467,19 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
         },
         "spec": {
             "data": [{
-                "label": "Pod名",
+                "title": "名称",
+                "fixed": 'left',
+                "dataIndex": "name",
+                "width": "300px",
                 "row": "metadata.name"
             },
                 {
-                    "label": "IP地址ַ",
+                    "title": "控制台ַ",
                     "row": "status.podIP"
                 },
                 {
-                    "kind": "internalLink",
-                    "label": "命名空间",
+                    "kind": "启用状态",
+                    "title": "命名空间",
                     "row": "metadata.namespace",
                     "internalLink": {
                         "kind": "Namespace"
@@ -270,7 +487,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
                 },
                 {
                     "kind": "internalLink",
-                    "label": "父类资源名",
+                    "title": "CPU",
                     "link": "@metadata.ownerReferences[0].apiVersion;.;metadata.ownerReferences[0].kind",
                     "row": "metadata.ownerReferences[0].name",
                     "internalLink": {
@@ -279,7 +496,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
                     }
                 },
                 {
-                    "label": "所在主机",
+                    "title": "内存",
                     "kind": "internalLink",
                     "tag": "metadata##name",
                     "row": "spec.nodeName",
@@ -288,12 +505,12 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
                     }
                 },
                 {
-                    "label": "创建时间",
+                    "title": "IPv4地址",
                     "row": "metadata.creationTimestamp"
                 },
                 {
                     "kind": "terminalLink",
-                    "label": "远程连接",
+                    "title": "远程连接",
                     "terminalLink": {
                         "icon": "Monitor",
                         "target": "http://133.133.135.134:30201/e/{containerID}",
@@ -304,7 +521,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
                 },
                 {
                     "kind": "terminalLink",
-                    "label": "容器日志",
+                    "title": "CPU架构",
                     "terminalLink": {
                         "icon": "Cellphone",
                         "target": "http://133.133.135.134:30201/e/{containerID}?follow=1&tail=10",
@@ -314,7 +531,7 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
                     }
                 },
                 {
-                    "label": "运行状态",
+                    "title": "平台",
                     "row": "status.phase",
                     "iconLink": [
                         {
@@ -328,8 +545,18 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
                     ]
                 },
                 {
+                    "title": "所有者",
+                    "width": "300px",
+                    "row": "metadata.creationTimestamp"
+                },
+                {
+                    "title": "创建时间",
+                    "row": "metadata.creationTimestamp"
+                },
+                {
                     "kind": "action",
-                    "label": "更多操作",
+                    "title": "操作",
+                    "fixed": 'right',
                     "actionLink": [
                         {
                             "label": "更新",
@@ -360,8 +587,8 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/desc',{
         "apiVersion":"doslab.io/v1",
         "kind":"Frontend",
         "spec":{
-            "title": "Pod",
-            "desc": "Pod是Kubernetes原生概念，是容器的基本运行单元。",
+            "title": "云主机",
+            "desc": "运行在物理机上的虚拟机实例，具有独立的IP地址，可以访问公共网络，运行应用服务。",
             "type": "description"
         }
     }
@@ -750,6 +977,738 @@ Mock.mock('http://localhost:5173//system/admin/self',{
         "permissions": [
             "*"
         ]
+    }
+})
+
+Mock.mock('http://localhost:5173/kubesys/system/listResources-text', {
+    code: 20000,
+    data: {
+        "apiVersion": "doslab.io/v1",
+        "kind": "VirtualMachineList",
+        "metadata": {
+            "name": "get-virtualmachines",
+            "totalCount": 2,
+            "currentPage": 1,
+            "totalPage": 1,
+            "itemsPerPage": 10,
+            "conditions": "{}"
+        },
+        items: [{
+            "apiVersion": "doslab.io/v1",
+            "kind": "VirtualMachine",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"doslab.io/v1\",\"kind\":\"VirtualMachine\",\"metadata\":{\"annotations\":{},\"labels\":{\"host\":\"133.133.135.134\"},\"name\":\"centos7\",\"namespace\":\"default\"},\"spec\":{\"lifecycle\":{\"createAndStartVMFromISO\":{\"cdrom\":\"/var/lib/libvirt/iso/centos7-minimal-1810.iso\",\"disk\":\"/var/lib/libvirt/cephfspool/centos7-disk1/centos7-disk1,format=qcow2\",\"graphics\":\"vnc,listen=0.0.0.0\",\"memory\":\"4096\",\"network\":\"type=bridge,source=virbr0\",\"noautoconsole\":true,\"os_variant\":\"centos7.0\",\"vcpus\":\"4\",\"virt_type\":\"kvm\"}},\"nodeName\":\"133.133.135.134\"}}\n"
+                },
+                "creationTimestamp": "2023-12-29T03:22:45Z",
+                "generation": 11,
+                "labels": {
+                    "host": "133.133.135.134"
+                },
+                "managedFields": [
+                    {
+                        "apiVersion": "doslab.io/v1",
+                        "fieldsType": "FieldsV1",
+                        "fieldsV1": {
+                            "f:metadata": {
+                                "f:annotations": {
+                                    ".": {},
+                                    "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                                },
+                                "f:labels": {
+                                    ".": {},
+                                    "f:host": {}
+                                }
+                            },
+                            "f:spec": {
+                                ".": {},
+                                "f:nodeName": {}
+                            }
+                        },
+                        "manager": "kubectl-client-side-apply",
+                        "operation": "Update",
+                        "time": "2023-12-29T03:22:45Z"
+                    },
+                    {
+                        "apiVersion": "doslab.io/v1",
+                        "fieldsType": "FieldsV1",
+                        "fieldsV1": {
+                            "f:spec": {
+                                "f:description": {
+                                    ".": {},
+                                    "f:lastOperationTimeStamp": {}
+                                },
+                                "f:domain": {
+                                    ".": {},
+                                    "f:_id": {},
+                                    "f:_type": {},
+                                    "f:clock": {
+                                        ".": {},
+                                        "f:_offset": {},
+                                        "f:timer": {}
+                                    },
+                                    "f:cpu": {
+                                        ".": {},
+                                        "f:_check": {},
+                                        "f:_match": {},
+                                        "f:_mode": {},
+                                        "f:feature": {},
+                                        "f:model": {
+                                            ".": {},
+                                            "f:_fallback": {},
+                                            "f:text": {}
+                                        },
+                                        "f:vendor": {
+                                            ".": {},
+                                            "f:text": {}
+                                        }
+                                    },
+                                    "f:currentMemory": {
+                                        ".": {},
+                                        "f:_unit": {},
+                                        "f:text": {}
+                                    },
+                                    "f:devices": {
+                                        ".": {},
+                                        "f:_interface": {},
+                                        "f:channel": {},
+                                        "f:console": {},
+                                        "f:controller": {},
+                                        "f:disk": {},
+                                        "f:emulator": {
+                                            ".": {},
+                                            "f:text": {}
+                                        },
+                                        "f:graphics": {},
+                                        "f:input": {},
+                                        "f:memballoon": {
+                                            ".": {},
+                                            "f:_model": {},
+                                            "f:address": {
+                                                ".": {},
+                                                "f:_bus": {},
+                                                "f:_domain": {},
+                                                "f:_function": {},
+                                                "f:_slot": {},
+                                                "f:_type": {}
+                                            },
+                                            "f:alias": {
+                                                ".": {},
+                                                "f:_name": {}
+                                            },
+                                            "f:stats": {
+                                                ".": {},
+                                                "f:_period": {}
+                                            }
+                                        },
+                                        "f:rng": {},
+                                        "f:serial": {},
+                                        "f:video": {}
+                                    },
+                                    "f:features": {
+                                        ".": {},
+                                        "f:acpi": {},
+                                        "f:apic": {}
+                                    },
+                                    "f:memory": {
+                                        ".": {},
+                                        "f:_unit": {},
+                                        "f:text": {}
+                                    },
+                                    "f:name": {
+                                        ".": {},
+                                        "f:text": {}
+                                    },
+                                    "f:on_crash": {
+                                        ".": {},
+                                        "f:text": {}
+                                    },
+                                    "f:on_poweroff": {
+                                        ".": {},
+                                        "f:text": {}
+                                    },
+                                    "f:on_reboot": {
+                                        ".": {},
+                                        "f:text": {}
+                                    },
+                                    "f:os": {
+                                        ".": {},
+                                        "f:boot": {},
+                                        "f:type": {
+                                            ".": {},
+                                            "f:_arch": {},
+                                            "f:_machine": {},
+                                            "f:text": {}
+                                        }
+                                    },
+                                    "f:pm": {
+                                        ".": {},
+                                        "f:suspend_to_disk": {
+                                            ".": {},
+                                            "f:_enabled": {}
+                                        },
+                                        "f:suspend_to_mem": {
+                                            ".": {},
+                                            "f:_enabled": {}
+                                        }
+                                    },
+                                    "f:resource": {
+                                        ".": {},
+                                        "f:partition": {
+                                            ".": {},
+                                            "f:text": {}
+                                        }
+                                    },
+                                    "f:seclabel": {},
+                                    "f:uuid": {
+                                        ".": {},
+                                        "f:text": {}
+                                    },
+                                    "f:vcpu": {
+                                        ".": {},
+                                        "f:_placement": {},
+                                        "f:text": {}
+                                    }
+                                },
+                                "f:powerstate": {},
+                                "f:status": {
+                                    ".": {},
+                                    "f:conditions": {
+                                        ".": {},
+                                        "f:state": {
+                                            ".": {},
+                                            "f:waiting": {
+                                                ".": {},
+                                                "f:message": {},
+                                                "f:reason": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "manager": "OpenAPI-Generator",
+                        "operation": "Update",
+                        "time": "2024-01-02T01:12:25Z"
+                    }
+                ],
+                "name": "centos7",
+                "namespace": "default",
+                "resourceVersion": "1081684",
+                "uid": "3a6cefae-c2ec-4560-ad9a-42df6678d01d"
+            },
+            "spec": {
+                "description": {
+                    "lastOperationTimeStamp": 1704157945915
+                },
+                "domain": {
+                    "_id": 2,
+                    "_type": "kvm",
+                    "clock": {
+                        "_offset": "utc",
+                        "timer": [
+                            {
+                                "_name": "rtc",
+                                "_tickpolicy": "catchup"
+                            },
+                            {
+                                "_name": "pit",
+                                "_tickpolicy": "delay"
+                            },
+                            {
+                                "_name": "hpet",
+                                "_present": "no"
+                            }
+                        ]
+                    },
+                    "cpu": {
+                        "_check": "full",
+                        "_match": "exact",
+                        "_mode": "custom",
+                        "feature": [
+                            {
+                                "_name": "vme",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "ss",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "pcid",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "hypervisor",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "arat",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "tsc_adjust",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "md-clear",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "stibp",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "ssbd",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "xsaveopt",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "pdpe1gb",
+                                "_policy": "require"
+                            },
+                            {
+                                "_name": "ibpb",
+                                "_policy": "require"
+                            }
+                        ],
+                        "model": {
+                            "_fallback": "forbid",
+                            "text": "SandyBridge-IBRS"
+                        },
+                        "vendor": {
+                            "text": "Intel"
+                        }
+                    },
+                    "currentMemory": {
+                        "_unit": "KiB",
+                        "text": 4194304
+                    },
+                    "devices": {
+                        "_interface": [
+                            {
+                                "_type": "bridge",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x0",
+                                    "_slot": "0x08",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "net0"
+                                },
+                                "mac": {
+                                    "_address": "52:54:00:6d:7f:bb"
+                                },
+                                "model": {
+                                    "_type": "virtio"
+                                },
+                                "source": {
+                                    "_bridge": "virbr0"
+                                },
+                                "target": {
+                                    "_dev": "fe54006d7fbb"
+                                }
+                            }
+                        ],
+                        "channel": [
+                            {
+                                "_type": "unix",
+                                "address": {
+                                    "_bus": 0,
+                                    "_controller": 0,
+                                    "_port": 1,
+                                    "_type": "virtio-serial"
+                                },
+                                "alias": {
+                                    "_name": "channel0"
+                                },
+                                "source": {
+                                    "_mode": "bind",
+                                    "_path": "/var/lib/libvirt/qemu/channel/target/domain-2-centos7/org.qemu.guest_agent.0"
+                                },
+                                "target": {
+                                    "_name": "org.qemu.guest_agent.0",
+                                    "_state": "disconnected",
+                                    "_type": "virtio"
+                                }
+                            }
+                        ],
+                        "console": [
+                            {
+                                "_tty": "/dev/pts/2",
+                                "_type": "pty",
+                                "alias": {
+                                    "_name": "serial0"
+                                },
+                                "source": {
+                                    "_path": "/dev/pts/2"
+                                },
+                                "target": {
+                                    "_port": 0,
+                                    "_type": "serial"
+                                }
+                            }
+                        ],
+                        "controller": [
+                            {
+                                "_index": 0,
+                                "_model": "ich9-ehci1",
+                                "_type": "usb",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x7",
+                                    "_slot": "0x03",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "usb"
+                                }
+                            },
+                            {
+                                "_index": 0,
+                                "_model": "ich9-uhci1",
+                                "_type": "usb",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x0",
+                                    "_multifunction": "on",
+                                    "_slot": "0x03",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "usb"
+                                },
+                                "master": {
+                                    "_startport": 0
+                                }
+                            },
+                            {
+                                "_index": 0,
+                                "_model": "ich9-uhci2",
+                                "_type": "usb",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x1",
+                                    "_slot": "0x03",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "usb"
+                                },
+                                "master": {
+                                    "_startport": 2
+                                }
+                            },
+                            {
+                                "_index": 0,
+                                "_model": "ich9-uhci3",
+                                "_type": "usb",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x2",
+                                    "_slot": "0x03",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "usb"
+                                },
+                                "master": {
+                                    "_startport": 4
+                                }
+                            },
+                            {
+                                "_index": 0,
+                                "_model": "pci-root",
+                                "_type": "pci",
+                                "alias": {
+                                    "_name": "pci.0"
+                                }
+                            },
+                            {
+                                "_index": 0,
+                                "_type": "ide",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x1",
+                                    "_slot": "0x01",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "ide"
+                                }
+                            },
+                            {
+                                "_index": 0,
+                                "_type": "virtio-serial",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x0",
+                                    "_slot": "0x04",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "virtio-serial0"
+                                }
+                            }
+                        ],
+                        "disk": [
+                            {
+                                "_device": "disk",
+                                "_type": "file",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x0",
+                                    "_slot": "0x05",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "virtio-disk0"
+                                },
+                                "backingStore": {},
+                                "driver": {
+                                    "_name": "qemu",
+                                    "_type": "qcow2"
+                                },
+                                "source": {
+                                    "_file": "/var/lib/libvirt/cephfspool/centos7-disk1/centos7-disk1"
+                                },
+                                "target": {
+                                    "_bus": "virtio",
+                                    "_dev": "vda"
+                                }
+                            },
+                            {
+                                "_device": "cdrom",
+                                "_type": "file",
+                                "address": {
+                                    "_bus": 0,
+                                    "_controller": 0,
+                                    "_target": 0,
+                                    "_type": "drive",
+                                    "_unit": 0
+                                },
+                                "alias": {
+                                    "_name": "ide0-0-0"
+                                },
+                                "driver": {
+                                    "_name": "qemu"
+                                },
+                                "readonly": {},
+                                "target": {
+                                    "_bus": "ide",
+                                    "_dev": "hda"
+                                }
+                            }
+                        ],
+                        "emulator": {
+                            "text": "/usr/libexec/qemu-kvm"
+                        },
+                        "graphics": [
+                            {
+                                "_autoport": "yes",
+                                "_listen": "0.0.0.0",
+                                "_port": 5900,
+                                "_type": "vnc",
+                                "listen": {
+                                    "_address": "0.0.0.0",
+                                    "_type": "address"
+                                }
+                            }
+                        ],
+                        "input": [
+                            {
+                                "_bus": "usb",
+                                "_type": "tablet",
+                                "address": {
+                                    "_bus": 0,
+                                    "_port": 1,
+                                    "_type": "usb"
+                                },
+                                "alias": {
+                                    "_name": "input0"
+                                }
+                            },
+                            {
+                                "_bus": "ps2",
+                                "_type": "mouse",
+                                "alias": {
+                                    "_name": "input1"
+                                }
+                            },
+                            {
+                                "_bus": "ps2",
+                                "_type": "keyboard",
+                                "alias": {
+                                    "_name": "input2"
+                                }
+                            }
+                        ],
+                        "memballoon": {
+                            "_model": "virtio",
+                            "address": {
+                                "_bus": "0x00",
+                                "_domain": "0x0000",
+                                "_function": "0x0",
+                                "_slot": "0x06",
+                                "_type": "pci"
+                            },
+                            "alias": {
+                                "_name": "balloon0"
+                            },
+                            "stats": {
+                                "_period": 5
+                            }
+                        },
+                        "rng": [
+                            {
+                                "_model": "virtio",
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x0",
+                                    "_slot": "0x07",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "rng0"
+                                },
+                                "backend": {
+                                    "_model": "random",
+                                    "text": "/dev/urandom"
+                                }
+                            }
+                        ],
+                        "serial": [
+                            {
+                                "_type": "pty",
+                                "alias": {
+                                    "_name": "serial0"
+                                },
+                                "source": {
+                                    "_path": "/dev/pts/2"
+                                },
+                                "target": {
+                                    "_port": 0,
+                                    "_type": "isa-serial",
+                                    "model": {
+                                        "_name": "isa-serial"
+                                    }
+                                }
+                            }
+                        ],
+                        "video": [
+                            {
+                                "address": {
+                                    "_bus": "0x00",
+                                    "_domain": "0x0000",
+                                    "_function": "0x0",
+                                    "_slot": "0x02",
+                                    "_type": "pci"
+                                },
+                                "alias": {
+                                    "_name": "video0"
+                                },
+                                "model": {
+                                    "_heads": 1,
+                                    "_primary": "yes",
+                                    "_type": "cirrus",
+                                    "_vram": 16384
+                                }
+                            }
+                        ]
+                    },
+                    "features": {
+                        "acpi": {},
+                        "apic": {}
+                    },
+                    "memory": {
+                        "_unit": "KiB",
+                        "text": 4194304
+                    },
+                    "name": {
+                        "text": "centos7"
+                    },
+                    "on_crash": {
+                        "text": "destroy"
+                    },
+                    "on_poweroff": {
+                        "text": "destroy"
+                    },
+                    "on_reboot": {
+                        "text": "restart"
+                    },
+                    "os": {
+                        "boot": [
+                            {
+                                "_dev": "hd"
+                            }
+                        ],
+                        "type": {
+                            "_arch": "x86_64",
+                            "_machine": "pc-i440fx-rhel7.6.0",
+                            "text": "hvm"
+                        }
+                    },
+                    "pm": {
+                        "suspend_to_disk": {
+                            "_enabled": "no"
+                        },
+                        "suspend_to_mem": {
+                            "_enabled": "no"
+                        }
+                    },
+                    "resource": {
+                        "partition": {
+                            "text": "/machine"
+                        }
+                    },
+                    "seclabel": [
+                        {
+                            "_model": "dac",
+                            "_relabel": "yes",
+                            "_type": "dynamic",
+                            "imagelabel": {
+                                "text": "+107:+107"
+                            },
+                            "label": {
+                                "text": "+107:+107"
+                            }
+                        }
+                    ],
+                    "uuid": {
+                        "text": "d1405afd-f675-4681-a3b9-6becaeab15ca"
+                    },
+                    "vcpu": {
+                        "_placement": "static",
+                        "text": 4
+                    }
+                },
+                "nodeName": "133.133.135.134",
+                "powerstate": "Running",
+                "status": {
+                    "conditions": {
+                        "state": {
+                            "waiting": {
+                                "message": "The VM is Running",
+                                "reason": "Running"
+                            }
+                        }
+                    }
+                }
+            }
+        }]
     }
 })
 

@@ -2,19 +2,22 @@
     <header class="header" >
         <div class="axu" >
             <div class="navbar" :style="{ color: menuProp.textColor }">
-                <div class="flex-1 flex">
-                    <div class="navbar-item">
-                        <fold />
-                    </div>
+                <div class="flex-1 flex" style="margin-left: 15px">
                     <div class="navbar-item">
                         <allMenu />
+                    </div>
+                    <div>
+
                     </div>
                     <div class="navbar-item">
                         <refresh />
                     </div>
-                    <div class="flex items-center px-2" v-if="!isMobile">
-                        <breadcrumb />
+                    <div class="flex px-2" v-if="!isMobile" style="margin-top: 5px" >
+<!--                        <breadcrumb />-->
+                      <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items"  @click="handleclick">
+                      </a-menu>
                     </div>
+
                 </div>
                 <div class="flex">
 <!--                    <div class="navbar-item" v-if="!isMobile">-->
@@ -51,6 +54,62 @@ const isMobile = computed(() => appStore.isMobile)
 
 const settingStore = useSettingStore()
 const sideTheme = computed(() => settingStore.sideTheme)
+
+const router = useRouter();
+const current = ref<string[]>(['setting:1']);
+
+
+const items = ref([
+  {
+    key: 'mail',
+    label: '首页',
+    title: '首页',
+    routes: '/home/dashboard'
+  },
+  {
+    key: 'sub1',
+    label: '资源中心',
+    title: '资源中心',
+    children: [
+      {
+        label: '云资源池',
+        key: 'setting:1',
+      },
+      {
+        label: '硬件设施',
+        key: 'setting:2',
+      },
+      {
+        label: '网络资源',
+        key: 'setting:3',
+      },
+      {
+        label: '网络服务',
+        key: 'setting:4',
+      }
+    ]
+  },
+  {
+    key: 'sub2',
+    label: '平台运维',
+    title: '平台运维',
+    children: [
+      {
+        label: '消息日志',
+        key: 'setting:1',
+      }
+    ]
+  },
+  {
+    key: 'alipay',
+    label: h('a', { href: 'https://antdv.com', target: '_blank' }, '设置'),
+    title: '设置',
+  },
+]);
+
+function handleclick(){
+  router.push('/home/dashboard');
+}
 
 const menuProp = computed(() => {
   return {

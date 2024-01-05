@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "name": "node-desc"
+  },
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "spec": {
+    "title": "Node",
+    "desc": "Node表征一台物理上实际存在的计算节点。",
+    "type": "description"
+  }
+}

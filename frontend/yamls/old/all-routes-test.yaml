@@ -1,0 +1,85 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "all-routes-test"
+  },
+  "spec": {
+    "catalogs": [{
+      "name": "环境信息",
+      "path": "/envInfo"
+    },
+      {
+        "name": "应用管理",
+        "path": "/appMgr"
+      }
+    ],
+    "groups": [{
+      "name": "平台信息",
+      "path": "/envInfo/basicInfo"
+    }
+    ],
+    "items": [
+      {
+        "component": "article/lists/index",
+        "name": "Node",
+        "kind": "Node",
+        "path": "/envInfo/basicInfo/node"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "Pod",
+        "kind": "Pod",
+        "path": "/envInfo/basicInfo/pod"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "Namespace",
+        "kind": "Namespace",
+        "path": "/envInfo/basicInfo/namespace"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "Deployment",
+        "kind": "apps.Deployment",
+        "path": "/envInfo/basicInfo/deployment"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "Frontend",
+        "kind": "doslab.io.Frontend",
+        "path": "/envInfo/basicInfo/frontend"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VirtualMachine",
+        "kind": "doslab.io.VirtualMachine",
+        "path": "/envInfo/basicInfo/vm"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VirtualMachinePool",
+        "kind": "doslab.io.VirtualMachinePool",
+        "path": "/envInfo/basicInfo/vmpool"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VirtualMachineDisk",
+        "kind": "doslab.io.VirtualMachineDisk",
+        "path": "/envInfo/basicInfo/disk"
+      },
+      {
+        "component": "article/lists/index",
+        "name": "VirtualMachineImages",
+        "kind": "doslab.io.VirtualMachineImages",
+        "path": "/envInfo/basicInfo/vmimage"
+      },
+      {
+        "component": "article/dashboard/index",
+        "source": "http://133.133.137.74:5173/",
+        "name": "远程测试",
+        "path": "/envInfo/basicInfo/index"
+      }
+    ]
+  }
+}

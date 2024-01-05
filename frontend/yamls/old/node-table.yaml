@@ -1,0 +1,83 @@
+{
+  "apiVersion": "doslab.io/v1",
+  "kind": "Frontend",
+  "metadata": {
+    "name": "node-table"
+  },
+  "spec": {
+    "data": [{
+      "kind": "externalLink",
+      "label": "资源名",
+      "link": "http://39.100.91.95:30001/ssh/host/{1}",
+      "row": "metadata.name",
+      "tag": "status.addresses[0].address"
+    },
+      {
+        "label": "资源名",
+        "row": "metadata.name"
+      },
+      {
+        "label": "资源角色",
+        "row": "metadata.labels.kubernetes#io/role;/;metadata.labels.kubernetes#io/status;/;metadata.labels.kubernetes#io/type"
+      },
+      {
+        "label": "IP地址",
+        "row": "status.addresses[0].address"
+      },
+      {
+        "label": "体系结构",
+        "row": "status.nodeInfo.architecture"
+      },
+      {
+        "label": "运行环境",
+        "row": "status.nodeInfo.containerRuntimeVersion"
+      },
+      {
+        "kind": "internalLink",
+        "label": "关联实例",
+        "row": "@metadata.name",
+        "internalLink": {
+          "kind": "Pod",
+          "item": "spec##nodeName"
+        }
+      },
+      {
+        "label": "资源配置(CPU/内存)",
+        "row": "status.capacity.cpu;/;status.capacity.memory"
+      },
+      {
+        "kind": "externalLink",
+        "link": "http://39.100.91.95:31002/d/pOg0RiI7z/node-exporter-full?orgId=1&refresh=1m&var-DS_PROMETHEUS=Prometheus&var-job=node&var-node={1}&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B&kiosk",
+        "tag": "metadata.name",
+        "label": "健康状态",
+        "row": "status.conditions[0].type;|;status.conditions[4].type"
+      },
+      {
+        "kind": "terminalLink",
+        "label": "远程连接",
+        "terminalLink": {
+          "icon": "a.icon",
+          "target": "http://133.133.135.134:30200/ssh/host/{hostIP}",
+          "values": [
+            "status.addresses[0].address"
+          ]
+        }
+      },
+      {
+        "kind": "action",
+        "label": "更多操作",
+        "actionLink": [
+          {
+            "label": "更新",
+            "action": "UPDATE"
+          },
+          {
+            "label": "删除",
+            "action": "DELETE"
+          }
+        ]
+      }
+    ],
+    "type": "table"
+  }
+}

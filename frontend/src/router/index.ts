@@ -31,6 +31,7 @@ export function createRouteRecord(route: any, firstRoute: boolean): RouteRecordR
         name: Symbol(route.paths),
         meta: {
             keepAlive: !!route.isCache,
+            label: route.label,
             title: route.name,
             perms: route.perms,
             query: route.params,

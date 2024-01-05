@@ -18,7 +18,7 @@ export default defineConfig({
         host: '0.0.0.0',
         proxy: {
             '/kubesys': {
-                target: 'http://133.133.135.134:30308',
+                target: 'http://133.133.135.130:30308',
                 changeOrigin: true
             }
         }

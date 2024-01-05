@@ -5,9 +5,9 @@
       <Annular :key="annular"/>
     </div>
   </template>
-  <div class="frontendTable_container">
+  <div class="frontendTable_container" style="border-top:1px solid #dbdde0; width: 100%">
     <!-- The Form section of the Table page -->
-    <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 10px">
+    <el-form :model="formData" ref="form" label-width="auto" label-position="left" style="margin-top: 20px">
       <el-row>
         <el-col v-for="formItem in formItems" :key="formItem.path" :span="7" style="margin-right: 20px">
           <el-form-item :label="formItem.label">
@@ -28,70 +28,147 @@
       </el-row>
     </el-form>
     <!-- Table page action button -->
-    <el-button type="primary" @click="creatDialog.showAndInit(ListName, TableName)"  style="text-align: left; background-color: #3967FF;"><icon name="el-icon-Plus" :size="16" style="margin-right: 5px"/>创建</el-button>
-    <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;"><icon name="el-icon-RefreshRight" :size="18" /></el-button>
-    <el-button @click="submitForm" style="text-align: left; background-color: #d7d9dc;">查询</el-button>
+    <a-space>
+      <a-button @click="submitForm" style="border: none; background-color: #f0f2f5; border-radius: 0px"><icon class="icon" name="el-icon-RefreshRight" :size="18" /></a-button>
+      <a-button type="primary" @click="creatDialog.showAndInit(ListName, TableName)"  style="border: none; background-color: #005bd4; border-radius: 0px;">
+          <icon class="icon" name="el-icon-Plus" />
+          <span class="text">创建云主机</span>
+      </a-button>
+      <a-button type="primary" style="border: none; background-color: #005bd4; border-radius: 0px;">
+        <el-icon class="icon"><MoreFilled /></el-icon>
+      </a-button>
 
-    <!-- Table table component -->
-    <el-table
-        :data="tableData.items"
-        :header-cell-style="{ color: '#000'}"
-        :max-height="500"
-        highlight-current-row
-        size="large">
-      >
-      <el-table-column
-          type="selection"
-          width="55">
-      </el-table-column>
-      <el-table-column
-          v-for="item in tableColumns"
-          align="center"
-          :key="item.key"
-          sortable
-          :label="item.label"
-      >
-        <template #default="scope">
-          <!--          <router-link-->
-          <!--              v-if="item.kind === 'internalLink'"-->
-          <!--              to="baidu">-->
-          <!--            <el-link type="primary">-->
-          <!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
-          <!--            </el-link>-->
-          <!--          </router-link>-->
-          <router-link
-              v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"
-              :to="{
-                path: item.internalLink.kind.indexOf('@') === -1 ? item.internalLink.kind : getComplexDataDispose(scope.row, item.internalLink.kind),
-                query: {
+      <a-button type="primary" style="border: none;border-radius: 0px;background-color: #f7f8fa" disabled>
+        <icon class="icon" name="el-icon-video-play" />
+        <span class="text">启动</span>
+      </a-button>
 
-                }
-              }"
-          >
-            <el-link type="primary" v-if="item.internalLink.kind.indexOf('@') !== -1">{{
-                getComplexDataDispose(scope.row, item.internalLink.item.substring(1))
-              }}</el-link>
-            <el-link type="primary" v-else>
-              {{ getComplexDataDispose(scope.row, item.row) }}
-            </el-link>
-          </router-link>
-          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">
-            <el-icon :size="20">
-              <component :is="item.terminalLink.icon"></component>
-            </el-icon>
-          </el-link>
-          <el-select
-              v-else-if="item.kind === 'action'"
-              placeholder="请选择"
-              style="width: 100px">
-            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />
-          </el-select>
-          <span v-else>
-            {{ getComplexDataDispose(scope.row, item.row) }}
-          </span>
+      <a-button type="primary" style="border: none;border-radius: 0px;background-color: #f7f8fa" disabled>
+        <icon class="icon" name="el-icon-video-pause" />
+        <span class="text">停止</span>
+      </a-button>
+
+      <a-dropdown ><a-button style="border: none;border-radius: 0px;background-color: #f0f2f5">
+        <span class="text">批量操作</span>
+        <icon class="icon" name="el-icon-arrow-down" />
+      </a-button></a-dropdown>
+
+      <a-button @click="submitForm" style="background-color: #d7d9dc;border-radius: 0px">
+        <icon class="icon" name="el-icon-search" />
+        <span class="text">搜索</span>
+      </a-button>
+    </a-space>
+
+<!--     Table table component-->
+<!--    <el-table-->
+<!--        :data="tableData.items"-->
+<!--        :header-cell-style="{ color: '#000'}"-->
+<!--        :max-height="500"-->
+<!--        highlight-current-row-->
+<!--        size="large">-->
+<!--      >-->
+<!--      <el-table-column-->
+<!--          type="selection"-->
+<!--          width="55">-->
+<!--      </el-table-column>-->
+<!--      <el-table-column-->
+<!--          v-for="item in tableColumns"-->
+<!--          align="center"-->
+<!--          :key="item.key"-->
+<!--          sortable-->
+<!--          :label="item.label"-->
+<!--      >-->
+<!--        <template #default="scope">-->
+<!--          &lt;!&ndash;          <router-link&ndash;&gt;-->
+<!--          &lt;!&ndash;              v-if="item.kind === 'internalLink'"&ndash;&gt;-->
+<!--          &lt;!&ndash;              to="baidu">&ndash;&gt;-->
+<!--          &lt;!&ndash;            <el-link type="primary">&ndash;&gt;-->
+<!--          &lt;!&ndash;              {{ getComplexDataDispose(scope.row, item.row) }}&ndash;&gt;-->
+<!--          &lt;!&ndash;            </el-link>&ndash;&gt;-->
+<!--          &lt;!&ndash;          </router-link>&ndash;&gt;-->
+<!--          <router-link-->
+<!--              v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"-->
+<!--              :to="{-->
+<!--                path: item.internalLink.kind.indexOf('@') === -1 ? item.internalLink.kind : getComplexDataDispose(scope.row, item.internalLink.kind),-->
+<!--                query: {-->
+
+<!--                }-->
+<!--              }"-->
+<!--          >-->
+<!--            <el-link type="primary" v-if="item.internalLink.kind.indexOf('@') !== -1">{{-->
+<!--                getComplexDataDispose(scope.row, item.internalLink.item.substring(1))-->
+<!--              }}</el-link>-->
+<!--            <el-link type="primary" v-else>-->
+<!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
+<!--            </el-link>-->
+<!--          </router-link>-->
+<!--          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">-->
+<!--            <el-icon :size="20">-->
+<!--              <component :is="item.terminalLink.icon"></component>-->
+<!--            </el-icon>-->
+<!--          </el-link>-->
+<!--          <el-select-->
+<!--              v-else-if="item.kind === 'action'"-->
+<!--              placeholder="请选择"-->
+<!--              style="width: 100px">-->
+<!--            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
+<!--          </el-select>-->
+<!--          <span v-else>-->
+<!--            {{ getComplexDataDispose(scope.row, item.row) }}-->
+<!--          </span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--    </el-table>-->
+
+    <a-table :row-selection="rowSelection"
+             :columns="tableColumns"
+             :data-source="tableData.items"
+             :scroll="{ x: 2000 }"
+             style="margin-top: 5px"
+             >
+      <template #bodyCell="{ column, text }" >
+<!--        <template v-if="column.kind === 'internalLink' && column.internalLink && column.internalLink.kind">-->
+
+<!--          <router-link-->
+
+<!--              :to="{-->
+<!--                path: column.internalLink.kind.indexOf('@') === -1 ? column.internalLink.kind : getComplexDataDispose(scope.row, column.internalLink.kind),-->
+<!--                query: {-->
+
+<!--                }-->
+<!--              }"-->
+<!--          >-->
+<!--            <el-link type="primary" v-if="column.internalLink.kind.indexOf('@') !== -1">{{-->
+<!--                getComplexDataDispose(scope.row, column.internalLink.item.substring(1))-->
+<!--              }}</el-link>-->
+<!--            <el-link type="primary" v-else>-->
+<!--              {{ getComplexDataDispose(column, column.row) }}-->
+<!--            </el-link>-->
+<!--          </router-link>-->
+<!--        </template>-->
+
+<!--        <template v-else-if="column.kind === 'terminalLink'">-->
+<!--          <el-link type="primary" :underline="false" :href="getTerminalAddr(scope.row, column.terminalLink)" target="_blank">-->
+<!--            <el-icon :size="20">-->
+<!--              <component :is="column.terminalLink.icon"></component>-->
+<!--            </el-icon>-->
+<!--          </el-link>-->
+<!--        </template>-->
+
+<!--        <template v-eles-if="column.kind === 'action'">-->
+<!--          <el-select-->
+<!--              placeholder="请选择"-->
+<!--              style="width: 100px">-->
+<!--            <el-option v-for="action in column.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
+<!--          </el-select>-->
+<!--        </template>-->
+
+        <template >
+<!--            {{ getComplexDataDispose(scope.row, column.row) }}-->
         </template>
-      </el-table-column>
-    </el-table>
+      </template>
+
+    </a-table>
 
     <!-- Table pagination -->
     <el-pagination
@@ -252,6 +329,20 @@ function getFormDataValueIndex(data:any){
   getFormDataValue(data, optionArray)
 }
 
+// a-table选择框
+const rowSelection = ref({
+  checkStrictly: false,
+  onChange: (selectedRowKeys: (string | number)[], selectedRows: tableData.value.items[]) => {
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  },
+  onSelect: (record: tableData.value.items, selected: boolean, selectedRows: tableData.value.items[]) => {
+    console.log(record, selected, selectedRows);
+  },
+  onSelectAll: (selected: boolean, selectedRows: tableData.value.items[], changeRows: tableData.value.items[]) => {
+    console.log(selected, selectedRows, changeRows);
+  },
+});
+
 function handleCurrentChange(newPage) {
   pageSite.value.page = newPage
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,propslecet.value, actions)
@@ -331,6 +422,18 @@ function saveData(){
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  float: left;
+  width: 15px;
+  height: 20px;
+}
+.text {
+  float: left;
+  padding: 0 5px 0 5px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
 .host-header-list{
   flex: 1;
   width: 100%;
@@ -368,6 +471,10 @@ function saveData(){
   display: block;
   border-bottom: 1px solid #cbc7c7;
   height: 4px;
+}
+
+::v-deep(.ant-table-cell) {
+  background: #ffffff !important;
 }
 
 /* 在样式中设置对话框内容的布局 */

@@ -141,6 +141,7 @@ const useUserStore = defineStore({
                         if(subItem.source){
                             return {
                                 name: subItem.name,
+                                label: subItem.label,
                                 component: subItem.component,
                                 paths: subItem.path.replace(mainItem.path, '').replace(/^\//, ''),
                                 menuType: "C",
@@ -149,6 +150,7 @@ const useUserStore = defineStore({
                         } else {
                             return {
                                 name: subItem.name,
+                                label: subItem.label,
                                 component: subItem.component,
                                 paths: subItem.path.replace(mainItem.path, '').replace(/^\//, ''),
                                 menuType: "C",

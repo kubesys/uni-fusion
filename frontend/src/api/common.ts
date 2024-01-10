@@ -1,7 +1,5 @@
 import {
-  getResourceformsearch,
-  getResourcedesc,
-  getResourcetable,
+  getResource,
   listResources,
   updateResource,
   createResource,
@@ -26,7 +24,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
        * Echarts data
        *
        ***********************/
-      var resultRun = 0
+      var resultRun = 3
       var resultPen = 0
       tableData.value.items.forEach((item: any) => {
         if (item.status !== undefined && item.status.phase === 'Running') {
@@ -57,7 +55,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       if (retry < retryCount) {
         getResourceData(retry + 1);
       } else {
-        getResourcetable({
+        getResource({
           fullkind: "doslab.io.Frontend",
           name: TableName + '-table',
           namespace: "default",
@@ -74,7 +72,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
 
 export function frontendMeta(TableName:string, descItem: [], region = 'local', retryCount = 10) {
   const getResourceData = (retry:any) => {
-    getResourcedesc({
+    getResource({
       fullkind: "doslab.io.Frontend",
       name: TableName + '-desc',
       namespace: "default",
@@ -98,7 +96,7 @@ export function frontendMeta(TableName:string, descItem: [], region = 'local', r
 
 export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 10) {
   const getResourceData = (retry:any) => {
-    getResourceformsearch({
+    getResource({
       fullkind: "doslab.io.Frontend",
       name: TableName + '-formsearch',
       namespace: "default",
@@ -336,7 +334,7 @@ export function getComplexValue(scope, key){
       result = '🟢'
     }
     else if (key.includes('Memory')) {
-      result = result/1024 + 'GB'
+      result = result/1024/1024 + 'GB'
     }
     else if (result === 'local') {
       result = '本地服务器'
@@ -374,6 +372,59 @@ export function getTerminalAddr(scope, item) {
   }
   let nstr = str.replace(/\{[^\}]+\}/,n);
   return nstr
+}
+
+export function getPlatformValue(scope, key){
+  if (JSON.stringify(scope) === '{}' || !key) {
+    return '-'
+  }
+
+  let result = scope
+
+  key.split('.').every((item) => {
+    item = item.replaceAll('#', '.')
+    if (item.indexOf('[') > 0) {
+      result = result[item.substring(0, item.indexOf('['))]
+      if (result === undefined || result.length === 0) {
+        result = '-'
+        return false
+      } else {
+        result =
+            result[
+                parseInt(
+                    item.substring(item.indexOf('[') + 1, item.indexOf(']'))
+                )
+                ]
+        return true
+      }
+    } else {
+      if (result && result[item] !== undefined) {
+        result = result[item]
+        return true
+      } else {
+        result = '⊘'
+        return false
+      }
+    }
+  })
+
+  if (result instanceof Object || result instanceof Array) {
+    const objResult = new Set()
+    for (const key in result) {
+      if (result[key] === '') {
+        continue
+      }
+      objResult.add(result[key])
+    }
+    return objResult
+  } else {
+    if (result.includes('centos7')) {
+      result = 'Linux'
+    } else  {
+      result = '⊘'
+    }
+    return result
+  }
 }
 
 

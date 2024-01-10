@@ -166,144 +166,144 @@ const listvalue = ref({
   value2:''
 })
 
-// const templateDate = ref({
-//   "spec": {
-//     "template": {
-//       "apiVersion": "v1",
-//       "kind": "VirtualMachine"
-//     },
-//     "stepName": [
-//       {
-//         "title": "基础配置"
-//       }, {
-//         "title": "资源配置"
-//       }, {
-//         "title": "确认信息"
-//       }
-//     ],
-//     "data": {
-//       "step1": {
-//         "group1": {
-//           "tabList": [
-//             {
-//               "key": "基本信息",
-//               "tab": "基本信息"
-//             }
-//           ],
-//           "tabKey": "基本信息",
-//           "constants": {
-//             "introduction": {
-//               "label": "简介",
-//               "type": "textbox"
-//             }
-//           },
-//           "variables": {
-//             "metadata.labels.host": {
-//               "label": "host",
-//               "type": "select"
-//             },
-//             "metadata.name": {
-//               "label": "名称",
-//               "regexp": [
-//                 "A-Za-z"
-//               ],
-//               "type": "text"
-//             }
-//           }
-//         },
-//         "group2": {
-//           "tabList": [
-//             {
-//               "key": "基础规格",
-//               "tab": "基础规格"
-//             }
-//           ],
-//           "tabKey": "基础规格",
-//           "variables": {
-//             "spec.nodename": {
-//               "label": "节点名称",
-//               "type": "text"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.memory": {
-//               "data": [
-//                 "1GB","2GB","4GB","8GB","16GB"
-//               ],
-//               "label": "内存大小(GB)",
-//               "step": 1,
-//               "type": "number"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.os_variant": {
-//               "label": "操作系统",
-//               "type": "select"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.vcpus": {
-//               "data": [
-//                   "1核","2核","4核","8核","16核","32核"
-//               ],
-//               "label": "CPU数量",
-//               "regexp": [
-//                 "0-9"
-//               ],
-//               "step": 1,
-//               "type": "number"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.virt_type": {
-//               "data": {
-//                 "label": "kvm"
-//               },
-//               "label": "虚拟化类型",
-//               "type": "radio"
-//             }
-//           }
-//         }
-//       },
-//       "step2": {
-//         "group1": {
-//           "variables": {
-//             "spec.lifecycle.createAndStartVMFromISO.DVD": {
-//               "kind": "doslab.io.VirtualMachineDisk",
-//               "label": "选择云盘",
-//               "name": null,
-//               "type": "combox"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.cdrom": {
-//               "kind": "doslab.io.VirtualMachineImages",
-//               "label": "选择光盘镜像",
-//               "name": null,
-//               "type": "combox"
-//             }
-//           }
-//         },
-//         "group2": {
-//           "variables": {
-//             "spec.lifecycle.createAndStartVMFromISO.graphics": {
-//               "label": "VNC协议",
-//               "type": "select"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.network": {
-//               "label": "网络配置",
-//               "regexp": [
-//                 "A-Za-z"
-//               ],
-//               "type": "list"
-//             },
-//             "spec.lifecycle.createAndStartVMFromISO.noautoconsole": {
-//               "data": {
-//                 "label": "true",
-//                 "label2": "false"
-//               },
-//               "label": "自动打开控制台",
-//               "type": "radio"
-//             }
-//           }
-//         }
-//       },
-//       "step3": {
-//         "group" : "confirm"
-//       }
-//     }
-//   }
-// })
+const templateDate = ref({
+  "spec": {
+    "template": {
+      "apiVersion": "v1",
+      "kind": "VirtualMachine"
+    },
+    "stepName": [
+      {
+        "title": "基础配置"
+      }, {
+        "title": "资源配置"
+      }, {
+        "title": "确认信息"
+      }
+    ],
+    "data": {
+      "step1": {
+        "group1": {
+          "tabList": [
+            {
+              "key": "基本信息",
+              "tab": "基本信息"
+            }
+          ],
+          "tabKey": "基本信息",
+          "constants": {
+            "introduction": {
+              "label": "简介",
+              "type": "textbox"
+            }
+          },
+          "variables": {
+            "metadata.labels.host": {
+              "label": "host",
+              "type": "select"
+            },
+            "metadata.name": {
+              "label": "名称",
+              "regexp": [
+                "A-Za-z"
+              ],
+              "type": "text"
+            }
+          }
+        },
+        "group2": {
+          "tabList": [
+            {
+              "key": "基础规格",
+              "tab": "基础规格"
+            }
+          ],
+          "tabKey": "基础规格",
+          "variables": {
+            "spec.nodename": {
+              "label": "节点名称",
+              "type": "text"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.memory": {
+              "data": [
+                "1GB","2GB","4GB","8GB","16GB"
+              ],
+              "label": "内存大小(GB)",
+              "step": 1,
+              "type": "number"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.os_variant": {
+              "label": "操作系统",
+              "type": "select"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.vcpus": {
+              "data": [
+                  "1核","2核","4核","8核","16核","32核"
+              ],
+              "label": "CPU数量",
+              "regexp": [
+                "0-9"
+              ],
+              "step": 1,
+              "type": "number"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.virt_type": {
+              "data": {
+                "label": "kvm"
+              },
+              "label": "虚拟化类型",
+              "type": "radio"
+            }
+          }
+        }
+      },
+      "step2": {
+        "group1": {
+          "variables": {
+            "spec.lifecycle.createAndStartVMFromISO.DVD": {
+              "kind": "doslab.io.VirtualMachineDisk",
+              "label": "选择云盘",
+              "name": null,
+              "type": "combox"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.cdrom": {
+              "kind": "doslab.io.VirtualMachineImages",
+              "label": "选择光盘镜像",
+              "name": null,
+              "type": "combox"
+            }
+          }
+        },
+        "group2": {
+          "variables": {
+            "spec.lifecycle.createAndStartVMFromISO.graphics": {
+              "label": "VNC协议",
+              "type": "select"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.network": {
+              "label": "网络配置",
+              "regexp": [
+                "A-Za-z"
+              ],
+              "type": "list"
+            },
+            "spec.lifecycle.createAndStartVMFromISO.noautoconsole": {
+              "data": {
+                "label": "true",
+                "label2": "false"
+              },
+              "label": "自动打开控制台",
+              "type": "radio"
+            }
+          }
+        }
+      },
+      "step3": {
+        "group" : "confirm"
+      }
+    }
+  }
+})
 
 // const templateDate = ref({
 //   "spec": {
@@ -400,85 +400,85 @@ const listvalue = ref({
 //   }
 // })
 
-const templateDate = ref({
-  "spec": {
-    "template": {
-      "apiVersion": "v1",
-      "kind": "VirtualMachine"
-    },
-    "stepName": [
-      {
-        "title": "基础信息"
-      }, {
-        "title": "确认信息"
-      }
-    ],
-    "data": {
-      "step1": {
-        "group1": {
-          "constants": {
-            "introduction": {
-              "label": "简介",
-              "type": "textbox"
-            }
-          },
-          "variables": {
-            "metadata.labels.host": {
-              "label": "host",
-              "type": "select"
-            },
-            "metadata.name": {
-              "label": "名称",
-              "regexp": [
-                "A-Za-z"
-              ],
-              "type": "text"
-            }
-          }
-        },
-        "group2": {
-          "variables": {
-            "spec.nodeName": {
-              "label": "节点名称",
-              "type": "text"
-            },
-            "spec.lifecycle.createDisk.type": {
-              "data": {
-                "label": "localfs"
-              },
-              "label": "文件系统类型",
-              "type": "radio"
-            },
-            "spec.lifecycle.createDisk.pool": {
-              "kind": "doslab.io.VirtualMachinePool",
-              "label": "选择资源池",
-              "name": null,
-              "type": "combox"
-            },
-            "spec.lifecycle.createDisk.capacity": {
-              "data": [
-                "20GB","40GB","100GB","200GB","500GB"
-              ],
-              "label": "容量(GB)",
-              "step": 10,
-              "type": "number"
-            },
-            "spec.lifecycle.createDisk.format": {
-              "data": {
-                "label": "qcow2"
-              },
-              "label": "格式",
-              "type": "radio"
-            },
-          }
-        }
-      },
-      "step2": {
-        "group" : "confirm"
-      }
-    }
-  }
-})
+// const templateDate = ref({
+//   "spec": {
+//     "template": {
+//       "apiVersion": "v1",
+//       "kind": "VirtualMachine"
+//     },
+//     "stepName": [
+//       {
+//         "title": "基础信息"
+//       }, {
+//         "title": "确认信息"
+//       }
+//     ],
+//     "data": {
+//       "step1": {
+//         "group1": {
+//           "constants": {
+//             "introduction": {
+//               "label": "简介",
+//               "type": "textbox"
+//             }
+//           },
+//           "variables": {
+//             "metadata.labels.host": {
+//               "label": "host",
+//               "type": "select"
+//             },
+//             "metadata.name": {
+//               "label": "名称",
+//               "regexp": [
+//                 "A-Za-z"
+//               ],
+//               "type": "text"
+//             }
+//           }
+//         },
+//         "group2": {
+//           "variables": {
+//             "spec.nodeName": {
+//               "label": "节点名称",
+//               "type": "text"
+//             },
+//             "spec.lifecycle.createDisk.type": {
+//               "data": {
+//                 "label": "localfs"
+//               },
+//               "label": "文件系统类型",
+//               "type": "radio"
+//             },
+//             "spec.lifecycle.createDisk.pool": {
+//               "kind": "doslab.io.VirtualMachinePool",
+//               "label": "选择资源池",
+//               "name": null,
+//               "type": "combox"
+//             },
+//             "spec.lifecycle.createDisk.capacity": {
+//               "data": [
+//                 "20GB","40GB","100GB","200GB","500GB"
+//               ],
+//               "label": "容量(GB)",
+//               "step": 10,
+//               "type": "number"
+//             },
+//             "spec.lifecycle.createDisk.format": {
+//               "data": {
+//                 "label": "qcow2"
+//               },
+//               "label": "格式",
+//               "type": "radio"
+//             },
+//           }
+//         }
+//       },
+//       "step2": {
+//         "group" : "confirm"
+//       }
+//     }
+//   }
+// })
 
 function createJson(json) {
   const jsontemplate = {}

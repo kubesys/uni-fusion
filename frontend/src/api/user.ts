@@ -4,7 +4,7 @@ import axios from "./request";
 
 // 登录
 export function login(params: Record<string, any>) {
-    return axios.post( 'http://localhost:5173/kubesys/system/login',{
+    return axios.post( 'kubesys/system/login',{
         kind: 'User',
         data: {
             name: params.name,
@@ -25,7 +25,7 @@ export function getUserInfo() {
 
 // 菜单路由
 export function getMenu() {
-    return axios.post( 'http://localhost:5173/kubesys/kube/route-test',{
+    return axios.post( '/kubesys/kube/getResource',{
         fullkind:"doslab.io.Frontend",
         name:"all-routes-test",
         namespace:"default",

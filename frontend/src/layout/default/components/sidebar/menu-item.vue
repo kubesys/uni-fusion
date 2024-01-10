@@ -25,6 +25,11 @@
 <!--                :route-path="resolvePath(item.path)"-->
 <!--                :popper-class="popperClass"-->
 <!--            />-->
+<!--            <template v-for="item in route?.children">-->
+<!--&lt;!&ndash;              <span v-if="item?.label">&ndash;&gt;-->
+
+<!--&lt;!&ndash;              </span>&ndash;&gt;-->
+<!--            </template>-->
           <a-menu
               id="dddddd"
               v-model:openKeys="openKeys"
@@ -32,8 +37,9 @@
               style="width: 256px"
               mode="inline"
               :items="items"
-              @click="handleClick"
-          ></a-menu>
+          >
+            <template></template>
+          </a-menu>
 
           <div style="border-top:1px solid #dbdde0;padding: 15px; margin-top: 350px">
             <div  style="margin-left: 80px">

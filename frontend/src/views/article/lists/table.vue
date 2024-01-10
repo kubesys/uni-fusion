@@ -162,22 +162,41 @@
 <!--            <el-option v-for="action in column.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
 <!--          </el-select>-->
 <!--        </template>-->
-
-        <template >
-<!--            {{ getComplexDataDispose(scope.row, column.row) }}-->
+        <template v-if="column.kind === 'action'">
+          <a>action</a>
         </template>
+
+        <template v-else-if="column.kind === 'display'">
+          <span >
+             {{  getPlatformValue (text, column.row) }}
+          </span>
+        </template>
+
+        <template v-else-if="column.kind === 'terminalLink'">
+          <el-link type="primary" :underline="false" :href="getTerminalAddr(text, column.terminalLink)" target="_blank">
+            <el-icon :size="20">
+              <component :is="column.terminalLink.icon"></component>
+            </el-icon>
+          </el-link>
+        </template>
+
+        <span v-else>
+            {{ getComplexDataDispose(text, column.row) }}
+        </span>
+
+
       </template>
 
     </a-table>
 
     <!-- Table pagination -->
-    <el-pagination
-        v-if="tableDataLoaded"
-        :page-size=pageSite.limit
-        :current-page=pageSite.page
-        :total=tableData.metadata.totalCount
-        @current-change="handleCurrentChange"
-    ></el-pagination>
+<!--    <el-pagination-->
+<!--        v-if="tableDataLoaded"-->
+<!--        :page-size=pageSite.limit-->
+<!--        :current-page=pageSite.page-->
+<!--        :total=tableData.metadata.totalCount-->
+<!--        @current-change="handleCurrentChange"-->
+<!--    ></el-pagination>-->
     <el-dialog
         v-model="dialogVisible"
         :title=selectedItemName
@@ -237,7 +256,16 @@
 import { onMounted, ref } from 'vue';
 // import Stomp from 'stompjs';
 // import {MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD, MQTT_topic} from '@/rabbitmq/mqtt';
-import { frontendFormSearch, frontendData, frontendUpdate, getComplexDataDispose, getFormDataValue, getTerminalAddr, actionDataValue } from "@/api/common";
+import {
+  frontendFormSearch,
+  frontendData,
+  frontendUpdate,
+  getComplexDataDispose,
+  getFormDataValue,
+  getTerminalAddr,
+  actionDataValue,
+  getPlatformValue
+} from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/lists/template/createTemplate.vue";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';

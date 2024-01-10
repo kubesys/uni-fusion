@@ -33,59 +33,6 @@ Mock.mock('http://localhost:5173/allMenu', {
     }
 });
 
-Mock.mock('http://localhost:5173/cloudHostings',{
-    code:200,
-    data:{
-        rows:[
-            {
-                index:10,
-                title: "虚拟机",
-                detail: "运行在物理机上的虚拟机实例，具有独立的IP地址，可以访问公共网络，运行应用服务",
-
-                items:[
-                    {index:1,
-                     label:"可用资源",
-                     name:"first",
-                     buttonName:"创建云主机",
-                     tableheaderItems:[
-                         {prop:"console", label:"控制台", width:120}, {prop:"startStatus", label:"启用状态", width:150}, {prop:"CPU", label:"CPU", width:100}, {prop:"memory", label:"内存", width:100}, {prop:"Ipv4", label:"Ipv4地址", width:200}, {prop:"CPUFrame", label:"CPU架构", width:100}, {prop:"platform", label:"平台", width:100}, {prop:"owner", label:"拥有者", width:200}, {prop:"date", label:"创建时间", width:200}
-                     ],
-                     tableItems:[
-                         {name:"ubuntu-3",  console:"□", startStatus:"🟢启动", CPU:"4", memory:"8GB" , Ipv4:"172.20.100.193", CPUFrame:"x86_64", platform:"🐧Linux", owner:"admin", date:"2022-09-23 15:11:49"},
-                        {name:"ubuntu-2",  console:"□", startStatus:"🔴停止", CPU:"4", memory:"8GB" , Ipv4:"172.20.100.193", CPUFrame:"x86_64", platform:"🐧Linux", owner:"admin", date:"2022-09-23 15:11:49"},
-                        {name:"ubuntu-1",  console:"□", startStatus:"🔴停止", CPU:"4", memory:"8GB" , Ipv4:"172.20.100.145", CPUFrame:"x86_64", platform:"🐧Linux", owner:"admin", date:"2022-09-23 14:27:23"}
-                     ]
-                    },
-                    {label: "回收站",
-                     name:"second",
-                     tableheaderItems:[{prop:"startStatus", label:"启用状态", width:150},{prop:"CPU", label:"CPU", width:100},{prop:"memory", label:"内存", width:100}, {prop:"Ipv4", label:"Ipv4地址", width:200}, {prop:"CPUFrame", label:"CPU架构", width:100}, {prop:"platform", label:"平台", width:100}, {prop:"owner", label:"拥有者", width:200}, {prop:"date", label:"创建时间", width:200}]}
-                ]
-            }
-        ]
-    }
-});
-
-Mock.mock('http://localhost:5173/Hostings',{
-    code:200,
-    data:{
-        gutter: 20,
-        rows:[
-            {
-                index:10,
-                title: "镜像",
-                detail: "云主机或云盘使用的镜像模板文件，包括两种类型：系统镜像、云盘镜像。",
-
-                items:[
-                    {   index:1,
-                        "label": "可用资源",
-                        name:"first",
-                        buttonName:"添加镜像",
-                        tableheaderItems:[{prop:"startStatus", label:"启用状态", width:150},{prop:"CPU", label:"CPU", width:100},{prop:"memory", label:"内存", width:100}, {prop:"Ipv4", label:"Ipv4地址", width:200}, {prop:"CPUFrame", label:"CPU架构", width:100}, {prop:"platform", label:"平台", width:100}, {prop:"owner", label:"拥有者", width:200}, {prop:"date", label:"创建时间", width:200}]}
-                ]
-            }
-        ]
-    }
-});
 
 Mock.mock('http://localhost:5173/CloudStorage',{
     code:200,
@@ -446,94 +393,53 @@ Mock.mock('http://localhost:5173/kubesys/kube/getResource/table', {
         "apiVersion": "doslab.io/v1",
         "kind": "Frontend",
         "metadata": {
-            "name": "pod-table"
+            "name": "doslab.io.virtualmachine"
         },
         "spec": {
-            "data": [{
-                "title": "名称",
-                "fixed": 'left',
-                "dataIndex": "name",
-                "width": "300px",
-                "row": "metadata.name"
-            },
+            "data": [
+                {
+                    "title": "名称",
+                    "fixed": 'left',
+                    "width": "300px",
+                    "row": "metadata.name"
+                },
                 {
                     "title": "控制台ַ",
-                    "row": "status.podIP"
+                    "row": "metadata.generation"
                 },
                 {
-                    "kind": "启用状态",
-                    "title": "命名空间",
-                    "row": "metadata.namespace",
-                    "internalLink": {
-                        "kind": "Namespace"
-                    }
+                    "title": "启用状态",
+                    "row": "spec.status.conditions.state.waiting.reason",
                 },
                 {
-                    "kind": "internalLink",
                     "title": "CPU",
-                    "link": "@metadata.ownerReferences[0].apiVersion;.;metadata.ownerReferences[0].kind",
-                    "row": "metadata.ownerReferences[0].name",
-                    "internalLink": {
-                        "kind": "@metadata.ownerReferences[0].apiVersion+metadata.ownerReferences[0].kind",
-                        "item": "@metadata.ownerReferences[0].name"
-                    }
+                    "row": "spec.domain.vcpu.text",
                 },
                 {
-                    "title": "内存",
-                    "kind": "internalLink",
-                    "tag": "metadata##name",
-                    "row": "spec.nodeName",
-                    "internalLink": {
-                        "kind": "Node"
-                    }
+                    "title": "内存(GB)",
+                    "row": "spec.domain.currentMemory.text",
                 },
                 {
                     "title": "IPv4地址",
-                    "row": "metadata.creationTimestamp"
+                    "row": "spec.nodeName"
                 },
                 {
-                    "kind": "terminalLink",
-                    "title": "远程连接",
-                    "terminalLink": {
-                        "icon": "Monitor",
-                        "target": "http://133.133.135.134:30201/e/{containerID}",
-                        "values": [
-                            "status.containerStatuses[0]"
-                        ]
-                    }
-                },
-                {
-                    "kind": "terminalLink",
                     "title": "CPU架构",
-                    "terminalLink": {
-                        "icon": "Cellphone",
-                        "target": "http://133.133.135.134:30201/e/{containerID}?follow=1&tail=10",
-                        "values": [
-                            "status.containerStatuses[0]"
-                        ]
-                    }
+                    "row": "spec.domain.os.type._arch"
                 },
                 {
                     "title": "平台",
-                    "row": "status.phase",
-                    "iconLink": [
-                        {
-                            "value": "正常运行",
-                            "icon": "running.icon"
-                        },
-                        {
-                            "value": "失败停止",
-                            "icon": "fail.icon"
-                        }
-                    ]
+                    "kind": "display",
+                    "row": "spec.domain.name.text",
                 },
                 {
                     "title": "所有者",
                     "width": "300px",
-                    "row": "metadata.creationTimestamp"
+                    "row": "metadata.namespace"
                 },
                 {
                     "title": "创建时间",
+                    "width": "300px",
                     "row": "metadata.creationTimestamp"
                 },
                 {

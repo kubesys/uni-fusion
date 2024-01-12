@@ -18,28 +18,28 @@
               <image-contain src='/menu1.png'  style="flex: 0.5; margin-left: 15px; margin-bottom: 15px"/>
               <span style="flex: 2; margin-left: 10px;margin-top: 10px">{{ routeMeta?.title }}</span>
             </div>
-<!--            <menu-item-->
-<!--                v-for="item in route?.children"-->
-<!--                :key="resolvePath(item.path)"-->
-<!--                :route="item"-->
-<!--                :route-path="resolvePath(item.path)"-->
-<!--                :popper-class="popperClass"-->
-<!--            />-->
+            <menu-item
+                v-for="item in route?.children"
+                :key="resolvePath(item.path)"
+                :route="item"
+                :route-path="resolvePath(item.path)"
+                :popper-class="popperClass"
+            />
 <!--            <template v-for="item in route?.children">-->
 <!--&lt;!&ndash;              <span v-if="item?.label">&ndash;&gt;-->
 
 <!--&lt;!&ndash;              </span>&ndash;&gt;-->
 <!--            </template>-->
-          <a-menu
-              id="dddddd"
-              v-model:openKeys="openKeys"
-              v-model:selectedKeys="selectedKeys"
-              style="width: 256px"
-              mode="inline"
-              :items="items"
-          >
-            <template></template>
-          </a-menu>
+<!--          <a-menu-->
+<!--              id="dddddd"-->
+<!--              v-model:openKeys="openKeys"-->
+<!--              v-model:selectedKeys="selectedKeys"-->
+<!--              style="width: 256px"-->
+<!--              mode="inline"-->
+<!--              :items="items"-->
+<!--          >-->
+<!--            <template></template>-->
+<!--          </a-menu>-->
 
           <div style="border-top:1px solid #dbdde0;padding: 15px; margin-top: 350px">
             <div  style="margin-left: 80px">

@@ -14,7 +14,8 @@
             运行中
         </div>
         <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
-          {{ tableData.resultRun }}
+<!--          {{ tableData.resultRun }}-->
+          0
         </div>
     </div>
 

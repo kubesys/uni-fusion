@@ -143,7 +143,7 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
 //   getResourceData(1);
 // }
 
-export function frontendCreateTemplate(TableName:string, templateSpec: [], region = 'local', retryCount = 3) {
+export function frontendCreateTemplate(TableName:string, templateSpec: any, obj: any, region = 'local', retryCount = 3) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -154,13 +154,54 @@ export function frontendCreateTemplate(TableName:string, templateSpec: [], regio
         .then((resp) => {
           console.log(resp.data.data.spec);
           templateSpec.value = resp.data.data.spec;
+
+          const jsontemplate = {}
+          obj.value = { ...templateSpec.value.template, ...jsontemplate }
+
+          for (const stepKey in templateSpec.value.data) {
+            if (Object.hasOwnProperty.call(templateSpec.value.data, stepKey)) {
+              const step = templateSpec.value.data[stepKey];
+
+              // 遍历每个分组
+              for (const groupKey in step) {
+                if (Object.hasOwnProperty.call(step, groupKey)) {
+                  const group = step[groupKey];
+
+                  // 检查是否存在 variables 属性
+                  if (group.variables) {
+                    // 遍历每个变量
+                    for (const variableKey in group.variables) {
+                      if (Object.hasOwnProperty.call(group.variables, variableKey)) {
+                        let newObj = {};  // 每次迭代创建一个新的对象
+                        const arr1 = variableKey.split(".");
+                        for (let index = arr1.length - 1; index >= 0; index--) {
+                          if (index === arr1.length - 1) {
+                            newObj = {
+                              [arr1[index]]: ''
+                            };
+                          } else {
+                            newObj = {
+                              [arr1[index]]: newObj
+                            };
+                          }
+                        }
+
+                        obj.value = assiginObj(newObj, obj.value);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          console.log(obj)
         })
         .catch((error) => {
           console.error(error);
           if (retry < retryCount) {
             getResourceData(retry + 1);
           } else {
-            ElMessage.error('Request failed.');
+            ElMessage.error('lack of ' + TableName + '-kind!');
           }
         });
   };
@@ -488,3 +529,19 @@ export function actionDataValue(TableName:string, ListName:string, dialogVisible
  * Url: https://system-iscas.yuque.com/org-wiki-system-iscas-os28is/htugy3/ccxy0kdbtsn023wl
  *
  ******************************************************************************************/
+function assiginObj(target = {},sources= {}){
+  const obj = target;
+  if(typeof target != 'object' || typeof sources != 'object'){
+    return sources; // 如果其中一个不是对象 就返回sources
+  }
+  for(const key in sources){
+    // 如果target也存在 那就再次合并
+    if(target.hasOwnProperty(key)){
+      obj[key] = assiginObj(target[key],sources[key]);
+    } else {
+      // 不存在就直接添加
+      obj[key] = sources[key];
+    }
+  }
+  return obj;
+}

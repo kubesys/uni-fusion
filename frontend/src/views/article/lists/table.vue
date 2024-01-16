@@ -30,9 +30,9 @@
     <!-- Table page action button -->
     <a-space>
       <a-button @click="submitForm" style="border: none; background-color: #f0f2f5; border-radius: 0px"><icon class="icon" name="el-icon-RefreshRight" :size="18" /></a-button>
-      <a-button type="primary" @click="creatDialog.showAndInit(ListName, TableName)"  style="border: none; background-color: #005bd4; border-radius: 0px;">
-          <icon class="icon" name="el-icon-Plus" />
-          <span class="text">创建云主机</span>
+      <a-button type="primary" @click="creatDialog.showAndInit(ListName, TableName, templateDate, obj)"  style="border: none; background-color: #005bd4; border-radius: 0px;">
+        <icon class="icon" name="el-icon-Plus" />
+        <span class="text">创建云主机</span>
       </a-button>
       <a-button type="primary" style="border: none; background-color: #005bd4; border-radius: 0px;">
         <el-icon class="icon"><MoreFilled /></el-icon>
@@ -59,109 +59,109 @@
       </a-button>
     </a-space>
 
-<!--     Table table component-->
-<!--    <el-table-->
-<!--        :data="tableData.items"-->
-<!--        :header-cell-style="{ color: '#000'}"-->
-<!--        :max-height="500"-->
-<!--        highlight-current-row-->
-<!--        size="large">-->
-<!--      >-->
-<!--      <el-table-column-->
-<!--          type="selection"-->
-<!--          width="55">-->
-<!--      </el-table-column>-->
-<!--      <el-table-column-->
-<!--          v-for="item in tableColumns"-->
-<!--          align="center"-->
-<!--          :key="item.key"-->
-<!--          sortable-->
-<!--          :label="item.label"-->
-<!--      >-->
-<!--        <template #default="scope">-->
-<!--          &lt;!&ndash;          <router-link&ndash;&gt;-->
-<!--          &lt;!&ndash;              v-if="item.kind === 'internalLink'"&ndash;&gt;-->
-<!--          &lt;!&ndash;              to="baidu">&ndash;&gt;-->
-<!--          &lt;!&ndash;            <el-link type="primary">&ndash;&gt;-->
-<!--          &lt;!&ndash;              {{ getComplexDataDispose(scope.row, item.row) }}&ndash;&gt;-->
-<!--          &lt;!&ndash;            </el-link>&ndash;&gt;-->
-<!--          &lt;!&ndash;          </router-link>&ndash;&gt;-->
-<!--          <router-link-->
-<!--              v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"-->
-<!--              :to="{-->
-<!--                path: item.internalLink.kind.indexOf('@') === -1 ? item.internalLink.kind : getComplexDataDispose(scope.row, item.internalLink.kind),-->
-<!--                query: {-->
+    <!--     Table table component-->
+    <!--    <el-table-->
+    <!--        :data="tableData.items"-->
+    <!--        :header-cell-style="{ color: '#000'}"-->
+    <!--        :max-height="500"-->
+    <!--        highlight-current-row-->
+    <!--        size="large">-->
+    <!--      >-->
+    <!--      <el-table-column-->
+    <!--          type="selection"-->
+    <!--          width="55">-->
+    <!--      </el-table-column>-->
+    <!--      <el-table-column-->
+    <!--          v-for="item in tableColumns"-->
+    <!--          align="center"-->
+    <!--          :key="item.key"-->
+    <!--          sortable-->
+    <!--          :label="item.label"-->
+    <!--      >-->
+    <!--        <template #default="scope">-->
+    <!--          &lt;!&ndash;          <router-link&ndash;&gt;-->
+    <!--          &lt;!&ndash;              v-if="item.kind === 'internalLink'"&ndash;&gt;-->
+    <!--          &lt;!&ndash;              to="baidu">&ndash;&gt;-->
+    <!--          &lt;!&ndash;            <el-link type="primary">&ndash;&gt;-->
+    <!--          &lt;!&ndash;              {{ getComplexDataDispose(scope.row, item.row) }}&ndash;&gt;-->
+    <!--          &lt;!&ndash;            </el-link>&ndash;&gt;-->
+    <!--          &lt;!&ndash;          </router-link>&ndash;&gt;-->
+    <!--          <router-link-->
+    <!--              v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"-->
+    <!--              :to="{-->
+    <!--                path: item.internalLink.kind.indexOf('@') === -1 ? item.internalLink.kind : getComplexDataDispose(scope.row, item.internalLink.kind),-->
+    <!--                query: {-->
 
-<!--                }-->
-<!--              }"-->
-<!--          >-->
-<!--            <el-link type="primary" v-if="item.internalLink.kind.indexOf('@') !== -1">{{-->
-<!--                getComplexDataDispose(scope.row, item.internalLink.item.substring(1))-->
-<!--              }}</el-link>-->
-<!--            <el-link type="primary" v-else>-->
-<!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
-<!--            </el-link>-->
-<!--          </router-link>-->
-<!--          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">-->
-<!--            <el-icon :size="20">-->
-<!--              <component :is="item.terminalLink.icon"></component>-->
-<!--            </el-icon>-->
-<!--          </el-link>-->
-<!--          <el-select-->
-<!--              v-else-if="item.kind === 'action'"-->
-<!--              placeholder="请选择"-->
-<!--              style="width: 100px">-->
-<!--            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
-<!--          </el-select>-->
-<!--          <span v-else>-->
-<!--            {{ getComplexDataDispose(scope.row, item.row) }}-->
-<!--          </span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--    </el-table>-->
+    <!--                }-->
+    <!--              }"-->
+    <!--          >-->
+    <!--            <el-link type="primary" v-if="item.internalLink.kind.indexOf('@') !== -1">{{-->
+    <!--                getComplexDataDispose(scope.row, item.internalLink.item.substring(1))-->
+    <!--              }}</el-link>-->
+    <!--            <el-link type="primary" v-else>-->
+    <!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
+    <!--            </el-link>-->
+    <!--          </router-link>-->
+    <!--          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">-->
+    <!--            <el-icon :size="20">-->
+    <!--              <component :is="item.terminalLink.icon"></component>-->
+    <!--            </el-icon>-->
+    <!--          </el-link>-->
+    <!--          <el-select-->
+    <!--              v-else-if="item.kind === 'action'"-->
+    <!--              placeholder="请选择"-->
+    <!--              style="width: 100px">-->
+    <!--            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
+    <!--          </el-select>-->
+    <!--          <span v-else>-->
+    <!--            {{ getComplexDataDispose(scope.row, item.row) }}-->
+    <!--          </span>-->
+    <!--        </template>-->
+    <!--      </el-table-column>-->
+    <!--    </el-table>-->
 
     <a-table :row-selection="rowSelection"
              :columns="tableColumns"
              :data-source="tableData.items"
              :scroll="{ x: 2000 }"
              style="margin-top: 5px"
-             >
+    >
       <template #bodyCell="{ column, text }" >
-<!--        <template v-if="column.kind === 'internalLink' && column.internalLink && column.internalLink.kind">-->
+        <!--        <template v-if="column.kind === 'internalLink' && column.internalLink && column.internalLink.kind">-->
 
-<!--          <router-link-->
+        <!--          <router-link-->
 
-<!--              :to="{-->
-<!--                path: column.internalLink.kind.indexOf('@') === -1 ? column.internalLink.kind : getComplexDataDispose(scope.row, column.internalLink.kind),-->
-<!--                query: {-->
+        <!--              :to="{-->
+        <!--                path: column.internalLink.kind.indexOf('@') === -1 ? column.internalLink.kind : getComplexDataDispose(scope.row, column.internalLink.kind),-->
+        <!--                query: {-->
 
-<!--                }-->
-<!--              }"-->
-<!--          >-->
-<!--            <el-link type="primary" v-if="column.internalLink.kind.indexOf('@') !== -1">{{-->
-<!--                getComplexDataDispose(scope.row, column.internalLink.item.substring(1))-->
-<!--              }}</el-link>-->
-<!--            <el-link type="primary" v-else>-->
-<!--              {{ getComplexDataDispose(column, column.row) }}-->
-<!--            </el-link>-->
-<!--          </router-link>-->
-<!--        </template>-->
+        <!--                }-->
+        <!--              }"-->
+        <!--          >-->
+        <!--            <el-link type="primary" v-if="column.internalLink.kind.indexOf('@') !== -1">{{-->
+        <!--                getComplexDataDispose(scope.row, column.internalLink.item.substring(1))-->
+        <!--              }}</el-link>-->
+        <!--            <el-link type="primary" v-else>-->
+        <!--              {{ getComplexDataDispose(column, column.row) }}-->
+        <!--            </el-link>-->
+        <!--          </router-link>-->
+        <!--        </template>-->
 
-<!--        <template v-else-if="column.kind === 'terminalLink'">-->
-<!--          <el-link type="primary" :underline="false" :href="getTerminalAddr(scope.row, column.terminalLink)" target="_blank">-->
-<!--            <el-icon :size="20">-->
-<!--              <component :is="column.terminalLink.icon"></component>-->
-<!--            </el-icon>-->
-<!--          </el-link>-->
-<!--        </template>-->
+        <!--        <template v-else-if="column.kind === 'terminalLink'">-->
+        <!--          <el-link type="primary" :underline="false" :href="getTerminalAddr(scope.row, column.terminalLink)" target="_blank">-->
+        <!--            <el-icon :size="20">-->
+        <!--              <component :is="column.terminalLink.icon"></component>-->
+        <!--            </el-icon>-->
+        <!--          </el-link>-->
+        <!--        </template>-->
 
-<!--        <template v-eles-if="column.kind === 'action'">-->
-<!--          <el-select-->
-<!--              placeholder="请选择"-->
-<!--              style="width: 100px">-->
-<!--            <el-option v-for="action in column.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
-<!--          </el-select>-->
-<!--        </template>-->
+        <!--        <template v-eles-if="column.kind === 'action'">-->
+        <!--          <el-select-->
+        <!--              placeholder="请选择"-->
+        <!--              style="width: 100px">-->
+        <!--            <el-option v-for="action in column.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
+        <!--          </el-select>-->
+        <!--        </template>-->
         <template v-if="column.kind === 'action'">
           <a>action</a>
         </template>
@@ -190,13 +190,13 @@
     </a-table>
 
     <!-- Table pagination -->
-<!--    <el-pagination-->
-<!--        v-if="tableDataLoaded"-->
-<!--        :page-size=pageSite.limit-->
-<!--        :current-page=pageSite.page-->
-<!--        :total=tableData.metadata.totalCount-->
-<!--        @current-change="handleCurrentChange"-->
-<!--    ></el-pagination>-->
+    <!--    <el-pagination-->
+    <!--        v-if="tableDataLoaded"-->
+    <!--        :page-size=pageSite.limit-->
+    <!--        :current-page=pageSite.page-->
+    <!--        :total=tableData.metadata.totalCount-->
+    <!--        @current-change="handleCurrentChange"-->
+    <!--    ></el-pagination>-->
     <el-dialog
         v-model="dialogVisible"
         :title=selectedItemName
@@ -264,7 +264,7 @@ import {
   getFormDataValue,
   getTerminalAddr,
   actionDataValue,
-  getPlatformValue
+  getPlatformValue, frontendCreateTemplate
 } from "@/api/common";
 import  CreateJsonDialog  from "@/views/article/lists/template/createTemplate.vue";
 import VueJsonPretty from 'vue-json-pretty';
@@ -336,9 +336,13 @@ watch(yaml, () => {
   }
 });
 
+const templateDate = ref()
+const obj = ref({})
+
 onMounted(()=>{
   frontendFormSearch(TableName, formItems)
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
+  frontendCreateTemplate(TableName, templateDate, obj)
   // frontendAction(TableName, scaleItems)
   tableDataLoaded.value = true
 })
@@ -350,9 +354,7 @@ getComplexDataDispose
  *  页面操作
  *
  ***********************/
-const optionArray = ref(
-
-)
+const optionArray = ref()
 function getFormDataValueIndex(data:any){
   getFormDataValue(data, optionArray)
 }

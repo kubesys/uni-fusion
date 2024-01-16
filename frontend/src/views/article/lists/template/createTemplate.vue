@@ -2,26 +2,27 @@
   <el-dialog v-model="dialogVisible" style="width:100%; height:100%" z-index="500">
     <div class="header" style="border-bottom:1px solid #dbdde0">
       <div class="create-title" style="font-size: 16px; margin-left: 50px">
-        创建{{ dialogName }}
+        开始创建{{ nameChange(dialogName) }}
       </div>
     </div>
     <div class="sync-dialog">
+      <div class="item1"/>
       <div class="item1">
         <a-steps
-            style="margin-left: 200px; margin-top: 10px; height: 200px"
+            style=" margin-top: 10px; height: 200px"
             progress-dot
             :current="active"
             active-color="#1890ff"
             process-color="#52c41a"
             direction="vertical"
         >
-          <a-step v-for="(item, index) in templateDate.spec.stepName" :key="index">
+          <a-step v-for="(item, index) in templateDate.stepName" :key="index">
             <template #title>
               <div class="step-title">{{ item.title }}</div>
             </template>
           </a-step>
         </a-steps>
-        <a-button @click="createJson(templateDate.spec)"></a-button>
+        <!--        <a-button @click="createJson(templateDate.spec)"></a-button>-->
       </div>
       <div class="item2">
         <a-card v-for="(group, groupName) in currentStepGroups"
@@ -30,82 +31,81 @@
                 :active-tab-key="group.tabKey"
                 :bordered="false"
                 style="border:1px solid #dbdde0;width: 80%; margin-top: 10px;border-radius: 0px">
-            <a-form :model="group"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol"
-                    >
-              <a-form-item v-for="(variable, key) in group.variables" :key="key" :label="variable.label" labelAlign="left">
-                <template v-if="variable.type === 'text' ">
-                  <a-input  style="width: 300px; border-radius: 0px"/>
-                </template>
-                <template v-else-if="variable.type === 'select' " >
-                  <a-select style="width: 300px" placeholder="Select" >
+          <a-form
+              :model="group"
+              :label-col="labelCol"
+              :wrapper-col="wrapperCol"
+          >
+            <a-form-item v-for="(variable, key) in group.variables" :key="key" :label="variable.label" labelAlign="left">
+              <template v-if="variable.type === 'text' ">
+                <a-input  style="width: 300px; border-radius: 0px"/>
+              </template>
+              <template v-else-if="variable.type === 'select' " >
+                <a-select v-model="propadd[variable.path]" style="width: 300px" placeholder="Select"  :options="options">
+                </a-select>
+              </template>
+              <template v-else-if="variable.type === 'radio'" >
+                <el-radio-group >
+                  <el-radio v-model="propadd[variable.path]" :label="variable.data.label">{{ variable.data.label }}</el-radio>
+                </el-radio-group>
+              </template>
+              <template v-else-if="variable.type === 'slider' " >
+                <el-slider v-model="propadd[variable.path]" show-input />
+              </template>
+              <template v-else-if="variable.type === 'number' " >
+                <div style="width: 750px;">
+                  <a-space v-for="(number, index) in variable.data" :key="index">
+                    <a-button type="primary" style="background-color:#005bd4; border: none ;margin-right: 5px; border-radius: 0px">{{ number }}</a-button>
+                  </a-space>
+                  -
+                  <el-input-number v-model="propadd[variable.path]" :min="1" :max="10" :step="variable.step" controls-position="right"/>
+                </div>
+              </template>
+              <template v-else-if="variable.type === 'combox' " >
+                <a-button  v-model="propadd[variable.path]" type="dashed" @click="showDrawer(variable.kind, variable.label)" >{{ variable.label }}</a-button>
 
-                  </a-select>
-                </template>
-                <template v-else-if="variable.type === 'radio'" >
-                  <el-radio-group >
-                    <el-radio :label="variable.data.label">{{ variable.data.label }}</el-radio>
-                  </el-radio-group>
-                </template>
-                <template v-else-if="variable.type === 'slider' " >
-                  <el-slider  show-input />
-                </template>
-                <template v-else-if="variable.type === 'number' " >
-                  <div style="width: 750px;">
-                    <a-space v-for="(number, index) in variable.data" :key="index">
-                      <a-button type="primary" style="background-color:#005bd4; border: none ;margin-right: 5px; border-radius: 0px">{{ number }}</a-button>
-                    </a-space>
-                    -
-                    <el-input-number  :min="1" :max="10" :step="variable.step" controls-position="right"/>
+              </template>
+              <template v-else-if="variable.type === 'list' " >
+                <div v-for="(div, index) in divs" :key="index" style="background-color: #f5f7fa;width: 750px;height: 150px; margin-top: 10px; display: flex;">
+                  <div style="padding: 20px; flex: 1">
+                    {{ div }}
                   </div>
-                </template>
-                <template v-else-if="variable.type === 'combox' " >
-                  <a-button type="dashed" @click="showDrawer(variable.kind, variable.label)" >{{ variable.label }}</a-button>
-
-                </template>
-                <template v-else-if="variable.type === 'list' " >
-                  <div v-for="(div, index) in divs" :key="index" style="background-color: #f5f7fa;width: 750px;height: 150px; margin-top: 10px; display: flex;">
-                    <div style="padding: 20px; flex: 1">
-                      {{ div }}
+                  <div style="padding: 30px; flex: 6">
+                    <div>
+                      <a-input v-model:value="listvalue.value1"  style="width: 120px"/>
+                      -
+                      <a-input v-model:value="listvalue.value2"  style="width: 120px"/>
                     </div>
-                    <div style="padding: 30px; flex: 6">
-                      <div>
-                        <a-input v-model:value="listvalue.value1"  style="width: 120px"/>
-                        -
-                        <a-input v-model:value="listvalue.value2"  style="width: 120px"/>
-                      </div>
-                      <div style="margin-top: 20px">
-                        <el-radio >设为默认</el-radio>
-                      </div>
+                    <div style="margin-top: 20px">
+                      <el-radio >设为默认</el-radio>
                     </div>
-                    <button @click="removeDiv" style="padding: 20px;flex: 0.1"><DeleteOutlined /></button>
                   </div>
-                  <a-button type="link" @click="addDiv"><PlusOutlined />添加配置</a-button>
-                </template>
-              </a-form-item>
-              <a-form-item v-for="(constants, key) in group.constants" :key="key" :label="constants.label" labelAlign="left" >
-                <template v-if="constants.type === 'textbox' ">
-                  <a-textarea style="width: 300px; border-radius: 0px" :rows="3" :maxLength="256" @input="numLimit"/>
-                  <div class="textarea">{{ numberlimit }}/256</div>
-                </template>
-              </a-form-item>
-            </a-form>
+                  <button @click="removeDiv" style="padding: 20px;flex: 0.1"><DeleteOutlined /></button>
+                </div>
+                <a-button type="link" @click="addDiv"><PlusOutlined />添加配置</a-button>
+              </template>
+            </a-form-item>
+            <a-form-item v-for="(constants, key) in group.constants" :key="key" :label="constants.label" labelAlign="left" >
+              <template v-if="constants.type === 'textbox' ">
+                <a-textarea style="width: 300px; border-radius: 0px" :rows="3" :maxLength="256" @input="numLimit"/>
+                <div class="textarea">{{ numberlimit }}/256</div>
+              </template>
+            </a-form-item>
+          </a-form>
           <template v-if="group == 'confirm'" >
-<!--                              <v-ace-editor v-model:value="jsonFormdata"-->
-<!--                                            lang="json"-->
-<!--                                            theme="cobalt"-->
-<!--                                            style="height: 500px"-->
-<!--                                            readonly="true"-->
-<!--                                            :options="{-->
-<!--                                            fontSize: 15-->
-<!--                                          }"/>-->
-<!--            <pre>-->
-<!--              {{ jsonFormdata }}-->
-<!--            </pre>-->
+            <v-ace-editor v-model:value="jsonFormdata"
+                          lang="json"
+                          theme="monokai"
+                          style="height: 500px"
+                          :options="{
+                                            fontSize: 15
+                                          }"/>
+            <!--            <pre>-->
+            <!--              {{ jsonFormdata }}-->
+            <!--            </pre>-->
           </template>
 
-          </a-card>
+        </a-card>
       </div>
     </div>
     <div class="footer" style="border-top:1px solid #dbdde0">
@@ -118,7 +118,7 @@
         <div v-else>
           <!--      <el-button style="margin-top: 12px" @click="next">完成</el-button>-->
           <a-button  @click="handlePrevStep" style="margin-top: 10px;float: right">上一步</a-button>
-          <a-button  style="margin-top: 10px;float: right;margin-right: 10px;background-color:cornflowerblue;border: none" type="primary">确认创建</a-button>
+          <a-button  style="margin-top: 10px;float: right;margin-right: 10px;background-color:cornflowerblue;border: none" type="primary" @click="createValue">确认创建</a-button>
         </div>
 
       </div>
@@ -136,12 +136,38 @@
     <el-button style="text-align: left; background-color: #f0f2f5; border-radius: 0px"><icon name="el-icon-RefreshRight" :size="18" /></el-button>
     <el-button style="text-align: left; background-color: #f0f2f5; border-radius: 0px">查询</el-button>
 
-    <a-table :columns="tableColumns" :data-source="tableData.items" :scroll="{ x: 1500, y: 300 }">
-      <template #bodyCell="{ column }">
+    <a-table :row-selection="rowSelection"
+             :columns="tableColumns"
+             :data-source="tableData.items"
+             :scroll="{ x: 1500 }"
+             style="margin-top: 5px"
+    >
+      <template #bodyCell="{ column, text }" >
         <template v-if="column.kind === 'action'">
           <a>action</a>
         </template>
+
+        <template v-else-if="column.kind === 'display'">
+          <span >
+             {{  getPlatformValue (text, column.row) }}
+          </span>
+        </template>
+
+        <template v-else-if="column.kind === 'terminalLink'">
+          <el-link type="primary" :underline="false" :href="getTerminalAddr(text, column.terminalLink)" target="_blank">
+            <el-icon :size="20">
+              <component :is="column.terminalLink.icon"></component>
+            </el-icon>
+          </el-link>
+        </template>
+
+        <span v-else>
+            {{ getComplexDataDispose(text, column.row) }}
+        </span>
+
+
       </template>
+
     </a-table>
 
     <template #footer>
@@ -154,8 +180,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons-vue';
-import type { DrawerProps } from 'ant-design-vue';
-import {frontendData} from "@/api/common";
+import type { TableProps, DrawerProps } from 'ant-design-vue';
+import {frontendCreate, frontendData, getComplexDataDispose, getPlatformValue, getTerminalAddr, frontendCreateTemplate} from "@/api/common";
 import {VAceEditor} from "vue3-ace-editor";
 
 const route = useRoute()
@@ -166,144 +192,15 @@ const listvalue = ref({
   value2:''
 })
 
-const templateDate = ref({
-  "spec": {
-    "template": {
-      "apiVersion": "v1",
-      "kind": "VirtualMachine"
-    },
-    "stepName": [
-      {
-        "title": "基础配置"
-      }, {
-        "title": "资源配置"
-      }, {
-        "title": "确认信息"
-      }
-    ],
-    "data": {
-      "step1": {
-        "group1": {
-          "tabList": [
-            {
-              "key": "基本信息",
-              "tab": "基本信息"
-            }
-          ],
-          "tabKey": "基本信息",
-          "constants": {
-            "introduction": {
-              "label": "简介",
-              "type": "textbox"
-            }
-          },
-          "variables": {
-            "metadata.labels.host": {
-              "label": "host",
-              "type": "select"
-            },
-            "metadata.name": {
-              "label": "名称",
-              "regexp": [
-                "A-Za-z"
-              ],
-              "type": "text"
-            }
-          }
-        },
-        "group2": {
-          "tabList": [
-            {
-              "key": "基础规格",
-              "tab": "基础规格"
-            }
-          ],
-          "tabKey": "基础规格",
-          "variables": {
-            "spec.nodename": {
-              "label": "节点名称",
-              "type": "text"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.memory": {
-              "data": [
-                "1GB","2GB","4GB","8GB","16GB"
-              ],
-              "label": "内存大小(GB)",
-              "step": 1,
-              "type": "number"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.os_variant": {
-              "label": "操作系统",
-              "type": "select"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.vcpus": {
-              "data": [
-                  "1核","2核","4核","8核","16核","32核"
-              ],
-              "label": "CPU数量",
-              "regexp": [
-                "0-9"
-              ],
-              "step": 1,
-              "type": "number"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.virt_type": {
-              "data": {
-                "label": "kvm"
-              },
-              "label": "虚拟化类型",
-              "type": "radio"
-            }
-          }
-        }
-      },
-      "step2": {
-        "group1": {
-          "variables": {
-            "spec.lifecycle.createAndStartVMFromISO.DVD": {
-              "kind": "doslab.io.VirtualMachineDisk",
-              "label": "选择云盘",
-              "name": null,
-              "type": "combox"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.cdrom": {
-              "kind": "doslab.io.VirtualMachineImages",
-              "label": "选择光盘镜像",
-              "name": null,
-              "type": "combox"
-            }
-          }
-        },
-        "group2": {
-          "variables": {
-            "spec.lifecycle.createAndStartVMFromISO.graphics": {
-              "label": "VNC协议",
-              "type": "select"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.network": {
-              "label": "网络配置",
-              "regexp": [
-                "A-Za-z"
-              ],
-              "type": "list"
-            },
-            "spec.lifecycle.createAndStartVMFromISO.noautoconsole": {
-              "data": {
-                "label": "true",
-                "label2": "false"
-              },
-              "label": "自动打开控制台",
-              "type": "radio"
-            }
-          }
-        }
-      },
-      "step3": {
-        "group" : "confirm"
-      }
-    }
-  }
-})
+const options = ref([
+  { value: 'value1', label: 'vm.node31' },
+  { value: 'value2', label: 'vm.node32' },
+  { value: 'value3', label: 'vm.node33' },
+]);
+
+const propadd = ref({})
+
+const templateDate = ref()
 
 // const templateDate = ref({
 //   "spec": {
@@ -480,97 +377,7 @@ const templateDate = ref({
 //   }
 // })
 
-function createJson(json) {
-  const jsontemplate = {}
-  let obj = { ...json.template, ...jsontemplate }
 
-  for (const stepKey in json.data) {
-    if (Object.hasOwnProperty.call(json.data, stepKey)) {
-      const step = json.data[stepKey];
-
-      // 遍历每个分组
-      for (const groupKey in step) {
-        if (Object.hasOwnProperty.call(step, groupKey)) {
-          const group = step[groupKey];
-
-          // 检查是否存在 variables 属性
-          if (group.variables) {
-            // 遍历每个变量
-            for (const variableKey in group.variables) {
-              if (Object.hasOwnProperty.call(group.variables, variableKey)) {
-                // const variable = group.variables[variableKey];
-                // console.log( variableKey, variable);
-
-                let oj = {}
-                const arr1 = variableKey.split(".");
-                for (let index = arr1.length-1; index >=0; index--) {
-                  if (index==arr1.length-1) {
-                    oj={
-                      [arr1[index]]:''
-                    }
-                  }else{
-                    oj={
-                      [arr1[index]]:oj
-                    }
-                  }
-
-                  obj = assiginObj(oj, obj)
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // for (const i  in arr) {
-  //   console.log(i)
-  //   for (const j in i) {
-  //     console.log(j)
-  //     const arr = Object.keys(j.variables)
-  //     for (const k in arr) {
-  //       let oj = {}
-  //       const arr1 = k.split(".");
-  //       for (let index = arr1.length-1; index >=0; index--) {
-  //         if (index==arr1.length-1) {
-  //           oj={
-  //             [arr1[index]]:'133.133.135.134'
-  //           }
-  //         }else{
-  //           oj={
-  //             [arr1[index]]:oj
-  //           }
-  //         }
-  //
-  //         obj = assiginObj(oj, obj)
-  //       }
-  //     }
-  //   }
-  // }
-  //
-  return obj
-}
-
-const jsonFormdata =  createJson(templateDate.value.spec)
-console.log(jsonFormdata)
-
-function assiginObj(target = {},sources= {}){
-  const obj = target;
-  if(typeof target != 'object' || typeof sources != 'object'){
-    return sources; // 如果其中一个不是对象 就返回sources
-  }
-  for(const key in sources){
-    // 如果target也存在 那就再次合并
-    if(target.hasOwnProperty(key)){
-      obj[key] = assiginObj(target[key],sources[key]);
-    } else {
-      // 不存在就直接添加
-      obj[key] = sources[key];
-    }
-  }
-  return obj;
-}
 
 const labelCol = { span: 4 };
 const wrapperCol = { span: 9 };
@@ -594,7 +401,8 @@ onMounted(() => {
 });
 
 function updateCurrentStepGroups() {
-  currentStepGroups.value = templateDate.value.spec.data[currentStep.value];
+
+  // currentStepGroups.value = templateDate.value.data[currentStep.value];
 }
 
 
@@ -625,6 +433,10 @@ function showDrawer(kind:any, label: any) {
   open.value = true;
   title.value = label
 };
+
+function createValue(){
+  frontendCreate(jsonFormdata)
+}
 const onClose = () => {
   open.value = false;
 };
@@ -645,34 +457,56 @@ function numLimit(){
   numberlimit.value = 256 - num
 }
 
-
-const showAndInit = (listName:any, tableName:any) => {
+const jsonFormdata = ref()
+const showAndInit = (listName:any, tableName:any, Date:any, obj: any ) => {
+  templateDate.value = Date
+  currentStepGroups.value = templateDate.value.data[currentStep.value]
+  jsonFormdata.value = JSON.stringify(obj, 0.5, 2)
   dialogName.value = listName
   TableName.value = tableName
   dialogVisible.value = true
-  // frontendCreateTemplate(TableName.value, templateSpec)
 }
 
+const rowSelection: TableProps['rowSelection'] = {
+  onChange: (selectedRowKeys: string[], selectedRows) => {
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  },
+};
+
 function handleNextStep() {
-  const stepNames = Object.keys(templateDate.value.spec.data);
+  const stepNames = Object.keys(templateDate.value.data);
   const currentIndex = stepNames.indexOf(currentStep.value);
   if (currentIndex < stepNames.length - 1) {
     currentStep.value = stepNames[currentIndex + 1];
     active.value = currentIndex + 1;
-    updateCurrentStepGroups();
+    currentStepGroups.value = templateDate.value.data[currentStep.value]
   }
   hasNextStep.value = currentIndex < stepNames.length - 2;
 }
 
 function handlePrevStep() {
-  const stepNames = Object.keys(templateDate.value.spec.data);
+  const stepNames = Object.keys(templateDate.value.data);
   const currentIndex = stepNames.indexOf(currentStep.value);
   if (currentIndex > 0) {
     currentStep.value = stepNames[currentIndex - 1];
     active.value = currentIndex - 1;
-    updateCurrentStepGroups();
+    currentStepGroups.value = templateDate.value.data[currentStep.value]
   }
   hasNextStep.value = currentIndex < stepNames.length - 2;
+}
+
+function nameChange(name) {
+  if (name == 'doslab.io.VirtualMachine') {
+    return '云主机'
+  } else if (name == 'doslab.io.VirtualMachineDisk') {
+    return '云盘'
+  } else if (name == 'doslab.io.VirtualMachineDiskImage') {
+    return '云盘镜像'
+  } else if (name == 'doslab.io.VirtualMachineSpec') {
+    return '计算规格'
+  } else if (name == 'doslab.io.VirtualMachineDiskSpec') {
+    return '云盘规格'
+  }
 }
 
 
@@ -694,7 +528,9 @@ defineExpose({
 }
 
 .item1 {
-  flex: 1.5;
+  flex: 1;
+  position: relative;
+  text-align: right;
 }
 
 .step-title {
@@ -708,7 +544,7 @@ defineExpose({
 }
 
 .item2 {
-  flex: 6;
+  flex: 8;
 }
 
 .wrap {

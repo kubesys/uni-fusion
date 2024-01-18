@@ -4,27 +4,32 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.kubesys</groupId>
 	<artifactId>mirror</artifactId>
-	<version>0.3.2.4</version>
+	<version>0.3.3</version>
 	<packaging>jar</packaging>
 	<name>mirror</name>
 	<url>http://maven.apache.org</url>
 	<properties>
+		<!-- project.version -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
-		<kubeclient.version>1.2.2.2</kubeclient.version>
-		<hibernate.version>6.2.5.Final</hibernate.version>
-		<postgresql.version>42.6.0</postgresql.version>
-		<amqp.version>5.19.0</amqp.version>
+		<!-- code -->
+		<kubeclient.version>1.2.3</kubeclient.version>
+		<hibernate.version>6.4.1.Final</hibernate.version>
+		<postgresql.version>42.7.1</postgresql.version>
+		<amqp.version>5.20.0</amqp.version>
 		
-		<junit.version>5.10.0</junit.version>
+		<!-- test -->
+		<junit.version>5.10.1</junit.version>
 		
+		<!-- build -->
 		<maven.assembly.version>3.6.0</maven.assembly.version>
-		<maven.dependency.version>3.6.0</maven.dependency.version>
-		<maven.compiler.version>3.11.0</maven.compiler.version>
+		<maven.dependency.version>3.6.1</maven.dependency.version>
+		<maven.compiler.version>3.12.1</maven.compiler.version>
 		<maven.resources.version>3.3.1</maven.resources.version>
 		<maven.source.version>3.3.0</maven.source.version>
-		<maven.javadoc.version>3.5.0</maven.javadoc.version>
+		<maven.javadoc.version>3.6.3</maven.javadoc.version>
 		<maven.gpg.version>3.1.0</maven.gpg.version>
+		<maven.sonar.version>3.10.0.2594</maven.sonar.version>
 	</properties>
 	<licenses>
 		<license>

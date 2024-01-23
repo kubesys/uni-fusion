@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="24.01"
+VERSION="24.02"
 
 token_file="kube-token"
 
@@ -77,11 +77,11 @@ kubectl exec -it $pod_name -n kube-iscas -- psql -h 127.0.0.1 -U postgres -d kub
 IP=$(cat /root/.kube/config | grep server | awk '{print$2}')
 
 
-TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client-token- | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep iscas-client-token- | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
 
 if [[ -z $TOKEN ]]
 then
-  TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client-token | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+  TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep iscas-client-token | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
 fi
 
 

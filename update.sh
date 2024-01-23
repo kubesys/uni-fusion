@@ -1,5 +1,5 @@
 base=$(pwd)
-version="24.01"
+version="24.02"
 
 for name in `ls | grep .yaml`
 do

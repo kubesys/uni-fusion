@@ -108,7 +108,7 @@ public class PostgresClient   {
 		} catch (Exception ex) {
 			m_logger.severe("wrong database parameters，or unavailable network." + ex);
 			System.exit(1);
-		}
+		} 
 	}
 	
 	/**

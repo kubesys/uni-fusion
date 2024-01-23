@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.github.kubesys.backend.clients.PostgresPoolClient;
 import io.github.kubesys.backend.models.auth.Role;
 import io.github.kubesys.backend.models.auth.User;
-import io.github.kubesys.devfrk.spring.auth.AuthingModel;
+import io.github.kubesys.devfrk.spring.bean.AuthingModel;
 import io.github.kubesys.devfrk.spring.cores.HttpAuthingInterceptor;
 
 /**

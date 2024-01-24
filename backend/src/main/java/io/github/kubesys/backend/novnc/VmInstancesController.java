@@ -1,4 +1,4 @@
-package io.github.kubesys.backend.controller;
+package io.github.kubesys.backend.novnc;
 
 
 import io.github.kubesys.backend.services.IVmInstancesService;

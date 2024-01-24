@@ -12,15 +12,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<kubemirror.version>0.3.3</kubemirror.version>
 		<kubespring.version>2.2.8</kubespring.version>
-		<keycloak.version>21.1.1</keycloak.version>
+		
+		<websocket.version>1.5.5</websocket.version>
+		<springboot.version>3.2.1</springboot.version>
 	</properties>
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-spring-boot-starter -->
-		<!--<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-spring-boot-starter</artifactId>
-			<version>${keycloak.version}</version>
-		</dependency>-->
 		<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
 		<!--<dependency>
 			<groupId>org.keycloak</groupId>
@@ -31,7 +27,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>3.1.5</version>
+			<version>${springboot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.github.kubesys</groupId>
@@ -53,17 +49,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- 新增 -->
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.31</version>
-		</dependency>
 		<dependency>
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
-			<version>1.5.3</version>
-		</dependency>
+			<version>${websocket.version}</version>
+	</dependency>
 	</dependencies>
 	<build>
 		<plugins>

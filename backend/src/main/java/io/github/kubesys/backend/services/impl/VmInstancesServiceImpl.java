@@ -1,10 +1,6 @@
 package io.github.kubesys.backend.services.impl;
 
-//import com.github.restapi.XN_Content;
-//import com.github.restapi.XN_Query;
-
-import io.github.kubesys.backend.controller.WebsockifyServer;
-
+import io.github.kubesys.backend.novnc.WebsockifyServer;
 //import com.qnkj.clouds.modules.VmInstances.entitys.VmInstances;
 import io.github.kubesys.backend.services.IVmInstancesService;
 

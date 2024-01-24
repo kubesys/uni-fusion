@@ -1,4 +1,4 @@
-package io.github.kubesys.backend.controller;
+package io.github.kubesys.backend.novnc;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;

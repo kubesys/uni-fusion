@@ -1,4 +1,4 @@
-package io.github.kubesys.backend.controller;
+package io.github.kubesys.backend.novnc;
 
 
 import org.java_websocket.WebSocket;
@@ -150,7 +150,8 @@ public class WebsockifyServer extends WebSocketServer {
         } catch (IOException e) {
         }
     }
-    private String getParameterValue(String queryString, String parameterName) {
+    @SuppressWarnings("unused")
+	private String getParameterValue(String queryString, String parameterName) {
         String[] parameters = queryString.split("&");
         for (String parameter : parameters) {
             String[] keyValue = parameter.split("=");

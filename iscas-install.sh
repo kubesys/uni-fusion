@@ -75,15 +75,7 @@ timestamp=$(date +"%Y-%m-%d %H:%M:%S.%6N")
 kubectl exec -it $pod_name -n kube-iscas -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_user\" (\"name\", \"createdat\", \"updatedat\", \"password\", \"role\", \"token\") VALUES('admin','$timestamp','$timestamp','b25jZWFz', 'admin','');"
 #
 IP=$(cat /root/.kube/config | grep server | awk '{print$2}')
-
-
-TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep iscas-client-token- | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-
-if [[ -z $TOKEN ]]
-then
-  TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep iscas-client-token | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-fi
-
+TOKEN=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep iscas-client-token | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
 
 echo "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"
 kubectl exec -it $pod_name -n kube-iscas -- psql -h 127.0.0.1 -U postgres -d kubeauth -c "INSERT INTO \"basic_role\" (\"role\", \"createdat\", \"updatedat\", \"allows\", \"tokens\") VALUES('admin','$timestamp','$timestamp','{\"all\": {}}','{\"local\": {\"url\": \"$IP\", \"token\": \"$TOKEN\"}}');"

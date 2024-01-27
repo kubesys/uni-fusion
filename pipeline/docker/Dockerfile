@@ -15,11 +15,9 @@ RUN apk add --no-cache openrc docker git curl tar gcc g++ make wget \
 #    ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
 #    rm /tmp/gradle-7.3.3-bin.zip && \
 
-RUN mkdir -p /root/.kube && \
-    usermod -a -G docker root
+#RUN mkdir -p /root/.kube && \
+RUN usermod -a -G docker root
 
-COPY config /root/.kube/
-
-
-COPY kubectl /usr/bin/
-RUN chmod +x /usr/bin/kubectl
+#COPY config /root/.kube/
+#COPY kubectl /usr/bin/
+#RUN chmod +x /usr/bin/kubectl

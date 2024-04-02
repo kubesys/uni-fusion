@@ -15,6 +15,8 @@ export interface UserState {
     perms: string[]
     catalogs: any[],
     groups: any[],
+    sideItems: any[],
+    menuItem: any[],
     selectedCatalog: string
 }
 
@@ -31,6 +33,8 @@ const useUserStore = defineStore({
         perms: [],
         catalogs: [],
         groups: [],
+        sideItems: [],
+        menuItem: [],
         selectedCatalog: ''
     }),
     getters: {},
@@ -142,6 +146,7 @@ const useUserStore = defineStore({
                             return {
                                 name: subItem.name,
                                 label: subItem.label,
+                                icon: subItem.icon,
                                 component: subItem.component,
                                 paths: subItem.path.replace(mainItem.path, '').replace(/^\//, ''),
                                 menuType: "C",
@@ -151,17 +156,22 @@ const useUserStore = defineStore({
                             return {
                                 name: subItem.name,
                                 label: subItem.label,
+                                icon: subItem.icon,
                                 component: subItem.component,
                                 paths: subItem.path.replace(mainItem.path, '').replace(/^\//, ''),
                                 menuType: "C",
                                 Kind: subItem.kind,
                                 kind: subItem.kind.toLowerCase(),
+                                structure: subItem.structure,
                                 filter: subItem.filter
                             };
                         }
                     })
                 };
             });
+            console.log(mergedMenu)
+            this.sideItems = mergedMenu
+            this.menuItem.push(mergedMenu[0])
             return mergedMenu
         },
         setSelectedCatalog(catalogPath:string) {

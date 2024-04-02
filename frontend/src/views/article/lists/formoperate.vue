@@ -44,6 +44,7 @@ interface FormItem {
 
 const formData = ref<Record<string, string>>({}); // 表单数据对象
 const formItems: FormItem[] = ref([]); // 用于存储生成的表单项
+const buttonItem = ref([]); // 用于存储生成的表单项
 
 const route = useRoute()
 const tablename = route.meta?.tablename
@@ -60,7 +61,7 @@ const tableData = ref({
   items:[]
 })
 
-frontendFormSearch(tablename, formItems)
+frontendFormSearch(tablename, formItems, buttonItem)
 // frontendData(listname, tablename, pageSite,tableColumns, tableData, props)
 function submitForm() {
   frontendData(listname, tablename, pageSite,tableColumns, tableData, props.value)

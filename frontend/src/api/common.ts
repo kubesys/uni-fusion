@@ -6,6 +6,7 @@ import {
   deleteResource,
 } from "@/api/kubernetes"
 import { ElMessage } from 'element-plus'
+import { message } from 'ant-design-vue';
 
 export function frontendData(ListName:string, TableName:string, pageSite:object, tableColumns:[], tableData:[], allLabels:object, actions:[] = [],  region='local', retryCount = 10 ){
   const getResourceData = (retry:any) => {
@@ -36,7 +37,7 @@ export function frontendData(ListName:string, TableName:string, pageSite:object,
       tableData.value.resultRun = resultRun
       tableData.value.resultPen = resultPen
 
-      getResourcetable({
+      getResource({
         fullkind: "doslab.io.Frontend",
         name: TableName + '-table',
         namespace: "default",
@@ -94,7 +95,7 @@ export function frontendMeta(TableName:string, descItem: [], region = 'local', r
   getResourceData(1);
 }
 
-export function frontendFormSearch(TableName:string, formItem: [], region = 'local', retryCount = 10) {
+export function frontendFormSearch(TableName:string, formItem: [], buttonItem: [], region = 'local', retryCount = 10) {
   const getResourceData = (retry:any) => {
     getResource({
       fullkind: "doslab.io.Frontend",
@@ -104,6 +105,7 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
     })
         .then((resp) => {
           formItem.value = resp.data.data.spec.data.items;
+          buttonItem.value = resp.data.data.spec.data.buttons;
         })
         .catch((error) => {
           console.error(error);
@@ -111,6 +113,30 @@ export function frontendFormSearch(TableName:string, formItem: [], region = 'loc
             getResourceData(retry + 1); // 重新发送
           } else {
             ElMessage.error('Request failed,' + TableName + 'formsearch');
+          }
+        });
+  };
+
+  getResourceData(1);
+}
+
+export function frontendInfo(TableName:string, infoItem: [], region = 'local', retryCount = 10) {
+  const getResourceData = (retry:any) => {
+    getResource({
+      fullkind: "doslab.io.Frontend",
+      name: TableName + '-info',
+      namespace: "default",
+      region: region
+    })
+        .then((resp) => {
+          infoItem.value = resp.data.data.spec;
+        })
+        .catch((error) => {
+          console.error(error);
+          if (retry < retryCount) {
+            getResourceData(retry + 1);
+          } else{
+            ElMessage.error('Request failed' + TableName + '-info');
           }
         });
   };
@@ -216,6 +242,13 @@ export function frontendUpdate(rowData:object, region = 'local', retryCount = 3)
       data: rowData
     })
         .then((resp) => {
+          if (resp.data.code == '50000') {
+            ElMessage({
+              duration: 6000,
+              message: resp.data,
+              type: 'error',
+            })
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -284,7 +317,43 @@ export function getIncludesValue(scope, key){
   return arr.join('/')
 }
 
-export function getComplexValue(scope, key){
+export function getComplexValue(scope, key) {
+  if (JSON.stringify(scope) === '{}' || !key) {
+    return ''
+  }
+  let value = ''
+  const strAry = key.split(';')
+
+  if (strAry.length === 1) {
+
+    // convert 1516703495241 to 2018-01-23 18:31:35
+    // function time()
+    if (key.includes('creationTimestamp')) {
+      const value = getTextValue(scope, key)
+      const dateObject = new Date(value);
+      return  dateObject.toLocaleString();
+    } else {
+      value = getTextValue(scope, key)
+    }
+
+    value = '.' + value
+  } else {
+    for (let i = 0; i < strAry.length; i++) {
+      const longKey = strAry[i]
+      if (i%2 === 0) {
+        const v = getTextValue(scope, longKey)
+        if (strAry[1] === '|') {
+          value = v.substring(0) !== '-' ? "." + v : value
+        } else {
+          value = value + strAry[1] + v.substring(0)
+        }
+      }
+    }
+  }
+  return value.substring(1)
+}
+
+export function getTextValue(scope, key){
   if (JSON.stringify(scope) === '{}' || !key) {
     return '-'
   }
@@ -337,7 +406,7 @@ export function getComplexValue(scope, key){
         result = result[item]
         return true
       } else {
-        result = '⊘'
+        result = '-'
         return false
       }
     }
@@ -373,6 +442,12 @@ export function getComplexValue(scope, key){
       result = '🔴'
     } else if (result === 'Active') {
       result = '🟢'
+    } else if (result === 'Exception') {
+      result = '🔴'
+    } else if (result === '400') {
+      result = '🔴'
+    } else if (result === 'Paused') {
+      result = '🟡'
     }
     else if (key.includes('Memory')) {
       result = result/1024/1024 + 'GB'
@@ -406,6 +481,12 @@ export function getTerminalAddr(scope, item) {
         n = id.substring('docker://'.length);
       }
     })
+  } else if (str.includes('{port}')) {
+    console.log(scope)
+    n = getComplexValue(scope, item.row)
+    console.log(n)
+    // return 'http://133.133.135.134:8081/VmInstance/viewNoVnc?record=' + n
+    return 'http://localhost:30301/VmInstance/viewNoVnc?record=' + n
   } else {
     item.values.forEach((item)=>{
       n = getComplexValue(scope, item)
@@ -459,13 +540,40 @@ export function getPlatformValue(scope, key){
     }
     return objResult
   } else {
-    if (result.includes('centos7')) {
+    if (result.includes('centos')) {
       result = 'Linux'
     } else  {
       result = '⊘'
     }
     return result
   }
+}
+
+export function nameChange(name: string) {
+  if (name == 'doslab.io.VirtualMachine') {
+    return '创建云主机'
+  } else if (name == 'doslab.io.VirtualMachineDisk') {
+    return '创建云盘'
+  } else if (name == 'doslab.io.VirtualMachineDiskImage') {
+    return '创建云盘镜像'
+  } else if (name == 'doslab.io.VirtualMachineSpec') {
+    return '创建计算规格'
+  } else if (name == 'doslab.io.VirtualMachineDiskSpec') {
+    return '创建云盘规格'
+  } else if (name == 'doslab.io.Zone') {
+    return '创建区域'
+  } else if (name == 'doslab.io.Cluster') {
+    return '创建集群'
+  } else if (name == 'Node') {
+    return '添加物理机'
+  } else if (name == 'doslab.io.VirtualMachinePool') {
+    return '创建主存储'
+  } else if (name == 'doslab.io.VirtualMachineSnapshot') {
+    return '创建云主机快照'
+  } else if (name == 'doslab.io.VirtualMachineDiskSnapshot') {
+    return '创建云盘快照'
+  }
+
 }
 
 
@@ -520,6 +628,125 @@ export function actionDataValue(TableName:string, ListName:string, dialogVisible
     dialogVisible.value = true;
     selectedItemName.value = dialogname
     rowItemData.value = rowData.metadata
+  } else if (action === 'start') {
+    let obj = {
+      "apiVersion": "doslab.io/v1",
+      "kind": rowData.kind,
+      "metadata": rowData.metadata,
+      "spec": rowData.spec
+    }
+    obj.spec.lifecycle = {
+      startVM: {}
+    };
+    frontendUpdate(obj)
+    message
+        .loading( '正在启动', 5)
+        .then(
+            () => {
+              if (rowData.spec.status.conditions.state.waiting.reason == 'Running') {
+                message.success(rowData.spec.status.conditions.state.waiting.message, 6)
+              } else {
+                message.error('启动失败', 6)
+              }
+            },
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {},
+        )
+  } else if (action === 'stop') {
+    let obj = {
+      "apiVersion": "doslab.io/v1",
+      "kind": rowData.kind,
+      "metadata": rowData.metadata,
+      "spec": rowData.spec
+    }
+    obj.spec.lifecycle = {
+      stopVMForce: {}
+    };
+    frontendUpdate(obj)
+    // frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
+    message
+        .loading('正在停止', 5)
+        .then(
+            () => message.success('已关闭。', 6),
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {},
+        )
+  } else if (action === 'suspend') {
+    let obj = {
+      "apiVersion": "doslab.io/v1",
+      "kind": rowData.kind,
+      "metadata": rowData.metadata,
+      "spec": rowData.spec
+    }
+    obj.spec.lifecycle = {
+      suspendVM: {}
+    };
+    frontendUpdate(obj)
+    message
+        .loading('正在暂停', 5)
+        .then(
+            () => message.success('已暂停。', 2.5),
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {},
+        )
+  } else if (action === 'resume') {
+    let obj = {
+      "apiVersion": "doslab.io/v1",
+      "kind": rowData.kind,
+      "metadata": rowData.metadata,
+      "spec": rowData.spec
+    }
+    obj.spec.lifecycle = {
+      resumeVM: {}
+    };
+    frontendUpdate(obj)
+    message
+        .loading('正在恢复', 5)
+        .then(
+            () => message.success('已恢复。', 2.5),
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {},
+        )
+  } else if (action === 'shutdown') {
+    let obj = {
+      "apiVersion": "doslab.io/v1",
+      "kind": rowData.kind,
+      "metadata": rowData.metadata,
+      "spec": rowData.spec
+    }
+    obj.spec.lifecycle = {
+      stopVMForce: {}
+    };
+    frontendUpdate(obj)
+    message
+        .loading('正在强制关闭', 5)
+        .then(
+            () => message.success('已关闭。', 2.5),
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {},
+        )
+
+  } else if (action === 'UnplugDisk') {
+    let obj = {
+      "apiVersion": "doslab.io/v1",
+      "kind": rowData.kind,
+      "metadata": rowData.metadata,
+      "spec": rowData.spec
+    }
+    obj.spec.lifecycle = {
+      unplugDisk: {
+        target: "Linux: vdb"
+      }
+    };
+    frontendUpdate(obj)
+    message
+        .loading('正在卸载', 5)
+        .then(
+            () => message.success('已卸载成功。', 2.5),
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            () => {},
+        )
+
   }
 }
 
@@ -545,3 +772,20 @@ function assiginObj(target = {},sources= {}){
   }
   return obj;
 }
+
+export function assignValues(obj1:any, obj2:any) {
+  for (const key in obj1) {
+    if (Object.prototype.hasOwnProperty.call(obj1, key)) {
+      const value = obj1[key];
+      assignValue(obj2, value);
+    }
+  }
+}
+
+export function assignValue(obj:any, value:any) {
+  obj.metadata.labels.name = value
+  console.log(obj)
+  frontendUpdate(obj)
+  ElMessage.success('更新成功.')
+}
+

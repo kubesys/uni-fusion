@@ -13,12 +13,12 @@
             <span style="color: #96989b">{{ catalog.name }}</span></a-divider>
 
           <!--          <div class="dataItems">-->
-<!--            <el-row >-->
-<!--              <el-col v-for="data in row.items" :key="data.index" :span=data.span>-->
-<!--                {{data.name}}<div class="dataItems-main" v-for="items in data.classify">{{items}}</div>-->
-<!--              </el-col>-->
-<!--            </el-row>-->
-<!--          </div>-->
+          <!--            <el-row >-->
+          <!--              <el-col v-for="data in row.items" :key="data.index" :span=data.span>-->
+          <!--                {{data.name}}<div class="dataItems-main" v-for="items in data.classify">{{items}}</div>-->
+          <!--              </el-col>-->
+          <!--            </el-row>-->
+          <!--          </div>-->
           <div class="dataItems" v-for="item in gropsItems" >
             <!--                        <a :href="`#${catalog.path}`" @click="handleCatalogClick(catalog)">{{ catalog.name }}</a>-->
 
@@ -29,14 +29,14 @@
                 </div>
 
                 <div class="showData_inner_inner" v-for="item in userStore.menu" :key="item.name">
-                  <router-link v-if="item.path.startsWith(group.path)" :to=item.path>
+                  <router-link v-if="item.path.startsWith(group.path)" :to=item.path @select="handleMenuClick">
                     {{item.name}}
                   </router-link>
                 </div>
               </span>
             </div>
-<!--            <div @click="handleCatalogClick(catalog)">{{ catalog.name }}</div>-->
-<!--            <div class="dataItems-main" v-for="menu in userStore.catalogs">{{ menu.routes }}</div>-->
+            <!--            <div @click="handleCatalogClick(catalog)">{{ catalog.name }}</div>-->
+            <!--            <div class="dataItems-main" v-for="menu in userStore.catalogs">{{ menu.routes }}</div>-->
           </div>
         </div>
       </div>
@@ -79,6 +79,18 @@ const handleCatalogClick = (catalog) => {
   userStore.setSelectedCatalog(catalog.path);
   userStore.getMenu()
 };
+
+function handleMenuClick(info:any){
+  console.log(info.key)
+  for (const item of userStore.sideItems) {
+    console.log(item);
+    if(item.name == info.key){
+      userStore.menuItem = []
+      userStore.menuItem.push(item)
+      console.log(userStore.menuItem)
+    }
+  }
+}
 
 </script>
 

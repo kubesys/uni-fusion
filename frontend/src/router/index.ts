@@ -27,7 +27,7 @@ export function filterAsyncRoutes(routes: any[], firstRoute = true) {
 export function createRouteRecord(route: any, firstRoute: boolean): RouteRecordRaw {
     //@ts-ignore
     const routeRecord: RouteRecordRaw = {
-        path: isExternal(route.paths) ? route.paths : firstRoute ? `/${route.paths}` : route.paths,
+        path: isExternal(route.paths) ? route.paths : firstRoute ? `${route.paths}` : route.paths,
         name: Symbol(route.paths),
         meta: {
             keepAlive: !!route.isCache,
@@ -39,6 +39,7 @@ export function createRouteRecord(route: any, firstRoute: boolean): RouteRecordR
             activeMenu: route.selected,
             listname: route.Kind,
             tablename: route.kind,
+            structure: route.structure,
             source: route.source,
             filter: route.filter
         }

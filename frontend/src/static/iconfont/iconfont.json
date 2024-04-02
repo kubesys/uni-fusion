@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4936983",
+      "name": "windows-fill",
+      "font_class": "windows-fill",
+      "unicode": "e882",
+      "unicode_decimal": 59522
+    },
+    {
+      "icon_id": "13253855",
+      "name": "linux",
+      "font_class": "linux",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "561883",
       "name": "iconfont-2",
       "font_class": "iconfont2",

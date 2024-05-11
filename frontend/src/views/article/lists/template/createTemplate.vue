@@ -61,7 +61,7 @@
               </a-form-item>
               <a-form-item v-else-if="variable.type === 'number' " :label="variable.label" :name="variable.path" labelAlign="left" :rules="[{required: variable.required, message: '请选择' + variable.label}]">
                 <a-radio-group class="custom-radio-group"
-                               v-model:value="propadd[variable.path]"
+                               v-model:value="variable.data[0].label"
                                button-style="solid"
                                option-type="button"
                                :options="variable.data"/>

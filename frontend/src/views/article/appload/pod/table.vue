@@ -120,9 +120,9 @@
                 <span v-else>
                   <span class="icon-text-container" v-if="getComplexDataDispose(text, column.row) == '🟢'" >
                     运行中</span>
-                  <span class="icon-text-container"v-else-if="getComplexDataDispose(text, column.row) == '🔴'">
+                  <span class="icon-text-container" v-else-if="getComplexDataDispose(text, column.row) == '🔴'">
                     已停止</span>
-                  <span class="icon-text-container"v-else-if="getComplexDataDispose(text, column.row) == '🟡'">
+                  <span class="icon-text-container" v-else-if="getComplexDataDispose(text, column.row) == '🟡'">
                     暂停中</span>
                   <span v-else>
                     {{ getComplexDataDispose(text, column.row) }}

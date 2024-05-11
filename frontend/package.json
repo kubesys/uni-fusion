@@ -36,6 +36,7 @@
     "vue": "^3.2.37",
     "vue-clipboard3": "^2.0.0",
     "vue-echarts": "^6.6.0",
+    "vue-grid-layout-v3": "^3.0.3",
     "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.0.16",
     "vue3-ace-editor": "^2.2.3",
@@ -70,6 +71,7 @@
     "vite-plugin-style-import": "^2.0.0",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-vue-setup-extend": "^0.4.0",
-    "vue-tsc": "^0.38.1"
+    "vue-tsc": "^0.38.1",
+    "vue3-draggable-grid": "^0.0.6"
   }
 }

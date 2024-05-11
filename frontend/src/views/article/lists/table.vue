@@ -328,12 +328,11 @@
                 <span v-else>
           <span class="icon-text-container" v-if="getComplexDataDispose(text, column.row) == '🟢'" >
             <RightCircleTwoTone two-tone-color="#57d344" />运行中
-
           </span>
-          <span class="icon-text-container"v-else-if="getComplexDataDispose(text, column.row) == '🔴'">
+          <span class="icon-text-container" v-else-if="getComplexDataDispose(text, column.row) == '🔴'">
             <StopTwoTone two-tone-color="red"/>已停止
           </span>
-          <span class="icon-text-container"v-else-if="getComplexDataDispose(text, column.row) == '🟡'">
+          <span class="icon-text-container" v-else-if="getComplexDataDispose(text, column.row) == '🟡'">
             <PauseCircleTwoTone two-tone-color="#96989b"/>暂停中
           </span>
           <span v-else>

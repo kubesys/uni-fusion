@@ -3,7 +3,7 @@
         <div class="font-size-style">
 <!--          <img src='src/assets/images/logo.png'>-->
 <!--          <img :width="szie" :height="szie" src='src/assets/images/logo.png' />-->
-          云计算平台
+          基于国产软硬件的云原生基础平台
         </div>
     </div>
 </template>
@@ -52,6 +52,7 @@ const config = computed(() => appStore.config)
     font-size: 16px;
     font-weight: bold;
     color: #eeeeee;
+    font-family: serif;
 
 }
 

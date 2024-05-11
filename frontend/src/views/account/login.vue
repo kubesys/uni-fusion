@@ -8,7 +8,7 @@
         <!--                >-->
         <div class="login_box flex flex-col justify-center px-10 py-10 ">
           <div class="text-center text-4xl font-medium mb-8" style="font-weight: bold">
-            云计算平台
+            基于国产软硬件的云原生基础平台
           </div>
           <el-form ref="formRef" :model="formData" size="large" :rules="rules">
             <el-form-item prop="account">

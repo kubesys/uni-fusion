@@ -17,7 +17,9 @@ import config from './config'
 NProgress.configure({ showSpinner: false })
 
 const loginPath = PageEnum.LOGIN
-const defaultPath = PageEnum.INDEX
+// const defaultPath = PageEnum.INDEX
+const homePath = PageEnum.HOME
+
 // 免登录白名单
 const whiteList: string[] = [PageEnum.LOGIN, PageEnum.ERROR_403]
 router.beforeEach(async (to, from, next) => {
@@ -31,7 +33,7 @@ router.beforeEach(async (to, from, next) => {
         const hasGetUserInfo = Object.keys(userStore.userInfo).length !== 0
         if (hasGetUserInfo) {
             if (to.path === loginPath) {
-                next({ path: defaultPath })
+                next({ path: homePath })
             } else {
                 next()
             }

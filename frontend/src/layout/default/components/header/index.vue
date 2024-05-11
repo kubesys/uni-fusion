@@ -95,8 +95,8 @@ const items = ref([
         path: '/envInfo/resource/layer2Net',
       },
       {
-        title: '应用负载',
-        path: '/envInfo/appload/pods',
+        title: '平台管理',
+        path: '/envInfo/platform/workload',
       }
     ]
   },

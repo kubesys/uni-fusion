@@ -1,34 +1,4 @@
 <template>
-  <!--  <div style="background: #a62727; padding: 30px">-->
-
-  <!--    <a-row :gutter="16">-->
-  <!--      <a-col>-->
-  <!--        <a-card  :bordered="false" style="width: 100%">-->
-  <!--          <p>Card content</p>-->
-  <!--          <div class="wrapper">-->
-  <!--            <div class="titleWrapper">-->
-  <!--              <div class="icon"}>-->
-  <!--                icon-->
-  <!--              </div>-->
-  <!--              <div class="title">-->
-  <!--                <div class="h3">2</div>-->
-  <!--                <p class="text-second">-->
-  <!--                  1-->
-  <!--                </p>-->
-  <!--              </div>-->
-  <!--            </div>-->
-  <!--          </div>-->
-  <!--        </a-card>-->
-  <!--      </a-col>-->
-  <!--    </a-row>-->
-  <!--    <a-row>-->
-  <!--      <a-col>-->
-  <!--        <a-card>-->
-
-  <!--        </a-card>-->
-  <!--      </a-col>-->
-  <!--    </a-row>-->
-  <!--  </div>-->
 
   <div style="background-color: #eff4f9; padding: 15px; width: 100%; overflow: scroll; height: 90vh">
     <a-row :gutter="24">
@@ -51,6 +21,8 @@
       </a-col>
     </a-row>
 
+
+
     <a-row :gutter="24" style="margin-top: 20px">
       <a-col :span="24">
         <a-card  :bordered="false">
@@ -69,9 +41,9 @@
               <template #prefix><SearchOutlined /></template>
             </a-input>
 
-            <a-button type="text" @click="createDeam">创建</a-button>
+            <a-button type="text" ><SyncOutlined /></a-button>
 
-
+            <a-button type="text" ><SettingOutlined /></a-button>
           </a-space>
 
           <div >

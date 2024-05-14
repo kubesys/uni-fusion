@@ -72,6 +72,49 @@ const sideTheme = computed(() => settingStore.sideTheme)
 const router = useRouter();
 const current = ref<string[]>(['setting:1']);
 
+// const items = ref([
+//   {
+//     title: '首页',
+//     path: '/home/dashboard'
+//   },
+//   {
+//     key: 'sub1',
+//     label: '资源中心',
+//     title: '资源中心',
+//     children: [
+//       {
+//         title: '云资源池',
+//         path: '/envInfo/basicInfo/vm',
+//       },
+//       {
+//         title: '硬件设施',
+//         path: '/envInfo/hardware/zone',
+//       },
+//       {
+//         title: '网络资源',
+//         path: '/envInfo/resource/layer2Net',
+//       },
+//       {
+//         title: '平台管理',
+//         path: '/envInfo/platform/workload',
+//       }
+//     ]
+//   },
+//   {
+//     title: '平台运维',
+//     children: [
+//       {
+//         title: '消息日志',
+//         path: 'setting:1',
+//       }
+//     ]
+//   },
+//   {
+//     title: '设置',
+//     path: '/config'
+//   },
+// ]);
+
 const items = ref([
   {
     title: '首页',
@@ -83,36 +126,11 @@ const items = ref([
     title: '资源中心',
     children: [
       {
-        title: '云资源池',
-        path: '/envInfo/basicInfo/vm',
-      },
-      {
-        title: '硬件设施',
-        path: '/envInfo/hardware/zone',
-      },
-      {
-        title: '网络资源',
-        path: '/envInfo/resource/layer2Net',
-      },
-      {
         title: '平台管理',
         path: '/envInfo/platform/workload',
       }
     ]
-  },
-  {
-    title: '平台运维',
-    children: [
-      {
-        title: '消息日志',
-        path: 'setting:1',
-      }
-    ]
-  },
-  {
-    title: '设置',
-    path: '/config'
-  },
+  }
 ]);
 
 // function handleclick(){

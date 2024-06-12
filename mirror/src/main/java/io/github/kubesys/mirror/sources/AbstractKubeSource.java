@@ -55,7 +55,7 @@ public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 	/**
 	 * 默认Kubernetes的URL
 	 */
-	static final String DEFAULT_URL = "https://kubernetes.default:443";
+	public static final String DEFAULT_URL = "https://kubernetes.default:443";
 	
 	/**
 	 * Kubernetes的客户端

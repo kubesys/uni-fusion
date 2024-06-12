@@ -10,8 +10,8 @@
 	<description>backend</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<kubemirror.version>0.3.4</kubemirror.version>
-		<kubespring.version>2.2.8</kubespring.version>
+		<kubemirror.version>0.3.5</kubemirror.version>
+		<kubespring.version>2.2.9</kubespring.version>
 		
 		<websocket.version>1.5.5</websocket.version>
 		<springboot.version>3.2.1</springboot.version>

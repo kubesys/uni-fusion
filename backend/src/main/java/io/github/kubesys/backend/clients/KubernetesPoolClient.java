@@ -22,6 +22,10 @@ import io.github.kubesys.client.KubernetesConstants;
 import io.github.kubesys.client.KubernetesWatcher;
 import io.github.kubesys.client.cores.KubernetesRuleBase;
 import io.github.kubesys.client.utils.KubeUtil;
+import io.github.kubesys.devfrk.spring.utils.EnvUtils;
+import io.github.kubesys.mirror.cores.Environment;
+import io.github.kubesys.mirror.sources.AbstractKubeSource;
+import io.github.kubesys.mirror.utils.MirrorUtil;
 
 /**
  * @author  wuheng@iscas.ac.cn
@@ -42,18 +46,28 @@ public class KubernetesPoolClient {
 	
 	
 	public KubernetesClient getKubeClient(String region) throws Exception {
-		if (kubeClients.containsKey(region)) {
-			return kubeClients.get(region);
-		}
 		
-		Role role = (Role) postgresClient.find(Role.class, "admin");
-		String url = role.getTokens().get(region).get("url").asText();
-		String token = role.getTokens().get(region).get("token").asText();
-		KubernetesClient client = new KubernetesClient(url, token);
+		KubernetesClient client = kubeClients.get(region);
+		
+		if (client == null) {
+			boolean authing = EnvUtils.isAuthing();
+			if (authing) {
+				Role role = (Role) postgresClient.find(Role.class, "admin");
+				String url = role.getTokens().get(region).get("url").asText();
+				String token = role.getTokens().get(region).get("token").asText();
+				client = new KubernetesClient(url, token);
+				kubeClients.put(region, client);
+			} else {
+				client = new KubernetesClient(
+						MirrorUtil.getEnv(Environment.ENV_KUBE_URL, AbstractKubeSource.DEFAULT_URL),
+						System.getenv(Environment.ENV_KUBE_TOKEN));
+				kubeClients.put(region, client);
+			}
+		}
 		client.watchResources("apiextensions.k8s.io.CustomResourceDefinition", 
 				new NewResourceWacther(client));
-		kubeClients.put(region, client);
 		return client;
+		
 	}
 	
 	public static class NewResourceWacther extends KubernetesWatcher {

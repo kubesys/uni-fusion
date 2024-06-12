@@ -10,18 +10,18 @@ spring:
     auth:
       hikari:
         maximum-pool-size: 5
-      #jdbcUrl: jdbc:postgresql://133.133.135.134:30306/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang  
+      jdbcUrl: jdbc:postgresql://133.133.135.134:30306/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang  
       #jdbcUrl: jdbc:postgresql://139.9.165.93:30306/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
-      jdbcUrl: jdbc:postgresql://kube-database.kube-iscas:5432/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
+      #jdbcUrl: jdbc:postgresql://kube-database.kube-iscas:5432/kubeauth?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
       username: postgres
       password: onceas
       driverClassName: org.postgresql.Driver
     kube:
       hikari:
         maximum-pool-size: 5
-      #jdbcUrl: jdbc:postgresql://133.133.135.134:30306/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang  
+      jdbcUrl: jdbc:postgresql://133.133.135.134:30306/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang  
       #jdbcUrl: jdbc:postgresql://139.9.165.93:30306/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
-      jdbcUrl: jdbc:postgresql://kube-database.kube-iscas:5432/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
+      #jdbcUrl: jdbc:postgresql://kube-database.kube-iscas:5432/kubestack?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&&serverTimezone=Asia/Shang
       username: postgres
       password: onceas
       driverClassName: org.postgresql.Driver

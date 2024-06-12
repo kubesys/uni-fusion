@@ -5,6 +5,7 @@ LABEL maintainer="bingshuai@nj.iscas.ac.cn"
 COPY . /kube-frontend
 
 RUN cd /kube-frontend \
+    && export NODE_OPTIONS=--max_old_space_size=4096 \
     && npm install \
     && yarn install \
     && npm run build:prod

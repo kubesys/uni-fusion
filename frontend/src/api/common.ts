@@ -144,6 +144,33 @@ export function frontendInfo(TableName:string, infoItem: [], region = 'local', r
   getResourceData(1);
 }
 
+export function createTemplate(TableName:string, templateDate:object,  region = 'local', retryCount = 10) {
+  const getResourceData = (retry:any) => {
+    getResource({
+      fullkind: "doslab.io.Frontend",
+      name: TableName + '-create',
+      namespace: "default",
+      region: region
+    })
+        .then((resp) => {
+          // console.log(resp.data.data.spec.data)
+          templateDate.value = resp.data.data.spec.data
+          // console.log(templateDate.value)
+        })
+        .catch((error) => {
+          console.error(error);
+          if (retry < retryCount) {
+            getResourceData(retry + 1); // 重新发送
+          } else {
+            ElMessage.error('Request failed,' + TableName + '-create');
+          }
+        });
+  };
+
+  getResourceData(1);
+}
+
+// 已废弃
 // export function frontendAction(TableName:string, step: [], region = 'local', retryCount = 3) {
 //   const getResourceData = (retry:any) => {
 //     getResource({
@@ -178,7 +205,7 @@ export function frontendCreateTemplate(TableName:string, templateSpec: any, obj:
       region: region
     })
         .then((resp) => {
-          console.log(resp.data.data.spec);
+          // console.log(resp.data.data.spec);
           templateSpec.value = resp.data.data.spec;
 
           const jsontemplate = {}
@@ -266,10 +293,10 @@ export function validResponse(response:any) {
   return response != null && response.hasOwnProperty('code') && response.code === 20000
 }
 
-export function frontendCreate(jsonData:any, region = 'local'){
+export function frontendCreate(jsonData:object, region = 'local'){
   createResource({
     region: region,
-    data: jsonData
+    data: JSON.parse(jsonData)
   }).then((resp)=>{
     if(resp.data.code == 20000){
       ElMessage.success('创建成功.')
@@ -368,7 +395,7 @@ export function getTextValue(scope, key){
         if (apiVersion) {
           newkey += apiVersion.split('/')[0];
         } else {
-          console.log(1);
+          // console.log(1);
           // 处理 apiVersion 为 undefined 或 null 的情况
         }
       } else {
@@ -482,9 +509,9 @@ export function getTerminalAddr(scope, item) {
       }
     })
   } else if (str.includes('{port}')) {
-    console.log(scope)
+    // console.log(scope)
     n = getComplexValue(scope, item.row)
-    console.log(n)
+    // console.log(n)
     // return 'http://133.133.135.134:8081/VmInstance/viewNoVnc?record=' + n
     return 'http://localhost:30301/VmInstance/viewNoVnc?record=' + n
   } else {
@@ -572,6 +599,26 @@ export function nameChange(name: string) {
     return '创建云主机快照'
   } else if (name == 'doslab.io.VirtualMachineDiskSnapshot') {
     return '创建云盘快照'
+  } else if (name == 'Pod') {
+    return '创建容器组'
+  } else if (name == 'apps.Deployment') {
+    return '创建微服务应用'
+  } else if (name == 'apps.StatefulSet') {
+    return '创建有状态副本集'
+  } else if (name == 'apps.Daemonset') {
+    return '创建守护进程集'
+  } else if (name == 'Service') {
+    return '创建服务'
+  } else if (name == 'Secret') {
+    return '创建保密字典'
+  } else if (name == 'batch.Job') {
+    return '创建任务'
+  } else if (name == 'batch.CronJob') {
+    return '创建定时任务'
+  } else if (name == 'PersistentVolume') {
+    return '创建持久卷'
+  } else if (name == 'PersistentVolumeClaim') {
+    return '创建持久卷声明'
   }
 
 }

@@ -7,47 +7,47 @@
         <div style="float:left; margin-top: 10px; font-size: 12px">
           总数
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; font-weight: bolder; font-size: 12px">
+        <div class="tablechart-data">
           {{tableData.metadata.totalCount || 0}}
         </div>
       </div>
       <div style="margin-right: 20px; flex: 1">
-        <span style="float:left; width: 3px; height: 30px; background: #57D344; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
+        <span class="tablechart-color" style="background: #57D344;" />
+        <div class="tablechart-desc" >
           运行中
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
+        <div class="tablechart-data" >
           <!--          {{ tableData.resultRun }}-->
           0
         </div>
       </div>
 
       <div style="margin-right: 20px; flex: 1">
-        <span style="float:left; width: 3px; height: 30px; background: red; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
+        <span class="tablechart-color" style="background: red;" />
+        <div class="tablechart-desc" >
           已停止
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
+        <div class="tablechart-data" >
           {{ tableData.resultPen }}
         </div>
       </div>
 
       <div style="margin-right: 20px; flex: 1">
-        <span style="float:left; width: 3px; height: 30px; background: #dbdde0; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
+        <span class="tablechart-color" style="background: #dbdde0;" />
+        <div class="tablechart-desc" >
           其他
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
+        <div class="tablechart-data" >
           0
         </div>
       </div>
 
       <div style="margin-right: 20px; flex: 1">
-        <span style="float:left; width: 3px; height: 30px; background: #96989b; display: inline-block; transform: translate(-50%, 40%);" />
-        <div style="float:left; margin-top: 10px; margin-left: 5px; font-size: 12px">
+        <span class="tablechart-color" style="background: #96989b;" />
+        <div class="tablechart-desc" >
           回收站
         </div>
-        <div style="float:left;margin-top: 3px;  margin-right:30px; margin-left: 5px;font-weight: bolder; font-size: 12px">
+        <div class="tablechart-data" >
           0
         </div>
       </div>
@@ -161,67 +161,6 @@
           <a-alert v-if="alertVisible" message="当前已选中" type="info"  closable @close="onClose" style="margin-top: 10px" show-icon/>
 
           <!--     Table table component-->
-          <!--    <el-table-->
-          <!--        :data="tableData.items"-->
-          <!--        :header-cell-style="{ color: '#000'}"-->
-          <!--        :max-height="500"-->
-          <!--        highlight-current-row-->
-          <!--        size="large">-->
-          <!--      >-->
-          <!--      <el-table-column-->
-          <!--          type="selection"-->
-          <!--          width="55">-->
-          <!--      </el-table-column>-->
-          <!--      <el-table-column-->
-          <!--          v-for="item in tableColumns"-->
-          <!--          align="center"-->
-          <!--          :key="item.key"-->
-          <!--          sortable-->
-          <!--          :label="item.label"-->
-          <!--      >-->
-          <!--        <template #default="scope">-->
-          <!--          &lt;!&ndash;          <router-link&ndash;&gt;-->
-          <!--          &lt;!&ndash;              v-if="item.kind === 'internalLink'"&ndash;&gt;-->
-          <!--          &lt;!&ndash;              to="baidu">&ndash;&gt;-->
-          <!--          &lt;!&ndash;            <el-link type="primary">&ndash;&gt;-->
-          <!--          &lt;!&ndash;              {{ getComplexDataDispose(scope.row, item.row) }}&ndash;&gt;-->
-          <!--          &lt;!&ndash;            </el-link>&ndash;&gt;-->
-          <!--          &lt;!&ndash;          </router-link>&ndash;&gt;-->
-          <!--          <router-link-->
-          <!--              v-if="item.kind === 'internalLink' && item.internalLink && item.internalLink.kind"-->
-          <!--              :to="{-->
-          <!--                path: item.internalLink.kind.indexOf('@') === -1 ? item.internalLink.kind : getComplexDataDispose(scope.row, item.internalLink.kind),-->
-          <!--                query: {-->
-
-          <!--                }-->
-          <!--              }"-->
-          <!--          >-->
-          <!--            <el-link type="primary" v-if="item.internalLink.kind.indexOf('@') !== -1">{{-->
-          <!--                getComplexDataDispose(scope.row, item.internalLink.item.substring(1))-->
-          <!--              }}</el-link>-->
-          <!--            <el-link type="primary" v-else>-->
-          <!--              {{ getComplexDataDispose(scope.row, item.row) }}-->
-          <!--            </el-link>-->
-          <!--          </router-link>-->
-          <!--          <el-link v-else-if="item.kind === 'terminalLink'" type="primary" :underline="false" :href="getTerminalAddr(scope.row, item.terminalLink)" target="_blank">-->
-          <!--            <el-icon :size="20">-->
-          <!--              <component :is="item.terminalLink.icon"></component>-->
-          <!--            </el-icon>-->
-          <!--          </el-link>-->
-          <!--          <el-select-->
-          <!--              v-else-if="item.kind === 'action'"-->
-          <!--              placeholder="请选择"-->
-          <!--              style="width: 100px">-->
-          <!--            <el-option v-for="action in item.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
-          <!--          </el-select>-->
-          <!--          <span v-else>-->
-          <!--            {{ getComplexDataDispose(scope.row, item.row) }}-->
-          <!--          </span>-->
-          <!--        </template>-->
-          <!--      </el-table-column>-->
-          <!--    </el-table>-->
-
-
           <div>
             <a-table class="custom-table"
                      :row-selection="rowSelection"
@@ -229,49 +168,17 @@
                      :rowKey='record=>record.metadata.name'
                      :data-source="tableData.items"
                      :scroll="{ x: 100 }"
-                     :pagination="{
-               pageSize: pageSite.limit,
-               current: pageSite.page,
-               onChange: handleCurrentChange}"
                      style="margin-top: 5px"
                      size="small"
+                     :pagination="{
+                       pageSize: pageSite.limit,
+                       showQuickJumper: true, // 是否可以快速跳转到指定页
+                       current: pageSite.page, // 当前页数
+                       total: tableData.metadata.totalCount, // 总条
+                       onChange: handleCurrentChange // 页码改变时的回调函数
+}"
             >
               <template #bodyCell="{ column, text }" >
-                <!--        <template v-if="column.kind === 'internalLink' && column.internalLink && column.internalLink.kind">-->
-
-                <!--          <router-link-->
-
-                <!--              :to="{-->
-                <!--                path: column.internalLink.kind.indexOf('@') === -1 ? column.internalLink.kind : getComplexDataDispose(scope.row, column.internalLink.kind),-->
-                <!--                query: {-->
-
-                <!--                }-->
-                <!--              }"-->
-                <!--          >-->
-                <!--            <el-link type="primary" v-if="column.internalLink.kind.indexOf('@') !== -1">{{-->
-                <!--                getComplexDataDispose(scope.row, column.internalLink.item.substring(1))-->
-                <!--              }}</el-link>-->
-                <!--            <el-link type="primary" v-else>-->
-                <!--              {{ getComplexDataDispose(column, column.row) }}-->
-                <!--            </el-link>-->
-                <!--          </router-link>-->
-                <!--        </template>-->
-
-                <!--        <template v-else-if="column.kind === 'terminalLink'">-->
-                <!--          <el-link type="primary" :underline="false" :href="getTerminalAddr(scope.row, column.terminalLink)" target="_blank">-->
-                <!--            <el-icon :size="20">-->
-                <!--              <component :is="column.terminalLink.icon"></component>-->
-                <!--            </el-icon>-->
-                <!--          </el-link>-->
-                <!--        </template>-->
-
-                <!--        <template v-eles-if="column.kind === 'action'">-->
-                <!--          <el-select-->
-                <!--              placeholder="请选择"-->
-                <!--              style="width: 100px">-->
-                <!--            <el-option v-for="action in column.actionLink" :key="action.key" :label="action.label" :value="action.action" @click="handleOptionClick(action.label, action.action, scope.row)" />-->
-                <!--          </el-select>-->
-                <!--        </template>-->
                 <template v-if="column.kind === 'action'">
                   <a-dropdown >
                     <a-button :icon="h(EllipsisOutlined)" />
@@ -350,16 +257,6 @@
     </a-row>
 
     <!-- Table page action button -->
-
-
-    <!-- Table pagination -->
-    <!--    <el-pagination-->
-    <!--        v-if="tableDataLoaded"-->
-    <!--        :page-size=pageSite.limit-->
-    <!--        :current-page=pageSite.page-->
-    <!--        :total=tableData.metadata.totalCount-->
-    <!--        @current-change="handleCurrentChange"-->
-    <!--    ></el-pagination>-->
     <el-dialog
         v-model="dialogVisible"
         :title=selectedItemName
@@ -817,6 +714,30 @@ watch(
 .frontendTable_container{
   padding-left: 24px;
   padding-right: 24px;
+}
+
+.tablechart-color{
+  float:left;
+  width: 3px;
+  height: 30px;
+  display: inline-block;
+  transform: translate(-50%, 40%);
+}
+
+.tablechart-data{
+  float:left;
+  margin-top: 3px;
+  margin-right:30px;
+  margin-left: 5px;
+  font-weight: bolder;
+  font-size: 12px
+}
+
+.tablechart-desc{
+  float:left;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 12px
 }
 
 //修改行内线

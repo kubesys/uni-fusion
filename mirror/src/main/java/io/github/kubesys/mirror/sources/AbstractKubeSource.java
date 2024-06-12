@@ -81,7 +81,7 @@ public abstract class AbstractKubeSource extends DataSource<KubeDataModel> {
 	 * @return Kubernetes客户端实例
 	 * @throws Exception 无法连接Kubernetes
 	 */
-	private static KubernetesClient initKubeClient() throws Exception {
+	public static KubernetesClient initKubeClient() throws Exception {
 		
 		File file = new File(MirrorConstants.KUBE_CA_PATH);
 		if (file.exists()) {

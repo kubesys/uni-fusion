@@ -58,9 +58,7 @@ public class KubernetesPoolClient {
 				client = new KubernetesClient(url, token);
 				kubeClients.put(region, client);
 			} else {
-				client = new KubernetesClient(
-						MirrorUtil.getEnv(Environment.ENV_KUBE_URL, AbstractKubeSource.DEFAULT_URL),
-						System.getenv(Environment.ENV_KUBE_TOKEN));
+				client = AbstractKubeSource.initKubeClient();
 				kubeClients.put(region, client);
 			}
 		}

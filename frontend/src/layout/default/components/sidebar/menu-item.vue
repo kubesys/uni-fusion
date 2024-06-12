@@ -4,20 +4,7 @@
       <image-contain src='/menu1.png'  style="flex: 0.5; margin-left: 15px; margin-bottom: 15px"/>
       <span style="flex: 2; margin-left: 10px;margin-top: 10px">{{ userStore.menuItem[0].name }}</span>
     </div>
-    <!--            <menu-item-->
-    <!--                v-for="item in route?.children"-->
-    <!--                :key="resolvePath(item.path)"-->
-    <!--                :route="item"-->
-    <!--                :route-path="resolvePath(item.path)"-->
-    <!--                :popper-class="popperClass"-->
-    <!--            />-->
-    <!--            <template v-for="item in route?.children">-->
-    <!--&lt;!&ndash;              <span v-if="item?.label">&ndash;&gt;-->
-
-    <!--&lt;!&ndash;              </span>&ndash;&gt;-->
-    <!--            </template>-->
     <a-menu
-        id="dddddd"
         v-model:openKeys="openKeys"
         v-model:selectedKeys="selectedKeys"
         style="width: 256px"
@@ -31,11 +18,6 @@
             <router-link v-if="item.paths" :to="item.paths">{{item.name}}</router-link>
           </a-menu-item>
         </a-menu-item-group>
-        <!--        <a-sub-menu v-if="menu.children" :key="menu.name" :title="menu.name">-->
-        <!--          <a-menu-item v-for="item of menu.children" :key="item.name">-->
-        <!--            <router-link v-if="item.paths" :to="item.paths">{{item.name}}</router-link>-->
-        <!--          </a-menu-item>-->
-        <!--        </a-sub-menu>-->
 
       </template>
     </a-menu>

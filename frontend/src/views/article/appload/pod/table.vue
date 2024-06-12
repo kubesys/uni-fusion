@@ -1,35 +1,4 @@
 <template>
-  <!--  <div style="background: #a62727; padding: 30px">-->
-
-  <!--    <a-row :gutter="16">-->
-  <!--      <a-col>-->
-  <!--        <a-card  :bordered="false" style="width: 100%">-->
-  <!--          <p>Card content</p>-->
-  <!--          <div class="wrapper">-->
-  <!--            <div class="titleWrapper">-->
-  <!--              <div class="icon"}>-->
-  <!--                icon-->
-  <!--              </div>-->
-  <!--              <div class="title">-->
-  <!--                <div class="h3">2</div>-->
-  <!--                <p class="text-second">-->
-  <!--                  1-->
-  <!--                </p>-->
-  <!--              </div>-->
-  <!--            </div>-->
-  <!--          </div>-->
-  <!--        </a-card>-->
-  <!--      </a-col>-->
-  <!--    </a-row>-->
-  <!--    <a-row>-->
-  <!--      <a-col>-->
-  <!--        <a-card>-->
-
-  <!--        </a-card>-->
-  <!--      </a-col>-->
-  <!--    </a-row>-->
-  <!--  </div>-->
-
   <div style="background-color: #eff4f9; padding: 15px; width: 100%; overflow: scroll; height: 90vh">
     <a-row :gutter="24">
       <a-col :span="24">
@@ -65,11 +34,11 @@
                 style="width: 260px"
             >
             </a-select>
-            <a-input placeholder="搜索" style="width: 1180px" >
+            <a-input v-for="formItem in formItems" placeholder="搜索" style="width: 1180px" v-model:value="propslecet[formItem.path]" @keyup.enter="submitForm">
               <template #prefix><SearchOutlined /></template>
             </a-input>
 
-            <a-button type="text" @click="createDeam">创建</a-button>
+            <a-button type="text" @click="creatDialog.showAndInit(ListName, templateDate)">创建</a-button>
 
 
           </a-space>
@@ -99,12 +68,8 @@
                         <a-menu-item
                             v-for="action in column.actionLink"
                             :key="action.key"
-
+                            @click="handleOptionClick(action.label, action.action, text)"
                             :disabled="getComplexValue(text, action.status)=='🟢' ? action.status && action.action == 'start' : getComplexValue(text, action.status)=='🟡' ? action.status && action.action == 'start' || action.action == 'suspend' : action.status && action.action == 'stop' || action.action == 'reboot' || action.action == 'suspend' || action.action == 'resume' || action.action == 'shutdown' ">
-                          <a-tree
-                              v-if= "action.action === 'extend'"
-                              :tree-data="action.children"
-                          />
                           <a target="_blank" >{{action.label}}</a>
                         </a-menu-item>
                       </a-menu>
@@ -143,12 +108,15 @@
       </a-col>
 
     </a-row>
+    <CreateJsonDialog ref="creatDialog"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import {ref, onMounted, h} from "vue";
 import {
+  actionDataValue,
+  createTemplate,
   frontendCreateTemplate,
   frontendData,
   frontendFormSearch,
@@ -168,6 +136,7 @@ import {
 } from "@ant-design/icons-vue";
 
 import type { TableProps } from 'ant-design-vue';
+import CreateJsonDialog from "@/views/article/appload/pod/apploadCreate.vue";
 
 
 interface tableColumns {
@@ -203,6 +172,8 @@ const formData = ref<Record<string, string>>({}); // 表单数据对象
 const formItems = ref([]); // 用于存储生成的表单项
 const buttonItem = ref([]); // 用于存储生成的表单按钮
 
+const creatDialog = ref()
+
 const tableColumns:tableColumns = ref([])
 const tableData = ref({
   metadata:{
@@ -235,13 +206,38 @@ const rowSelection: TableProps['rowSelection'] = {
   }
 };
 
+
+const rowJsonData = ref()
+const selectedItemName = ref('');
+const dialogVisible = ref(false)
+const rowItemData = ref()
+function handleOptionClick(dialogname, action, rowData) {
+  rowJsonData.value = rowData
+  // console.log(rowData)
+  actionDataValue(TableName, ListName, dialogVisible, selectedItemName, rowItemData, dialogname, action, rowData)
+  reflash()
+}
+
+function reflash() {
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
+}
+
+const templateDate = ref({})
+const obj = ref({})
+
 onMounted(()=>{
   frontendMeta(TableName, descItem);
   frontendFormSearch(TableName, formItems, buttonItem)
   frontendData(ListName, TableName, pageSite,tableColumns, tableData,allLabels.value, actions)
   // frontendCreateTemplate(TableName, templateDate, obj)
+  createTemplate(TableName, templateDate)
   tableDataLoaded.value = true
 })
+
+function submitForm() {
+  console.log(propslecet.value)
+  frontendData(ListName, TableName, pageSite,tableColumns, tableData, propslecet.value, actions)
+}
 
 
 

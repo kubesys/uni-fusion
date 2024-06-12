@@ -45,19 +45,17 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, provide, ref} from 'vue';
-import {getMenu} from '@/api/user';
+import {onMounted, ref} from 'vue';
 import useUserStore from "@/stores/modules/user";
 
 const userStore = useUserStore()
-
 const routes = useRoute()
 const title = routes.meta?.title
-
 const gropsItems = ref([])
-const groupByPath = (groups) => {
+
+const groupByPath = (groups:any) => {
   const grouped = {};
-  groups.forEach((group) => {
+  groups.forEach((group:any) => {
     const path = group.path.split('/')[1];
     if (!grouped[path]) {
       grouped[path] = [];
@@ -75,19 +73,19 @@ onMounted(() => {
 
 const handleCatalogClick = (catalog) => {
   // 更新 Store 中选中的catalog
-  console.log(catalog)
+  // console.log(catalog)
   userStore.setSelectedCatalog(catalog.path);
   userStore.getMenu()
 };
 
 function handleMenuClick(info:any){
-  console.log(info.key)
+  // console.log(info.key)
   for (const item of userStore.sideItems) {
     console.log(item);
     if(item.name == info.key){
       userStore.menuItem = []
       userStore.menuItem.push(item)
-      console.log(userStore.menuItem)
+      // console.log(userStore.menuItem)
     }
   }
 }

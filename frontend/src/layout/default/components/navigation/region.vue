@@ -50,7 +50,7 @@ async function allRegions() {
 }
 
 function handleRegionItemClick(region) {
-  console.log('点击了区域：', region.value);
+  // console.log('点击了区域：', region.value);
   localStorage.setItem('region', region.value)
 }
 

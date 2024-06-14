@@ -70,7 +70,7 @@ const settingStore = useSettingStore()
 const sideTheme = computed(() => settingStore.sideTheme)
 
 const router = useRouter();
-const current = ref<string[]>(['setting:1']);
+const current = ref<string[]>([]);
 
 const items = ref([
   {
@@ -105,7 +105,7 @@ const items = ref([
     children: [
       {
         title: '消息日志',
-        path: 'setting:1',
+        path: '/log',
       }
     ]
   },

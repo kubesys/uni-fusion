@@ -180,9 +180,7 @@ const tableData = ref({
     totalCount:''
   },
   items:[],
-  actions:[],
-  resultRun: 0,
-  resultPen: 0
+  actions:[]
 })
 
 function handleCurrentChange(newPage) {

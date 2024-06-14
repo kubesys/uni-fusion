@@ -86,11 +86,11 @@ function getItem(
 //     return props.route.meta
 // })
 
-const items: ItemType[] = reactive([
-  getItem('虚拟资源', 'grp', null, [getItem('云主机', '1', h(DesktopOutlined)), getItem('云盘', '2', h(SaveOutlined))], 'group'),
-  getItem('计算配置', 'grp', null, [ getItem('云盘镜像', '4', h(PieChartOutlined)), getItem('计算规格', '5', h(FundProjectionScreenOutlined)), getItem('云盘规格', '6', h(FileExcelOutlined))], 'group'),
-  getItem('资源服务', 'grp', null, [getItem('云主机快照', '7', h(FolderViewOutlined)), getItem('云盘快照', '7', h(FolderViewOutlined))], 'group')
-]);
+// const items: ItemType[] = reactive([
+//   getItem('虚拟资源', 'grp', null, [getItem('云主机', '1', h(DesktopOutlined)), getItem('云盘', '2', h(SaveOutlined))], 'group'),
+//   getItem('计算配置', 'grp', null, [ getItem('云盘镜像', '4', h(PieChartOutlined)), getItem('计算规格', '5', h(FundProjectionScreenOutlined)), getItem('云盘规格', '6', h(FileExcelOutlined))], 'group'),
+//   getItem('资源服务', 'grp', null, [getItem('云主机快照', '7', h(FolderViewOutlined)), getItem('云盘快照', '7', h(FolderViewOutlined))], 'group')
+// ]);
 
 // const resolvePath = (path: string) => {
 //     if (isExternal(path)) {

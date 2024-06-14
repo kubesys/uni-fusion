@@ -172,10 +172,10 @@
                      size="small"
                      :pagination="{
                        pageSize: pageSite.limit,
-                       showQuickJumper: true, // 是否可以快速跳转到指定页
-                       current: pageSite.page, // 当前页数
-                       total: tableData.metadata.totalCount, // 总条
-                       onChange: handleCurrentChange // 页码改变时的回调函数
+                       showQuickJumper: true,
+                       current: pageSite.page,
+                       total: tableData.metadata.totalCount,
+                       onChange: handleCurrentChange
 }"
             >
               <template #bodyCell="{ column, text }" >
@@ -212,12 +212,12 @@
                 </template>
 
                 <template v-else-if="column.kind === 'icon'">
-                  <span v-if="getComplexDataDispose(text, column.row).includes('centos')">
+<!--                  <span v-if="getComplexDataDispose(text, column.row).includes('centos')">-->
                     <i class="iconfont icon-linux" />Liunx
-                  </span>
-                  <span v-else-if="getComplexDataDispose(text, column.row).includes('windows')">
-                    <i class="iconfont icon-windows-fill" />Windows
-                  </span>
+<!--                  </span>-->
+<!--                  <span v-else-if="getComplexDataDispose(text, column.row).includes('windows')">-->
+<!--                    <i class="iconfont icon-windows-fill" />Windows-->
+<!--                  </span>-->
                 </template>
 
                 <template v-else-if="column.kind === 'terminalLink'">

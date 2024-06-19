@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<!-- code -->
-		<kubeclient.version>1.3.0</kubeclient.version>
+		<kubeclient.version>1.2.3</kubeclient.version>
 		<hibernate.version>6.4.1.Final</hibernate.version>
 		<postgresql.version>42.7.1</postgresql.version>
 		<amqp.version>5.20.0</amqp.version>

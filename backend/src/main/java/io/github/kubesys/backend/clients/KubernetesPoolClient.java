@@ -23,9 +23,7 @@ import io.github.kubesys.client.KubernetesWatcher;
 import io.github.kubesys.client.cores.KubernetesRuleBase;
 import io.github.kubesys.client.utils.KubeUtil;
 import io.github.kubesys.devfrk.spring.utils.EnvUtils;
-import io.github.kubesys.mirror.cores.Environment;
 import io.github.kubesys.mirror.sources.AbstractKubeSource;
-import io.github.kubesys.mirror.utils.MirrorUtil;
 
 /**
  * @author  wuheng@iscas.ac.cn

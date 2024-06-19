@@ -60,7 +60,7 @@ public class PostgresClient   {
 	/**
 	 * 默认驱动
 	 */
-	static final String DEFAULT_POOLSIZE   = "5";
+	static final String DEFAULT_POOLSIZE   = "2";
 	
 	/**
 	 * 

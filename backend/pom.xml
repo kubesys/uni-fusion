@@ -12,6 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<kubemirror.version>0.3.6</kubemirror.version>
 		<kubespring.version>2.2.9</kubespring.version>
+		<hikaricp.version>5.1.0</hikaricp.version>
 		
 		<websocket.version>1.5.5</websocket.version>
 		<springboot.version>3.2.1</springboot.version>
@@ -53,7 +54,7 @@
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
 			<version>${websocket.version}</version>
-	</dependency>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

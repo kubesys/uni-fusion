@@ -59,9 +59,9 @@ public class KubernetesPoolClient {
 				client = AbstractKubeSource.initKubeClient();
 				kubeClients.put(region, client);
 			}
+			client.watchResources("apiextensions.k8s.io.CustomResourceDefinition", 
+					new NewResourceWacther(client));
 		}
-		client.watchResources("apiextensions.k8s.io.CustomResourceDefinition", 
-				new NewResourceWacther(client));
 		return client;
 		
 	}

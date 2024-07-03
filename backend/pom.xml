@@ -4,18 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.kubesys</groupId>
 	<artifactId>backend</artifactId>
-	<version>0.3.6</version>
+	<version>0.3.7</version>
 	<packaging>jar</packaging>
 	<name>backend</name>
 	<description>backend</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<kubemirror.version>0.3.6</kubemirror.version>
-		<kubespring.version>2.2.9</kubespring.version>
-		<hikaricp.version>5.1.0</hikaricp.version>
-		
-		<websocket.version>1.5.5</websocket.version>
-		<springboot.version>3.2.1</springboot.version>
+		<kubespring.version>2.3.0</kubespring.version>
+		<websocket.version>1.5.6</websocket.version>
+		<springboot.version>3.3.1</springboot.version>
 	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
@@ -33,7 +30,7 @@
 		<dependency>
 			<groupId>io.github.kubesys</groupId>
 			<artifactId>mirror</artifactId>
-			<version>${kubemirror.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.github.kubesys</groupId>

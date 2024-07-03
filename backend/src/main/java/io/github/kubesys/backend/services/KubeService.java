@@ -189,6 +189,20 @@ public class KubeService extends AbstractHttpHandler {
 		}
 	}
 
+	/**
+	 * see KubernetesClient.getResource
+	 * 
+	 * @param namespace namespace
+	 * @param pod       pod name
+	 * @param region    region
+	 * @return json json
+	 * @throws Exception exception
+	 */
+	public String getPodLog(String namespace, String pod, String region) throws Exception {
+		namespace = (namespace == null || "".equals(namespace)) ? "default" : namespace;
+		return kubeClient.getKubeClient(region).getPodLog(namespace, pod);
+	}
+	
 	/*************************************************************************
 	 * 
 	 * 
